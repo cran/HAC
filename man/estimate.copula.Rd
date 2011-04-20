@@ -1,0 +1,58 @@
+\name{estimate.copula}
+\alias{estimate.copula}
+
+\title{Estimation of the structure of HAC
+}
+\description{
+The function \code{estimate.copula} estimates the parameter and determines the structure of Hierarchical Archimedean Copulae.
+}
+\usage{
+estimate.copula(X, type = HAC_GUMBEL, method = TAU, epsilon = 0)
+}
+\arguments{
+  \item{X}{
+a matrix, which contains the data. The columns should be labeled. The default names \code{X1, ..., Xdim[X]2} are given otherwise.
+}
+  \item{type}{
+  defines the model. It can be selected between \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_CLAYTON}, \code{AC_CLAYTON} and \code{GAUSS}.
+}
+  \item{method}{
+the estimation method. Either ``Kendall's \eqn{\tau}'' denoted by \code{TAU} or ``Quasi Maximum Likelihood'' denoted by \code{ML}.
+}
+  \item{epsilon}{
+  a scalar \eqn{\geq 0}. The variables of consecutive nodes are aggregated, if the difference of their dependency parameters is smaller than \code{epsilon}. For a detailed explanation see also \code{\link{aggregate.hac}}.
+}
+}
+\details{
+It is not possible to estimate negative dependencies using a HAC-type in combination with Kendall's \eqn{\tau}. If variables of X are negatively correlated, the correlation is set to \eqn{0}.
+}
+\value{
+An object of the class \env{hac} is returned. In the case of \code{type = GAUSS} a matrix is returned.
+}
+\references{
+Okhrin, O., Okhrin, Y. and Schmid, W., Determining the structure and estimation of hierarchical Archimedean copulas, \emph{Journal of Econometrics}, under revision.
+	
+Joe, H. 2005, Asymptotic efficiency of the two-stage estimation method for copula-based models, \emph{Journal of Multivariate Analysis, Volume 94 Issue 2}, 401-419.
+	
+Genest, C., Ghoudi, K., and Rivest, L. P. 1995, A Semiparametric Estimation Procedure of Dependence Parameters in Multivariate Families of Distributions, \emph{Biometrika} 82, 543-552.
+}
+\author{
+Ostap Okhrin
+}
+
+\examples{
+M = matrix(c(2, 0, 0, 0, 3, 4, 0, 0, ~X1 + X5, ~X2, ~X3, ~X4),
+ncol = 4, byrow = TRUE)
+g.model = hac(HAC_GUMBEL, M)
+
+# sample from copula g.model
+x = rHAC(1000, g.model)
+
+# in the following case the true model is binary approximated
+est.obj = estimate.copula(x, HAC_GUMBEL, TAU, epsilon = 0)
+plot(est.obj, index = TRUE)
+
+# consider also the aggregation of the variables
+est.obj = estimate.copula(x, HAC_GUMBEL, TAU, epsilon = 0.1)
+plot(est.obj, index = TRUE)
+}

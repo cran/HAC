@@ -1,0 +1,47 @@
+## regular functions:
+export("pHAC",
+	"emp.copula",
+	"emp.copula.self",
+	"estimate.copula",
+	"tau2theta",
+	"theta2tau",
+	"phi",
+	"phi.inv",
+	"dAC",
+	"dHAC",
+	"rAC",
+	"rHAC",
+	"tree2str",
+	"get.params",
+	"hac",
+	"hac.full",
+	"columns.hac",
+	"check.var",
+	"check.par",
+	"copMult"
+)
+
+exportClass("hac"
+)
+
+# definitions:
+export("HAC_GUMBEL",
+	"AC_GUMBEL",
+	"HAC_ROTATED_GUMBEL",
+	"HAC_CLAYTON",
+	"AC_CLAYTON",
+	"GAUSS",
+	"theta.eps",
+	"TAU",
+	"ML"
+)
+
+# generics:
+S3method(plot, hac)
+S3method(print, hac)
+S3method(aggregate, hac)
+export("plot.hac", "print.hac", "aggregate.hac")
+
+importFrom(fBasics, rstable)
+importFrom(stats, aggregate)
+importFrom(graphics, plot)
