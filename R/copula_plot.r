@@ -134,12 +134,12 @@ tree = x$model
 )}
 
 if(A == TRUE){
-	plot(x = 0, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, axes = axes, col = "white", ...)
+	graphics::plot(x = 0, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, axes = axes, col = "white", ...)
 	symbols(.coord(tree)$coord$x, .coord(tree)$coord$y, rectangles = cbind(l, h), add = TRUE, inches = FALSE, bg = bg, lwd = lwd, fg = fg)
 	.plotlines(.shift(.coord(tree)))
 	.plottree(.shift(.coord(tree)), tree, l, "A", theta, x$type)}
 else{
-	plot(x = 0, type = "p", xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, axes = axes, col = "white", ...)
+	graphics::plot(x = 0, type = "p", xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, axes = axes, col = "white", ...)
 	symbols(.coord(tree)$coord$x, .coord(tree)$coord$y, rectangles = cbind(s ,0.25), add = TRUE, inches = FALSE, bg = bg, lwd = lwd, fg = fg)
 	.plotlines(.shift(.coord(tree)))
 	.plottree(.shift(.coord(tree)), tree, s, "B", theta, x$type)}
@@ -152,7 +152,7 @@ if((x$type == AC_GUMBEL) | (x$type == AC_CLAYTON)){
 	tree = integer(dim)
 	coord.circ = 1 : dim
 	
-	plot(1, col = "white", xlim = xlim + c(0.7, -0.7), ylim = ylim, xlab = xlab, ylab = ylab, axes = axes, ...)
+	graphics::plot(1, col = "white", xlim = xlim + c(0.7, -0.7), ylim = ylim, xlab = xlab, ylab = ylab, axes = axes, ...)
 	for(i in 1 : dim){
 		lines(c(coord.circ[i], (max(coord.circ) + min(coord.circ))/2), c(0, 1), lwd = lwd, col = col)
 		symbols(coord.circ[i], 0, circles = circles, add = TRUE, inches = FALSE, bg = bg, lwd = lwd, fg = fg)
