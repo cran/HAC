@@ -7,7 +7,8 @@
 The function \code{estimate.copula} estimates the parameter and determines the structure of Hierarchical Archimedean Copulae.
 }
 \usage{
-estimate.copula(X, type = HAC_GUMBEL, method = TAU, epsilon = 0)
+estimate.copula(X, type = HAC_GUMBEL, method = TAU, epsilon = 0,
+na.rm = FALSE, max.min = TRUE)
 }
 \arguments{
   \item{X}{
@@ -21,6 +22,12 @@ the estimation method. Either ``Kendall's \eqn{\tau}'' denoted by \code{TAU} or 
 }
   \item{epsilon}{
   a scalar \eqn{\geq 0}. The variables of consecutive nodes are aggregated, if the difference of their dependency parameters is smaller than \code{epsilon}. For a detailed explanation see also \code{\link{aggregate.hac}}.
+}
+  \item{na.rm}{
+boolean. If \code{na.rm = TRUE} and a row of \code{X} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.
+}
+  \item{max.min}{
+boolean. If \code{max.min = TRUE} and an element of \code{X} is \eqn{\geq 1} or \eqn{\leq 0}, it is set to \eqn{1-10^{-6}} and \eqn{10^{-6}} respectively.
 }
 }
 \details{

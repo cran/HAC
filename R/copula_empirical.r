@@ -4,7 +4,7 @@
 #  emp.copula.self          Computes the emprical copula for a given sample x.       
 ##########################################################################################################################
 
-emp.copula = function(u, x, proc = "M", sort = "none", na.rm = FALSE){
+emp.copula = function(u, x, proc = "M", sort = "none", na.rm = FALSE, max.min = TRUE){
 	
 	if((class(u) != "matrix") & (class(u) == "numeric")){
 		 u = t(u)}
@@ -19,25 +19,27 @@ emp.copula = function(u, x, proc = "M", sort = "none", na.rm = FALSE){
 		 u = t(u)}
 	
 	if(na.rm == TRUE){
-	x.help = matrix((rowSums(is.na(x < 0)) + rowSums(is.na(x > 1)) + rowSums(is.na(x))), nrow = n)
-	if(sum(x.help) != 0){
-	x = x[-which(x.help > 0), ]
-	for(i in 1 : n){
-	if(x.help[i,] > 0){warning(paste("Row", i,"of x was deleted, since at least one element of the row is >", 1,", <", 0,"or is.na(x[", i,", ]) == TRUE."))}}}}
-
-	n = dim(x)[1]
-	d = dim(x)[2]
+		if(any(is.na(x))){
+			x.help = matrix(rowSums(is.na(x)), nrow = n)
+			rm = which(x.help > 0)
+			x = x[-rm, ]
+			n = dim(x)[1]
+			warning(paste("The following rows of x were removed, since at least one element of them is NA:"), paste(rm, collapse = ","))}}
 	
 	if(na.rm == TRUE){
-	u.help = matrix((rowSums(is.na(u < 0)) + rowSums(is.na(u > 1)) + rowSums(is.na(u))), nrow = nn)
-	if(sum(u.help) != 0){
-	u = u[-which(u.help > 0), ]
-	for(i in 1 : nn){
-	if(u.help[i,] > 0){warning(paste("Row", i,"of u was deleted, since at least one element of the row is >", 1,", <", 0,"or is.na(u[", i,", ]) == TRUE."))}}}}
+		if(any(is.na(u))){
+			u.help = matrix(rowSums(is.na(u)), nrow = nn)
+			rm = which(u.help > 0)
+			u = u[-rm, ]
+			nn = dim(u)[1]
+			warning(paste("The following rows of u were removed, since at least one element of them is NA:"), paste(rm, collapse = ","))}}
+
+	if(max.min == TRUE){
+		x[which(x > 1)] = 1
+		x[which(x < 0)] = 0
+		u[which(u > 1)] = 1
+		u[which(u < 0)] = 0}
 	
-	nn = dim(u)[1]
-	dd = dim(u)[2]
-			
 	emp = function(u, x, proc){
 		if(proc == "M"){
 		Compare = matrix(t(matrix(rep(x, nn), ncol = nn * d)), ncol = d, byrow = TRUE)
@@ -69,4 +71,5 @@ if(sort == "desc"){
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-emp.copula.self = function(x, proc = "M", sort = "none", na.rm = FALSE){switch(proc, M = emp.copula(x, x, "M", sort = sort, na.rm = na.rm), A = emp.copula(x, x, "A", sort = sort, na.rm = na.rm))}
+emp.copula.self = function(x, proc = "M", sort = "none", na.rm = FALSE, max.min = TRUE){switch(proc, M = emp.copula(x, x, "M", sort = sort, na.rm = na.rm, max.min = max.min), A = emp.copula(x, x, "A", sort = sort, na.rm = na.rm, max.min =
+max.min))}

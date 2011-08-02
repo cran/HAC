@@ -1,0 +1,11 @@
+2011-08-02 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* emp.copula is upgraded. If na.rm = TRUE, values < 0 and > 1 are not removed anymore. However, the variable max.min is introduced. If max.min = TRUE, values > 1 are set to 1 and values < 0 are set to 0.
+	
+	* estimate.copula is upgraded. Two further variables are introduced. na.rm and max.min enables the user to remove NA values from the data and to set values >= 1 to 1-10^-6 as well as values <= 0 to 10^-6.
+	
+	* estimate.copula is upgraded. Argument type of tau2theta was not specified in two cases.
+
+2011-07-28 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* The description is cut.

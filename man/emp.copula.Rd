@@ -8,8 +8,8 @@ The functions \code{emp.copula} and \code{emp.copula.self} compute the empirical
 }
 
 \usage{
-emp.copula(u, x, proc = "M", sort = "none", na.rm = FALSE)
-emp.copula.self(x, proc = "M", sort = "none", na.rm = FALSE)
+emp.copula(u, x, proc = "M", sort = "none", na.rm = FALSE, max.min = TRUE)
+emp.copula.self(x, proc = "M", sort = "none", na.rm = FALSE, max.min = TRUE)
 }
 
 \arguments{
@@ -25,7 +25,10 @@ enables the user to choose between two different methods. Generally, it is advis
 defines, whether the output is ordered. \code{sort = "asc"} refers to ascending values, which might be interesting for plotting and \code{sort = "desc"} refers to descending values.
 }
   \item{na.rm}{
-boolean. If \code{na.rm = TRUE} and a row of \code{x} or \code{u} contains a value bigger than 1, smaller than 0 or \code{NA}, the row is dropped and not used for the computation. Corresponding warnings appear.
+boolean. If \code{na.rm = TRUE} and a row of \code{x} or \code{u} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.
+}
+  \item{max.min}{
+boolean. If \code{max.min = TRUE} and an element of \code{x} or \code{u} is \eqn{> 1} or \eqn{< 0}, it is set to \eqn{1} and \eqn{0} respectively.
 }
 }
 \details{

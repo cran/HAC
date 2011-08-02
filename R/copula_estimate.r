@@ -4,9 +4,21 @@
 #  .ub          			Assures that the dependency parameter of the initial node is smaller than parameter of consecutive nodes. (Internal function)       
 ##########################################################################################################################
 
-estimate.copula = function(X, type = HAC_GUMBEL, method = TAU, epsilon = 0){
+estimate.copula = function(X, type = HAC_GUMBEL, method = TAU, epsilon = 0, na.rm = FALSE, max.min = TRUE){
 	
 	if(is.null(colnames(X)) == TRUE){colnames(X) = paste("X", 1 : dim(X)[2], sep = "")}
+	
+	n = NROW(X)
+	if(na.rm == TRUE){
+		if(any(is.na(X))){
+			X.help = matrix(rowSums(is.na(X)), nrow = n)
+			rm = which(X.help > 0)
+			X = X[-rm, ]
+			warning(paste("The following rows of X were removed, since at least one element of them is NA:"), paste(rm, collapse = ","))}}
+
+	if(max.min == TRUE){
+		X[which(X >= 1)] = 0.999999
+		X[which(X <= 0)] = 0.000001}
 	
     if((method == TAU) && (dim(X)[1] == 1))stop("Cant estimate copula based on the tau method with just one observation")
     if((type == HAC_GUMBEL) || (type == HAC_CLAYTON)){
@@ -34,11 +46,11 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = TAU, epsilon = 0){
             if(class(tree[[max.ii]]) != "character") sub.min = c(sub.min, tree[[max.ii]]$theta)
             if(min(min(sub.min), matr[max.i,max.ii]) == matr[max.i,max.ii]){sub.min = matr[max.i,max.ii]}else{sub.min = min(sub.min) - theta.eps}
 
-            co = copMult(cbind(X[,max.i], X[,max.ii]), max(sub.min, tau2theta(theta.eps)), type)
+            co = copMult(cbind(X[,max.i], X[,max.ii]), max(sub.min, tau2theta(theta.eps, type)), type)
             X = matrix(X[,-max(max.i, max.ii)], ncol = (main.dim-main.i))
             X[,min(max.i, max.ii)] = co
 
-            tree[[max.i]] = list(V1 = tree[[max.i]], V2 = tree[[max.ii]], theta = max(sub.min, tau2theta(theta.eps)))
+            tree[[max.i]] = list(V1 = tree[[max.i]], V2 = tree[[max.ii]], theta = max(sub.min, tau2theta(theta.eps, type)))
             tree = tree[-max.ii]
         }
         if(method == TAU){
