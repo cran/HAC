@@ -1,7 +1,7 @@
 \name{tree2str}
 \alias{tree2str}
 
-\title{String structure of a HAC
+\title{String structure of HAC
 }
 \description{
 The function prints the structure of HAC as string, so that the important characteristics of the copula can be identified.

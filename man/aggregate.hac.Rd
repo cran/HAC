@@ -4,7 +4,7 @@
 \title{Aggregation of variables
 }
 \description{
-The function \code{Aggregate} tests, whether the absolute difference of the dependency parameters of two successive nodes is smaller than a constant, i.e. \eqn{\vert \theta_{1} - \theta_{2} \vert < \epsilon}, where \eqn{\theta_{i}} denote the dependency parameter with \eqn{\theta_{1} < \theta_{2}}, \eqn{\epsilon \geq 0} and \eqn{i \in \{1, 2 \}}. If the difference is smaller than the constant, the variables of the nodes are aggregated in one node of the HAC with a new dependency parameter \eqn{(\theta_{1} + \theta_{2}) / 2}. \code{Aggregate} applies this procedure to all consecutive nodes of a HAC.
+The function \code{aggregate.hac} tests, whether the absolute difference of the dependency parameters of two successive nodes is smaller than a constant, i.e. \eqn{\vert \theta_{1} - \theta_{2} \vert < \epsilon}, where \eqn{\theta_{i}} denote the dependency parameter with \eqn{\theta_{1} < \theta_{2}}, \eqn{\epsilon \geq 0} and \eqn{i \in \{1, 2 \}}. If the difference is smaller than the constant, the variables of the nodes are aggregated in one node of the HAC with a new dependency parameter \eqn{(\theta_{1} + \theta_{2}) / 2}. \code{aggregate.hac} applies this procedure to all consecutive nodes of a HAC.
 }
 \usage{
 \method{aggregate}{hac}(x, epsilon = 0.01, \dots)

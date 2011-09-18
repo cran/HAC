@@ -1,7 +1,7 @@
 \name{copMult}
 \alias{copMult}
 
-\title{2dim copula
+\title{d dim copula
 }
 \description{
 This function returns the values for \eqn{d} dimensional Archimedean copulae.
