@@ -4,24 +4,27 @@
 \title{Aggregation of variables
 }
 \description{
-The function \code{aggregate.hac} tests, whether the absolute difference of the dependency parameters of two successive nodes is smaller than a constant, i.e. \eqn{\vert \theta_{1} - \theta_{2} \vert < \epsilon}, where \eqn{\theta_{i}} denote the dependency parameter with \eqn{\theta_{1} < \theta_{2}}, \eqn{\epsilon \geq 0} and \eqn{i \in \{1, 2 \}}. If the difference is smaller than the constant, the variables of the nodes are aggregated in one node of the HAC with a new dependency parameter \eqn{(\theta_{1} + \theta_{2}) / 2}. \code{aggregate.hac} applies this procedure to all consecutive nodes of a HAC.
+\code{aggregate} tests, whether the absolute difference of the dependency parameters of two successive nodes is smaller than a constant, i.e. \eqn{\vert \theta_{1} - \theta_{2} \vert < \epsilon}, where \eqn{\theta_{i}} denotes the dependency parameter with \eqn{\theta_{1} < \theta_{2}}, \eqn{\epsilon \geq 0} and \eqn{i \in \{1, 2 \}}. If the absolute difference is smaller than the constant, the variables of the nodes are aggregated in a single node with new dependency parameter, which is determined as function of the previous, e.g. \eqn{ \theta_{new} = (\theta_ {1} + \theta_{2})/2 }. \code{aggregate} applies this procedure to all consecutive nodes of HAC.
 }
 \usage{
-\method{aggregate}{hac}(x, epsilon = 0.01, \dots)
+\method{aggregate}{hac}(x, epsilon = 0.01, method = "mean", \dots)
 }
 \arguments{
   \item{x}{
 an object of the class \env{hac}.
 }
   \item{epsilon}{
-a scalar \eqn{\geq 0}.
+scalar \eqn{\geq 0}.
+}
+  \item{method}{
+determines, whether the new dependency parameter is the \code{"mean"}, \code{"min"} or \code{"max"} of the of the two previous.
 }
   \item{\dots}{
 arguments to be passed to methods.
 }
 }
 \details{
-The flexibility of HAC can lead to relatively complicated structures, if the amount of variables is high. In these cases it is possible, that the function does not aggregate variables, although it is theoretically possible to aggregate them. This is reasoned by the binary approximation of the HAC, i.e. a node can host at most 2 successive nodes. Such a situation is illustrated in example 3.
+The flexibility of HAC can lead to relatively complicated structures, even if the amount of variables is high. In these cases it is possible, that the function does not aggregate variables, although it is theoretically possible to aggregate them. This is reasoned by the binary approximation of the HAC, i.e. a node can host at most 2 successive nodes. Such a situation is illustrated in example 3.
 }
 \value{
 an object of the class \env{hac}.

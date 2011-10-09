@@ -4,7 +4,7 @@
 \title{Empirical copula
 }
 \description{
-The functions \code{emp.copula} and \code{emp.copula.self} compute the empirical copula for a given sample. The difference between these functions is, that \code{emp.copula.self} takes the sample itself as grid \code{u}, such that the grid has not to be specified manually.
+\code{emp.copula} and \code{emp.copula.self} compute the empirical copula for a given sample. The difference between these functions is, that \code{emp.copula.self} takes the sample itself as grid \code{u}, such that the grid has not to be specified manually.
 }
 
 \usage{

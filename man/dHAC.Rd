@@ -3,7 +3,8 @@
 \alias{dAC}
 \title{Probability density function
 }
-\description{The function \code{dHAC} returns the values of the pdf for 3-dimensional HAC, whereas the function \code{dAC} returns the values of a pdf for 2-dim AC.
+\description{
+\code{dHAC} returns the values of the pdf for 3-dimensional HAC, whereas the function \code{dAC} returns the values of a pdf for 2-dim AC.
 }
 \usage{
 dHAC(X, hac)

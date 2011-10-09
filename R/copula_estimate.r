@@ -4,7 +4,7 @@
 #  .ub          			Assures that the dependency parameter of the initial node is smaller than parameter of consecutive nodes. (Internal function)       
 ##########################################################################################################################
 
-estimate.copula = function(X, type = HAC_GUMBEL, method = TAU, epsilon = 0, na.rm = FALSE, max.min = TRUE){
+estimate.copula = function(X, type = HAC_GUMBEL, method = TAU, epsilon = 0, agg.method = "mean", na.rm = FALSE, max.min = TRUE){
 	
 	if(is.null(colnames(X)) == TRUE){colnames(X) = paste("X", 1 : dim(X)[2], sep = "")}
 	
@@ -55,10 +55,10 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = TAU, epsilon = 0, na.r
         }
         if(method == TAU){
             res = list(V1 = tree[1][[1]], V2 = tree[2][[1]], theta = tau2theta(max(cor(X[,1], X[,2], method = "kendall"), theta.eps), type))
-            res = .union(res, epsilon)
+            res = .union(res, epsilon, method = agg.method)
         }else{  			
             res = list(V1 = tree[1][[1]], V2 = tree[2][[1]], theta = tau2theta(optimise(f = function(y, i, j){sum(log(dAC(X[,1], X[,2], tau2theta(y, type), type)))}, i = 1, j = 2, interval = c(0 + theta.eps, .ub(tree[1][[1]], tree[2][[1]], type)), maximum = TRUE)$maximum, type))
-            res = .union(res, epsilon)
+            res = .union(res, epsilon, method = agg.method)
         }
     }else if(type == GAUSS){
         res = cov(qnorm(X))

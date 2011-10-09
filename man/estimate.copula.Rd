@@ -4,11 +4,11 @@
 \title{Estimation of the structure of HAC
 }
 \description{
-The function \code{estimate.copula} estimates the parameter and determines the structure of Hierarchical Archimedean Copulae.
+This function estimates the parameter and determines the structure of Hierarchical Archimedean Copulae.
 }
 \usage{
 estimate.copula(X, type = HAC_GUMBEL, method = TAU, epsilon = 0,
-na.rm = FALSE, max.min = TRUE)
+agg.method = "mean", na.rm = FALSE, max.min = TRUE)
 }
 \arguments{
   \item{X}{
@@ -21,7 +21,10 @@ a matrix, which contains the data. The columns should be labeled. The default na
 the estimation method. Either ``Kendall's \eqn{\tau}'' denoted by \code{TAU} or ``Quasi Maximum Likelihood'' denoted by \code{ML}.
 }
   \item{epsilon}{
-  a scalar \eqn{\geq 0}. The variables of consecutive nodes are aggregated, if the difference of their dependency parameters is smaller than \code{epsilon}. For a detailed explanation see also \code{\link{aggregate.hac}}.
+  scalar \eqn{\geq 0}. The variables of consecutive nodes are aggregated, if the difference of their dependency parameters is smaller than \code{epsilon}. For a detailed explanation see also \code{\link{aggregate.hac}}.
+}
+  \item{agg.method}{
+if \eqn{\epsilon > 0}, the new dependency parameter can be determined by \code{"mean"}, \code{"min"} or \code{"max"} of the of the two previous; see also \code{\link{aggregate.hac}}.
 }
   \item{na.rm}{
 boolean. If \code{na.rm = TRUE} and a row of \code{X} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.
@@ -31,10 +34,10 @@ boolean. If \code{max.min = TRUE} and an element of \code{X} is \eqn{\geq 1} or 
 }
 }
 \details{
-It is not possible to estimate negative dependencies using a HAC-type in combination with Kendall's \eqn{\tau}. If variables of X are negatively correlated, the correlation is set to \eqn{0}.
+Because negative dependencies cannot be estimated basing on the implemented HAC-types, the correlations are set to \eqn{0}, if variables of X are negatively correlated and Kendall's \eqn{\tau} is chosen as estimation method.
 }
 \value{
-An object of the class \env{hac} is returned. In the case of \code{type = GAUSS} a matrix is returned.
+A \env{hac} object is returned. In the case of \code{type=GAUSS} a matrix is returned.
 }
 \references{
 Okhrin, O., Okhrin, Y. and Schmid, W., Determining the structure and estimation of hierarchical Archimedean copulas, \emph{Journal of Econometrics}, under revision.

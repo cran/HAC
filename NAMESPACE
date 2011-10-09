@@ -15,6 +15,7 @@ export("pHAC",
 	"get.params",
 	"hac",
 	"hac.full",
+	"as.hac",
 	"columns.hac",
 	"copMult"
 )
