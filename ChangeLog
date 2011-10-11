@@ -1,3 +1,12 @@
+
+
+
+2011-10-10 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* as.hac is introduced as further function to create hac objects.
+
+	* aggregate.hac and estimate.copula are upgraded. The variables "method" and "agg.method" are introduced. It allows the user to determine the new dependency parameter to be the mean, min or max of the two previous, if epsilon is chosen > 0.
+
 2011-09-18 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
 
 	* The Manual is revised.

@@ -1,5 +1,5 @@
-6e87c9dbaa7ba1c31fff36e61421cef9 *ChangeLog
-24e88d68114b2d11bfea2edbb3136e79 *DESCRIPTION
+a9ff03758f56f942793da72a8abaabd7 *ChangeLog
+c59a979dd909db6b2f5c34b9b644c9c7 *DESCRIPTION
 9ee7ff2aec09d05922e7d0537518fa3f *NAMESPACE
 f04db11295c696ed425482aa01c04c43 *R/copula_aggregate.r
 7d039f439cfff6e0beb8729b64dd0014 *R/copula_cdf.r
@@ -18,7 +18,7 @@ cc1e1b1f0f7407e7d354090dde0c8379 *R/copula_functions.r
 0c24830461b03273552200439d3cb202 *man/emp.copula.Rd
 ecdcc77a6a1632dd5f6e8baf89868dfa *man/estimate.copula.Rd
 0a6537e06875487de10931d8cd4b13a5 *man/get.params.Rd
-6bcda1e8cb804e63aaa277d20093c178 *man/hac.Rd
+79f2298b9b85d7c7fdcbd5819d0fa83c *man/hac.Rd
 fa920150842fcfb14bf8120db6626a21 *man/pHAC.Rd
 4f517d73407bebf84659a0e438002fd8 *man/phi.Rd
 0c09a21e92effb9088fe83f963abc924 *man/plot.hac.Rd
