@@ -1,15 +1,15 @@
 # copula_functions.r #####################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  definitions				In order that the package works appropriately some definitions are required.
-#  theta.eps				Is addressed during the estimation procedure.
-#  TAU						Possible argument of estimate.copula. Estimation bases on Kendall's tau.
-#  ML						Possible argument of estimate.copula. Estimation bases on Quasi Maximum Likelihood.
+#  definitions					In order that the package works appropriately some definitions are required.
+#  theta.eps					Is addressed during the estimation procedure.
+#  TAU							Possible argument of estimate.copula. Estimation bases on Kendall's tau.
+#  ML							Possible argument of estimate.copula. Estimation bases on Quasi Maximum Likelihood.
 #  tau2theta       			Converts Kendall's rank correlation coefficient into dependence parameter.
 #  theta2tau          		Converts dependence parameter into Kendall's rank correlation coefficient.
-#  phi        				The generator function.
-#  phi.inv				  	The inverse of the generator function.
+#  phi        					The generator function.
+#  phi.inv				  		The inverse of the generator function.
 #  copMult        			Computes the value of copulae.
-#  cop2d					The 2-dimensional precursor of copMult.         
+#  cop2d						The 2-dimensional precursor of copMult.         
 ##########################################################################################################################
 
 HAC_GUMBEL         = 0

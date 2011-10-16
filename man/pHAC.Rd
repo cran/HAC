@@ -8,7 +8,7 @@
 This function computes the cdf for a given sample and copula model.
 }
 \usage{
-pHAC(X, hac)
+pHAC(X, hac, margins = NULL, na.rm = FALSE, max.min = TRUE)
 }
 \arguments{
   \item{hac}{
@@ -16,6 +16,15 @@ an object of the class \env{hac}.
 }
   \item{X}{
 a data matrix. The sample has to contain at least \eqn{2} rows (observations), since the values of the cdf cannot be computed otherwise. The column names have to be identical to the names of the variables of the \code{hac} object.
+}
+  \item{margins}{
+scalar or vector specifying how the margins are to compute. They can be determined nonparametrically denoted by \code{"edf"} or in parametric way , e.g. \code{"norm"}. See \code{\link{estimate.copula}} for a detailed explanation.
+}
+  \item{na.rm}{
+boolean. If \code{na.rm = TRUE} and a row of \code{X} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.
+}
+  \item{max.min}{
+boolean. If \code{max.min = TRUE} and an element of \code{X} is \eqn{\geq 1} or \eqn{\leq 0}, it is set to \eqn{1-10^{-6}} and \eqn{10^{-6}} respectively.
 }
 }
 \value{

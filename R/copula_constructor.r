@@ -25,7 +25,11 @@ columns.hac = function(n){
 
 hac = function(type = HAC_GUMBEL, X, dim = NULL){
 	
-	if((type == AC_GUMBEL) | (type == AC_CLAYTON)){
+	if((NROW(X)==1) & (NCOL(X)==1) & (is.null(dim)==FALSE)){
+		if(type == HAC_GUMBEL){type = AC_GUMBEL}
+			else
+			if(type == HAC_CLAYTON){type = AC_CLAYTON}
+			
 		CopulaNew = list(dim = 0, theta = 0)
 		CopulaNew$dim = dim
 		CopulaNew$theta = X

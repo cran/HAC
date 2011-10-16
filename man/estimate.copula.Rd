@@ -8,7 +8,7 @@ This function estimates the parameter and determines the structure of Hierarchic
 }
 \usage{
 estimate.copula(X, type = HAC_GUMBEL, method = TAU, epsilon = 0,
-agg.method = "mean", na.rm = FALSE, max.min = TRUE)
+agg.method = "mean", margins = NULL, na.rm = FALSE, max.min = TRUE)
 }
 \arguments{
   \item{X}{
@@ -25,6 +25,9 @@ the estimation method. Either ``Kendall's \eqn{\tau}'' denoted by \code{TAU} or 
 }
   \item{agg.method}{
 if \eqn{\epsilon > 0}, the new dependency parameter can be determined by \code{"mean"}, \code{"min"} or \code{"max"} of the of the two previous; see also \code{\link{aggregate.hac}}.
+}
+  \item{margins}{
+scalar or vector specifying the marginal distributions. They can be determined nonparametrically denoted by \code{"edf"} or in a parametric way , e.g. \code{"norm"}. According to the latter approach the parameter of the distributions are estimated by ML. Basing on these estimates the values of the univariate margins are computed. If the argument is defined as scalar, all margins are computed according to the specification. Otherwise, different margins may be defined, e.g. \code{c("norm", "t", "edf")} for a 3 dimensional sample. Almost all continuous functions of \code{\link{Distributions}} are available. Inappropriate usage of this argument might lead to misspecified margins, e.g. application of \code{"exp"} though the sample contains negative values. If the sample contains the margins yet, the default value is to use.
 }
   \item{na.rm}{
 boolean. If \code{na.rm = TRUE} and a row of \code{X} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.
@@ -65,4 +68,12 @@ plot(est.obj, index = TRUE)
 # consider also the aggregation of the variables
 est.obj = estimate.copula(x, HAC_GUMBEL, TAU, epsilon = 0.1)
 plot(est.obj, index = TRUE)
+
+# if margins != NULL
+data = rmnorm(1000, varcov = matrix(c(5, 2, 0, 2, 20, 0, 0, 0, 40), 
+ncol = 3))
+
+result1 = estimate.copula(data, method = ML, margins = "norm")
+result2 = estimate.copula(data, method = ML, margins = c("norm",
+"norm", "norm"))
 }

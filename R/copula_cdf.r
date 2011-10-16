@@ -5,7 +5,16 @@
 #  .get.names.in.tree       Returns the columns of the sample for which the cdf is to compute. (Internal function)           
 ##########################################################################################################################
 
-pHAC = function(X, hac){
+pHAC = function(X, hac, margins = NULL, na.rm = FALSE, max.min = TRUE){
+	
+	X = .margins(X, margins)
+	
+	if(max.min == TRUE){
+			X = .max.min(X)}
+	
+	if(na.rm == TRUE){
+			X = .na.rm(X)}
+			
     if(hac$type == HAC_ROTATED_GUMBEL){
         return((1 - .cop.cdf(hac$model, X, HAC_GUMBEL)))
     }else if((hac$type == HAC_GUMBEL) || (hac$type == HAC_CLAYTON)){
@@ -46,4 +55,3 @@ pHAC = function(X, hac){
 		return(c(.get.names.in.tree(Ltree$V1), .get.names.in.tree(Ltree$V2)))
 	}
 }
-	

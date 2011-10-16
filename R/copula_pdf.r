@@ -1,14 +1,23 @@
 # copula_pdf.r ###########################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  dAC						Computes the values of the density of 2-dimensional copulae.
-#  .gumb.12.density			2-dim density of Gumbel copulae. (Internal function)
-#  .clay.12.density			2-dim density of Clayton copulae. (Internal function)
+#  dAC							Computes the values of the density of 2-dimensional copulae.
+#  .gumb.12.density		2-dim density of Gumbel copulae. (Internal function)
+#  .clay.12.density		2-dim density of Clayton copulae. (Internal function)
 #  dHAC						Computes the values of the density of 2- or 3-dimensional copulae.
-#  .gumb.12.3.density       3-dim density of HAC Gumbel copulae. (Internal function)
-#  .clay.12.3.density  		3-dim density of HAC Clayton copulae. (Internal function)     
+#  .gumb.12.3.density   3-dim density of HAC Gumbel copulae. (Internal function)
+#  .clay.12.3.density  	 3-dim density of HAC Clayton copulae. (Internal function)     
 ##########################################################################################################################
 
-dAC = function(x, y, theta = 1.0, type = AC_GUMBEL){	
+dAC = function(x, y, theta = 1.0, type = AC_GUMBEL, na.rm = FALSE, max.min = TRUE){
+		
+	if(max.min == TRUE){
+		x = .max.min(x)
+		y = .max.min(y)}
+	
+	if(na.rm == TRUE){
+		x = .na.rm(x)
+		y = .na.rm(y)}
+	
 	if((type == HAC_GUMBEL) || (type == AC_GUMBEL)){
 		.gumb.12.density(x, y, theta)
 	}else if((type == HAC_CLAYTON) || (type == AC_CLAYTON)){
@@ -38,7 +47,15 @@ dAC = function(x, y, theta = 1.0, type = AC_GUMBEL){
 	
 #-------------------------------------------------------------------------------------------------------------------------------
 
-dHAC = function(X, hac){
+dHAC = function(X, hac, margins = NULL, na.rm = FALSE, max.min = TRUE){
+	X = .margins(X, margins)
+	
+	if(max.min == TRUE){
+			X = .max.min(X)}
+			
+	if(na.rm == TRUE){
+			X = .na.rm(X)}
+	
 	cop.12.3.density = function(u1, u2, u3, theta1, theta2, type){
 		if(type == HAC_GUMBEL)
 			.gumb.12.3.density(u1, u2, u3, theta1, theta2)

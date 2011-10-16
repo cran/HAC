@@ -1,3 +1,5 @@
+## useDynLib(HAC)
+
 ## regular functions:
 export("pHAC",
 	"emp.copula",
@@ -41,6 +43,6 @@ S3method(print, hac)
 S3method(aggregate, hac)
 export("plot.hac", "print.hac", "aggregate.hac")
 
-importFrom(fBasics, rstable)
-importFrom(stats, aggregate)
-importFrom(graphics, plot)
+importFrom("fBasics", rstable)
+importFrom("graphics", plot)
+importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, dt, pt, dexp, pexp, dweibull, pweibull)

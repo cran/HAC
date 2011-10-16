@@ -8,8 +8,10 @@
 }
 
 \usage{
-emp.copula(u, x, proc = "M", sort = "none", na.rm = FALSE, max.min = TRUE)
-emp.copula.self(x, proc = "M", sort = "none", na.rm = FALSE, max.min = TRUE)
+emp.copula(u, x, proc = "M", sort = "none", margins = NULL, 
+na.rm = FALSE, max.min = TRUE)
+emp.copula.self(x, proc = "M", sort = "none", margins = NULL, 
+na.rm = FALSE, max.min = TRUE)
 }
 
 \arguments{
@@ -23,6 +25,9 @@ enables the user to choose between two different methods. Generally, it is advis
 }
   \item{sort}{
 defines, whether the output is ordered. \code{sort = "asc"} refers to ascending values, which might be interesting for plotting and \code{sort = "desc"} refers to descending values.
+}
+  \item{margins}{
+scalar or vector specifying how the margins are to compute. They can be determined nonparametrically denoted by \code{"edf"} or in parametric way , e.g. \code{"norm"}. See \code{\link{estimate.copula}} for a detailed explanation.
 }
   \item{na.rm}{
 boolean. If \code{na.rm = TRUE} and a row of \code{x} or \code{u} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.

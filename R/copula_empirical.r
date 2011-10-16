@@ -1,11 +1,12 @@
 # copula_empirical.r #####################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  emp.copula				Computes the emprical copula for a given grid u and sample x.
-#  emp.copula.self          Computes the emprical copula for a given sample x.       
+#  emp.copula				Returns the values of the emprical copula for a given grid u and sample x.
+#  emp.copula.self        	Returns the values of the emprical copula for a given sample x.  
+#  .emp   						Computes the values of the empirical copula. (Internal function)
 ##########################################################################################################################
 
-emp.copula = function(u, x, proc = "M", sort = "none", na.rm = FALSE, max.min = TRUE){
-	
+emp.copula = function(u, x, proc = "M", sort = "none", margins = NULL, na.rm = FALSE, max.min = TRUE){
+    
 	if((class(u) != "matrix") & (class(u) == "numeric")){
 		 u = t(u)}
 	
@@ -18,58 +19,46 @@ emp.copula = function(u, x, proc = "M", sort = "none", na.rm = FALSE, max.min = 
 		nn = dd
 		 u = t(u)}
 	
-	if(na.rm == TRUE){
-		if(any(is.na(x))){
-			x.help = matrix(rowSums(is.na(x)), nrow = n)
-			rm = which(x.help > 0)
-			x = x[-rm, ]
-			n = dim(x)[1]
-			warning(paste("The following rows of x were removed, since at least one element of them is NA:"), paste(rm, collapse = ","))}}
+	x = .margins(x, margins)
 	
 	if(na.rm == TRUE){
-		if(any(is.na(u))){
-			u.help = matrix(rowSums(is.na(u)), nrow = nn)
-			rm = which(u.help > 0)
-			u = u[-rm, ]
-			nn = dim(u)[1]
-			warning(paste("The following rows of u were removed, since at least one element of them is NA:"), paste(rm, collapse = ","))}}
+		x = .na.rm(X = x)
+		u = .na.rm(X = u)}
 
 	if(max.min == TRUE){
-		x[which(x > 1)] = 1
-		x[which(x < 0)] = 0
-		u[which(u > 1)] = 1
-		u[which(u < 0)] = 0}
+		x = .max.min(X = x)
+		u = .max.min(X = u)}
 	
-	emp = function(u, x, proc){
-		if(proc == "M"){
-		Compare = matrix(t(matrix(rep(x, nn), ncol = nn * d)), ncol = d, byrow = TRUE)
-		Values = matrix(rep(t(x), nn), n * nn, d, byrow = TRUE)
-		
-		1 / n * colSums(matrix((rowSums(Values <= Compare) == d), ncol = nn)) 
-	}
-	
-	else if(proc == "A"){
-		
-		embedded = function(u){
-			compare.help = function(X){(X <= u)}
-				Compare = function(X){apply(X, 1, compare.help)}
-			1 / n * cumsum(apply(t(Compare(x)), 1, prod))
-		}
-		
-		apply(u, 1, embedded)[n,]
-	}}
-
 if(sort == "none"){
-	emp(u = u, x = x, proc = proc)}
+	.emp(u = u, x = x, proc = proc, n = n, nn = nn, d = d)}
 else
 if(sort == "asc"){
-	sort(emp(u = u, x = x, proc = proc))}
+	sort(.emp(u = u, x = x, proc = proc, n = n, nn = nn, d = d))}
 else
 if(sort == "desc"){
-	sort(emp(u = u, x = x, proc = proc), decreasing = TRUE)}
+	sort(.emp(u = u, x = x, proc = proc, n = n, nn = nn, d = d), decreasing = TRUE)}
 }
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-emp.copula.self = function(x, proc = "M", sort = "none", na.rm = FALSE, max.min = TRUE){switch(proc, M = emp.copula(x, x, "M", sort = sort, na.rm = na.rm, max.min = max.min), A = emp.copula(x, x, "A", sort = sort, na.rm = na.rm, max.min =
+emp.copula.self = function(x, proc = "M", sort = "none", margins = NULL, na.rm = FALSE, max.min = TRUE){switch(proc, M = emp.copula(x, x, "M", sort = sort, margins = margins, na.rm = na.rm, max.min = max.min), A = emp.copula(x, x, "A", sort = sort, margins = margins, na.rm = na.rm, max.min =
 max.min))}
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.emp = function(u, x, proc, n, nn, d){
+	if(proc == "M"){
+		Compare = matrix(t(matrix(rep(x, nn), ncol = nn * d)), ncol = d, byrow = TRUE)
+		Values = matrix(rep(t(x), nn), n * nn, d, byrow = TRUE)
+		
+		1 / n * colSums(matrix((rowSums(Values <= Compare) == d), ncol = nn)) 
+	}else{ if(proc == "A"){
+	
+	embedded = function(u){
+		compare.help = function(X){(X <= u)}
+		Compare = function(X){apply(X, 1, compare.help)}
+		1 / n * cumsum(apply(t(Compare(x)), 1, prod))
+	}
+		apply(u, 1, embedded)[n,]
+	}}
+}

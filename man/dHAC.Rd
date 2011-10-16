@@ -7,8 +7,8 @@
 \code{dHAC} returns the values of the pdf for 3-dimensional HAC, whereas the function \code{dAC} returns the values of a pdf for 2-dim AC.
 }
 \usage{
-dHAC(X, hac)
-dAC(x, y, theta = 1.0, type = AC_GUMBEL)
+dHAC(X, hac, margins = NULL, na.rm = FALSE, max.min = TRUE)
+dAC(x, y, theta = 1.0, type = AC_GUMBEL, na.rm = FALSE, max.min = TRUE)
 }
 \arguments{
   \item{hac}{
@@ -25,6 +25,15 @@ a data matrix. The number of columns (\eqn{2} or \eqn{3}) has to coincide with t
 }
   \item{x, y}{
 data vectors.
+}
+  \item{margins}{
+scalar or vector specifying how the margins are to compute. They can be determined nonparametrically denoted by \code{"edf"} or in parametric way , e.g. \code{"norm"}. See \code{\link{estimate.copula}} for a detailed explanation.
+}
+  \item{na.rm}{
+boolean. If \code{na.rm = TRUE} and a row of \code{X} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.
+}
+  \item{max.min}{
+boolean. If \code{max.min = TRUE} and an element of \code{X} is \eqn{\geq 1} or \eqn{\leq 0}, it is set to \eqn{1-10^{-6}} and \eqn{10^{-6}} respectively.
 }
 }
 \details{
