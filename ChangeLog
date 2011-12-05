@@ -1,4 +1,9 @@
+2011-12-05 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* Due to an update of the copula-package, the dependencies of HAC were adjusted.
+
 2011-10-18 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+	
 	* estimate.copula is debugged. Estimation of a 2-dim HAC was not possible.
 
 	* estimate.copula is upgraded. The argument margins specifies how the margins are to compute. They can be determined nonparametrically denoted by \code{"edf"} or in parametric way , e.g. \code{"norm"}. Following the latter approach the parameter of the selected distribution are estimated by ML. Basing on these estimates the values of the univariate margins are computed. If the argument is defined as scalar, all margins are computed according to the specification. Otherwise, one can define a different margin for each column of \code{X}, e.g. \code{c("norm", "t", "edf")} for a 3 dimensional sample. Almost all continuous functions of \code{\link{Distributions}} are available. Wrong usage of this argument might result in misspecified margins, e.g. application of \code{"exp"} though the sample contains negative values. If the sample contains the margins yet, the default value is to use.
