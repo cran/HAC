@@ -1,3 +1,7 @@
+2011-12-24 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* rHAC with type = HAC_CLAYTON works for small copula parameters.
+
 2011-12-05 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
 
 	* Due to an update of the copula-package, the dependencies of HAC were adjusted.

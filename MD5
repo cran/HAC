@@ -1,6 +1,6 @@
-ac670bdfe104e7ffee19d7723e090697 *ChangeLog
-fe8a41b01a8ab285d0bf404a4841c0d9 *DESCRIPTION
-1d22c51235ec099bf666ee19666f5ecf *NAMESPACE
+563a41f8e4fb6e8f3425e7ab9c6e4425 *ChangeLog
+c9e6ca70d3a85015bbf6684b8f1e3c8c *DESCRIPTION
+23170c699f915ce689984e30c389ca41 *NAMESPACE
 f04db11295c696ed425482aa01c04c43 *R/copula_aggregate.r
 17e83e992f2f5c37d90fa5f6347b6386 *R/copula_cdf.r
 10de37368d5f7080e1990fb98f805c73 *R/copula_constructor.r
@@ -9,7 +9,7 @@ f04db11295c696ed425482aa01c04c43 *R/copula_aggregate.r
 bb52e705232a27552bb13ced98755758 *R/copula_functions.r
 92ad89fa8c4f7caec662ad1c46d40061 *R/copula_pdf.r
 01848e3cbf98231c84bc0be4189ec97a *R/copula_plot.r
-2170b4c02f285a4831777079b1f00525 *R/copula_simulate.r
+d9a487e4af617c46c880ab012b1c3b06 *R/copula_simulate.r
 3d56050b39f197c68f3d9efaded6b832 *R/tree2str.r
 6b678963042d4367f468c60d187435f0 *man/Definitions.Rd
 7120696c673af08cdf7ddd0197e4db8c *man/aggregate.hac.Rd

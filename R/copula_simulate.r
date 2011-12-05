@@ -3,11 +3,11 @@
 #  rAC						Simulates values of AC.
 #  .f_gumbel				Samples from the inverse Laplace-Stietjes transfrom of a Gumbel copula. (Internal function)
 #  .f_clayton				Samples from the inverse Laplace-Stietjes transfrom of a Clayton copula. (Internal function)
-#  rHAC						Simulates values of HAC.
+#  rHAC					Simulates values of HAC.
 #  .theta      				Computes the ratio of two dependency parameters. (Internal function)
 #  .initial  					Samples from the inverse Laplace-Stietjes transfrom of the initial node of nested AC. (Internal function) 
 #  .stayStage  			Simulates values of the initial node of HAC. (Internal function)     
-#  .fReject 					The fast rejection algorithm is implemented. Have a look at Hofert (2010) "Efficiently sampling nested ...". (Internal function)     
+#  .fReject 				The fast rejection algorithm is implemented. Have a look at Hofert (2010) "Efficiently sampling nested ...". (Internal function)     
 #  .follow					Samples the inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)   
 #  .nextStage  			Simulates values of successive nodes of HAC. (Internal function)     
 #  .simualte.hac  		Simulates all successive nodes. (Internal function)     
@@ -27,7 +27,7 @@ rAC = function(n, theta = 1.5, dim = 2, type = AC_GUMBEL){
 #-------------------------------------------------------------------------------------------------------------------------------
 
 .f_gumbel = function(n, theta){
-	as.vector(fBasics::rstable(n, 1 / theta, 1, cos(pi / (2 * theta))^(theta), 0, pm = 1))
+	as.vector(stabledist::rstable(n, 1 / theta, 1, cos(pi / (2 * theta))^(theta), 0, pm = 1))
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ rHAC = function(n, hac){
 .initial = function(n, Ltheta, type){
 	mat = matrix(0, nrow = n)
 		if(type == HAC_GUMBEL){
-			mat = matrix(fBasics::rstable(n, alpha = 1 / Ltheta, beta = 1, gamma = cos(pi/(2 * Ltheta))^(Ltheta), delta = (Ltheta == 1) * 1, pm = 1), nrow = n)
+			mat = matrix(stabledist::rstable(n, alpha = 1 / Ltheta, beta = 1, gamma = cos(pi/(2 * Ltheta))^(Ltheta), delta = (Ltheta == 1) * 1, pm = 1), nrow = n)
 			mat}
 		else{
 		if(type == HAC_CLAYTON){
@@ -77,36 +77,27 @@ rHAC = function(n, hac){
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.stayStage = function(n, d, Y, Ltheta, type){
-	LU = matrix(rexp(n * d, rate = 1), nrow = n, ncol = d)
-		if((type == HAC_GUMBEL) || (type == AC_GUMBEL) || (type == HAC_ROTATED_GUMBEL)){
-			L = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_GUMBEL)
-			L}
-		else{
-		if((type == HAC_CLAYTON) || (type == AC_CLAYTON)){
-			L  = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_CLAYTON)
-			L}}
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------
-
 .fReject = function(alpha, I){
 	if(alpha == 1){I}
 	else{
 		m = round(I) + (round(I) == 0) * 1
-		gamma = (cos(alpha * pi / 2) * I * 1 / m)^(1 / alpha)
-		L = cbind(1, matrix(0, nrow = length(m), ncol = (max(m) - 1)))
-		for(i in 1 : length(m)){
-			for(j in 2 : max(m)){
-				if(m[i] >= j)
-			L[i, j] = 1}}	
-		G = matrix(L * rep(gamma, max(m)), ncol = max(m))
-		N = fBasics::rstable(dim(I)[1] * max(m), alpha = alpha, beta = 1, pm = 1) * G
-		U = runif(dim(I)[1] * max(m))
-		Com = U <= exp(-N)
-		while(prod(Com) != 1){
-			N[which(Com == FALSE)] = fBasics::rstable(length(which(Com == FALSE)), , alpha = alpha, beta = 1, pm = 1) * G[which(Com == FALSE)]
-			Com[which(Com == FALSE)] = runif(length(which(Com == FALSE))) <= exp(-N[which(Com == FALSE)])}
+		m.max = max(m)
+		m.length = length(m)
+		
+		gamma = (cos(alpha * pi / 2) * I * 1 / m)^(1 / alpha)	
+		M = matrix(0, nrow = m.length, ncol = (m.max))
+		
+		for(i in 1:m.length){M[i, (1:m[i])] = 1}	
+		M[which(M > 0)] = stabledist::rstable(n = sum(m), alpha = alpha, beta = 1, gamma = 1, delta = 0, pm = 1)
+		G = matrix(rep(gamma, m.max), ncol = m.max)
+		N =  M * G
+		U = runif(m.length * m.max)
+		Com = (U <= exp(-N))
+		while(any((Com == FALSE) | (is.na(Com)))){
+			fa = which((Com == FALSE) | (is.na(Com)))
+			n = length(fa)
+			N[fa] = stabledist::rstable(n, alpha = alpha, beta = 1, pm = 1) * G[fa]
+			Com[fa] = (runif(n) <= exp(-N[fa]))}
 		rowSums(N)}
 }
 												
@@ -117,7 +108,7 @@ rHAC = function(n, hac){
 		if(type == HAC_GUMBEL){
 			gamma = (cos(pi/(2 * Ltheta)) * I)^(Ltheta)
 			delta = (Ltheta == 1) * I
-			mat = matrix(fBasics::rstable(n, alpha = 1 / Ltheta, beta = 1, pm = 1) * gamma + delta, nrow = n)
+			mat = matrix(stabledist::rstable(n, alpha = 1 / Ltheta, beta = 1, pm = 1) * gamma + delta, nrow = n)
 			mat}
 		else{
 		if(type == HAC_CLAYTON){
@@ -135,6 +126,19 @@ rHAC = function(n, hac){
 		else{
 		if(type == HAC_CLAYTON){
 			L =	phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_CLAYTON)
+			L}}
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+
+.stayStage = function(n, d, Y, Ltheta, type){
+	LU = matrix(rexp(n * d, rate = 1), nrow = n, ncol = d)
+		if((type == HAC_GUMBEL) || (type == AC_GUMBEL)){
+			L = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_GUMBEL)
+			L}
+		else{
+		if((type == HAC_CLAYTON) || (type == AC_CLAYTON)){
+			L  = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_CLAYTON)
 			L}}
 }
 	
