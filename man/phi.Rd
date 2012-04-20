@@ -4,7 +4,7 @@
 
 \title{Generator function
 }
-\description{The generator function of AC and HAC.
+\description{The Archimedean generator function and its inverse.
 }
 \usage{
 phi(x, theta, type = HAC_GUMBEL)
@@ -20,9 +20,6 @@ a scalar, vector or matrix at which the function is evaluated. The support of th
   \item{type}{
   choose the model between \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_ROTATED_GUMBEL}, \code{HAC_CLAYTON} and \code{AC_CLAYTON}.
 }
-}
-\author{
-Ostap Okhrin
 }
 \examples{
 x = runif(100, min = 0, max = 100)

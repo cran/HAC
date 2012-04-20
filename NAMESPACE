@@ -1,6 +1,8 @@
 ## useDynLib(HAC)
 
+
 ## regular functions:
+
 export("pHAC",
 	"emp.copula",
 	"emp.copula.self",
@@ -9,40 +11,47 @@ export("pHAC",
 	"theta2tau",
 	"phi",
 	"phi.inv",
-	"dAC",
 	"dHAC",
 	"rAC",
 	"rHAC",
 	"tree2str",
 	"get.params",
-	"hac",
 	"hac.full",
-	"as.hac",
-	"columns.hac",
+	"hac",
 	"copMult"
 )
+
 
 exportClass("hac"
 )
 
+
 # definitions:
+
 export("HAC_GUMBEL",
 	"AC_GUMBEL",
 	"HAC_ROTATED_GUMBEL",
 	"HAC_CLAYTON",
 	"AC_CLAYTON",
 	"GAUSS",
-	"theta.eps",
 	"TAU",
 	"ML"
 )
 
+
 # generics:
+
 S3method(plot, hac)
+
 S3method(print, hac)
+
 S3method(aggregate, hac)
+
 export("plot.hac", "print.hac", "aggregate.hac")
 
+
 importFrom("stabledist", rstable)
+
 importFrom("graphics", plot)
-importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull)
+
+importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull, numericDeriv, na.omit, D, deriv)

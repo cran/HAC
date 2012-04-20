@@ -1,17 +1,16 @@
 # copula_simulate.r ######################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  rAC						Simulates values of AC.
+#  rAC							Samples from AC.
 #  .f_gumbel				Samples from the inverse Laplace-Stietjes transfrom of a Gumbel copula. (Internal function)
 #  .f_clayton				Samples from the inverse Laplace-Stietjes transfrom of a Clayton copula. (Internal function)
-#  rHAC					Simulates values of HAC.
+#  rHAC						Samples from HAC.
 #  .theta      				Computes the ratio of two dependency parameters. (Internal function)
-#  .initial  					Samples from the inverse Laplace-Stietjes transfrom of the initial node of nested AC. (Internal function) 
-#  .stayStage  			Simulates values of the initial node of HAC. (Internal function)     
-#  .fReject 				The fast rejection algorithm is implemented. Have a look at Hofert (2010) "Efficiently sampling nested ...". (Internal function)     
-#  .follow					Samples the inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)   
-#  .nextStage  			Simulates values of successive nodes of HAC. (Internal function)     
-#  .simualte.hac  		Simulates all successive nodes. (Internal function)     
-#  .rHAC 					Simulates the initial node. (Internal function)     
+#  .initial  					Samples from the inverse Laplace-Stietjes transfrom for the initial node of HAC. (Internal function) 
+#  .stayStage  			Samples from the initial node of HAC. (Internal function)     
+#  .fReject 					Samples from inverse Laplace-Stietjes transfrom for subsequent nodes, if type = HAC_CLAYTON. (Internal function)     
+#  .follow						Samples the inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)     
+#  .simualte		  		The recursive sampling procedure. (Internal function)     
+#  .rHAC 					Initializes the recursion. (Internal function)     
 ##########################################################################################################################
 
 rAC = function(n, theta = 1.5, dim = 2, type = AC_GUMBEL){
@@ -40,21 +39,23 @@ rAC = function(n, theta = 1.5, dim = 2, type = AC_GUMBEL){
 
 rHAC = function(n, hac){
 	if(hac$type == AC_CLAYTON){
-		res = rAC(n, theta = hac$model$theta, dim = hac$model$dim, type = AC_CLAYTON)
-	}
-	else
+		m = length(unlist(hac$tree))
+		res = rAC(n, theta = hac$tree[[m]], dim = (m-1), type = AC_CLAYTON)
+	}else{
 	if(hac$type == AC_GUMBEL){
-		res = rAC(n, theta = hac$model$theta, dim = hac$model$dim, type = AC_GUMBEL)
-	}
-	else
+		m = length(unlist(hac$tree))
+		res = rAC(n, theta = hac$tree[[m]], dim = (m-1), type = AC_GUMBEL)
+	}else{
+	if(hac$type == GAUSS){
+        res = rcopula(normalCopula(hac$tree[lower.tri(hac$tree)], dim = NCOL(hac$tree), dispstr = "un"), n)
+	}else{
 	if(hac$type != HAC_ROTATED_GUMBEL){
 		res = .rHAC(n, hac)
-	}
-	else
+	}else{
 	if(hac$type == HAC_ROTATED_GUMBEL){
 		hac$type = HAC_GUMBEL
 		res = (1 - .rHAC(n, hac))
-	}
+	}}}}}
 	res
 }
 
@@ -73,6 +74,19 @@ rHAC = function(n, hac){
 		if(type == HAC_CLAYTON){
 			mat = matrix((rgamma(n, 1/Ltheta)), nrow = n)
 			mat}}
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+
+.stayStage = function(n, d, Y, Ltheta, type){
+	LU = matrix(rexp(n * d, rate = 1), nrow = n, ncol = d)
+		if((type == HAC_GUMBEL) || (type == AC_GUMBEL) || (type == HAC_ROTATED_GUMBEL)){
+			L = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_GUMBEL)
+			L}
+		else{
+		if((type == HAC_CLAYTON) || (type == AC_CLAYTON)){
+			L  = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_CLAYTON)
+			L}}
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -115,98 +129,53 @@ rHAC = function(n, hac){
 			mat = matrix(.fReject(alpha = 1 / Ltheta, I = I), nrow = n)
 			mat}}
 }
-
-#-------------------------------------------------------------------------------------------------------------------------------
-
-.nextStage = function(n, d, Y, Ltheta, type){
-	LU = matrix(rexp(n * d, rate = 1), nrow = n, ncol = d)
-		if(type == HAC_GUMBEL){
-			L =	phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_GUMBEL)
-			L}
-		else{
-		if(type == HAC_CLAYTON){
-			L =	phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_CLAYTON)
-			L}}
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------
-
-.stayStage = function(n, d, Y, Ltheta, type){
-	LU = matrix(rexp(n * d, rate = 1), nrow = n, ncol = d)
-		if((type == HAC_GUMBEL) || (type == AC_GUMBEL)){
-			L = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_GUMBEL)
-			L}
-		else{
-		if((type == HAC_CLAYTON) || (type == AC_CLAYTON)){
-			L  = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_CLAYTON)
-			L}}
-}
 	
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.simulate.hac = function(n, Lhac, First, ober.theta, type){
-   	if((class(Lhac$V1) == "character") & (class(Lhac$V2) == "character")){
-		Y1 = .follow(n, Ltheta = .theta(Lhac$theta, ober.theta), I = First, type)
-		dim = length(Lhac$V1) + length(Lhac$V2)
-		v = .nextStage(n, d = dim, Y = Y1, Ltheta = Lhac$theta, type)
-		colnames(v) = c(Lhac$V1, Lhac$V2)}
-    else if((class(Lhac$V1) != "character") & (class(Lhac$V2) == "character")){
-    	dim = length(Lhac$V2)
-    	Y2 = .follow(n, Ltheta = .theta(Lhac$theta, ober.theta), I = First, type = type)
-        v1 = .simulate.hac(n, Lhac = Lhac$V1, First = Y2, ober.theta = Lhac$theta, type = type)
-        v2 = .nextStage(n, d = dim, Y = Y2, Ltheta = Lhac$theta, type = type)
-        colnames(v2) = Lhac$V2
-        v = cbind(v1, v2)}
-    else if((class(Lhac$V1) == "character") & (class(Lhac$V2) != "character")){
-    	dim = length(Lhac$V1)
-    	Y3 = .follow(n, Ltheta = .theta(Lhac$theta, ober.theta), I = First, type = type)
-        v1 = .nextStage(n, d = dim, Y = Y3, Ltheta = Lhac$theta, type = type)
-        colnames(v1) = Lhac$V1
-        v2 = .simulate.hac(n, Lhac = Lhac$V2, First = Y3, ober.theta = Lhac$theta, type = type)
-        v = cbind(v1, v2)}
-    else if((class(Lhac$V1) != "character") & (class(Lhac$V2) != "character")){
-    	Y4 = .follow(n, Ltheta = .theta(Lhac$theta, ober.theta), I = First, type = type)    
-    	v1 = .simulate.hac(n, Lhac = Lhac$V1, First = Y4, ober.theta = Lhac$theta, type = type)
-        v2 = .simulate.hac(n, Lhac = Lhac$V2, First = Y4, ober.theta = Lhac$theta, type = type)
-        v = cbind(v1, v2)}
-return(v)
-}	
+.simulate = function(n, hac, First, ober.theta, type){
+    dd = length(hac)
+    m = matrix(, nrow = n)
+    Y = .follow(n, Ltheta = .theta(hac[[dd]], ober.theta), I = First, type)
+  
+    select = sapply(hac[-dd], FUN = is.character)
+    if(any(select==TRUE)){
+        this.node = which(select == TRUE)
+        v = as.matrix(.stayStage(n, d = length(this.node), Y = Y, Ltheta = hac[[dd]], type))
+        colnames(v) = hac[this.node]
+        m = cbind(m, v)
+    }
+
+    if(any(select==FALSE)){
+    later = which(select == FALSE)
+    for(i in later){
+       	v = .simulate(n, hac = hac[[i]], First = Y, ober.theta = hac[[dd]], type = type)
+       	m = cbind(m, v)
+	}}
+	return(m[,-1])
+}
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
 .rHAC = function(n, L){
-hac = L$model
-if((class(hac$V1) == "character") & (class(hac$V2) == "character")){
-		Y1 = .initial(n, Ltheta = hac$theta, type = L$type)
-		dim = length(hac$V1) + length(hac$V2)
-		v  = .stayStage(n, d = dim, Y = Y1, Ltheta = hac$theta, type = L$type)
-		colnames(v) = c(hac$V1, hac$V2)}
-    else
-if((class(hac$V1) != "character") & (class(hac$V2) == "character")){
-		hac2 = hac$V1
-		Y2 = .initial(n, Ltheta = hac$theta, type = L$type)
-		dim = length(hac$V2)
-  		v2 = .stayStage(n, d = dim, Y = Y2, Ltheta = hac$theta, type = L$type)
-  		colnames(v2) = hac$V2
-        v1 = .simulate.hac(n, Lhac = hac2, First = Y2, ober.theta = hac$theta, type = L$type)
-		v  = cbind(v1, v2)}
-    else
-if((class(hac$V1) == "character") & (class(hac$V2) != "character")){
-		hac3 = hac$V2
-		dim = length(hac$V1)
-		Y3 = .initial(n, Ltheta = hac$theta, type = L$type)
-        v1 = .stayStage(n, d = dim, Y = Y3, Ltheta = hac$theta, type = L$type)
-  		colnames(v1) = hac$V1        
-        v2 = .simulate.hac(n, Lhac = hac3, First = Y3, ober.theta = hac$theta, type = L$type)
-		v  = cbind(v1, v2)}
-	else
-if((class(hac$V1) != "character") & (class(hac$V2) != "character")){
-		hac4 = hac$V1
-		hac5 = hac$V2
-		Y4 = .initial(n, hac$theta, L$type)
-        v1 = .simulate.hac(n, Lhac = hac4, First = Y4, ober.theta = hac$theta, type = L$type)
-        v2 = .simulate.hac(n, Lhac = hac5, First = Y4, ober.theta = hac$theta, type = L$type)
-		v  = cbind(v1, v2)
-        colnames(v) = c(colnames(v1), colnames(v2))}
-	return(v)
+    hac = L$tree
+    type = L$type
+    dd = length(hac)
+    m = matrix(, nrow = n)
+    Y = .initial(n, Ltheta = hac[[dd]], type = type)
+    
+    select = sapply(hac[-dd], FUN = is.character)
+    if(any(select==TRUE)){
+        this.node = which(select == TRUE)
+        v = as.matrix(.stayStage(n, d = length(this.node), Y = Y, Ltheta = hac[[dd]], type = type))
+        colnames(v) = hac[this.node]
+        m = cbind(m, v)
+    }
+    
+    if(any(select==FALSE)){   
+    later = which(select == FALSE)
+    for(i in later){
+            v = .simulate(n, hac = hac[[i]], First = Y, ober.theta = hac[[dd]], type = type)
+          	m = cbind(m, v)
+	}}
+	return(m[,-1])
 }

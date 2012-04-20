@@ -4,48 +4,45 @@
 \title{Empirical copula
 }
 \description{
-\code{emp.copula} and \code{emp.copula.self} compute the empirical copula for a given sample. The difference between these functions is, that \code{emp.copula.self} takes the sample itself as grid \code{u}, such that the grid has not to be specified manually.
+\code{emp.copula} and \code{emp.copula.self} compute the empirical copula for a given sample. The difference between these functions is, that \code{emp.copula.self} does not need a grid, at which the sample is evaluated.
 }
 
 \usage{
 emp.copula(u, x, proc = "M", sort = "none", margins = NULL, 
-na.rm = FALSE, max.min = TRUE)
+na.rm = FALSE, \dots)
 emp.copula.self(x, proc = "M", sort = "none", margins = NULL, 
-na.rm = FALSE, max.min = TRUE)
+na.rm = FALSE, \dots)
 }
 
 \arguments{
   \item{u}{
-the grid for the computation of the empirical copula. It can be a scalar, a vector or a matrix. The number of columns has to be equal to the number of columns of the matrix \code{x}. The values of \code{u} should be within the interval \eqn{[0, 1]}. 
-}  \item{x}{
-denotes the matrix of variables, which are marginal distributions in practice. The values should be within the interval \eqn{[0, 1]}. The number of columns should correspond to the number of variables, whereas the number of rows should be equal to the number of observations.
+the grid, at which the sample is evaluated. According to the dimension of the data matrix \code{x}, it can be a scalar, a vector or a matrix. The values of \code{u} should be within the interval \eqn{[0, 1]}. 
+}  
+\item{x}{
+denotes the matrix of marginal distributions, if \code{margins = NULL}. The number of columns should correspond to the number of variables \eqn{d}, whereas the number of rows should be equal to the number of observations \eqn{n}, with \eqn{n > d}.
 }
   \item{proc}{
-enables the user to choose between two different methods. Generally, it is advised to choose \code{"M"} (given by default), because it takes only \eqn{1/25} of the computational time of method \code{"A"}. However, in the case of large datasets it might occur, that method \code{"M"} does not work, since it requires more working memory. When this occurs, the user is advised to set \code{proc = "A"}, since the procedure is less sensitive regarding the size of the working memory.
+enables the user to choose between two different methods. It is recommended to use the default method, \code{"M"}, because it takes only \eqn{1/25} of the computational time of method \code{"A"}. However, method \code{"M"} is sensitive with respect to the size of the working memory and therefore inapplicable for very large datasets.
 }
   \item{sort}{
 defines, whether the output is ordered. \code{sort = "asc"} refers to ascending values, which might be interesting for plotting and \code{sort = "desc"} refers to descending values.
 }
   \item{margins}{
-scalar or vector specifying how the margins are to compute. They can be determined nonparametrically denoted by \code{"edf"} or in parametric way , e.g. \code{"norm"}. See \code{\link{estimate.copula}} for a detailed explanation.
+  specifies the margins. The data matrix is assumed to contain the values of the marginal distributions by default, i.e. \code{margins = NULL}. If raw data are used, the margins can be determined nonparametrically, \code{"edf"}, or in parametric way, e.g. \code{"norm"}. See \code{\link{estimate.copula}} for a detailed explanation.
 }
   \item{na.rm}{
-boolean. If \code{na.rm = TRUE} and a row of \code{x} or \code{u} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.
+boolean. If \code{na.rm = TRUE}, missing values, \code{NA}, contained in \code{x} and \code{u} are removed.
 }
-  \item{max.min}{
-boolean. If \code{max.min = TRUE} and an element of \code{x} or \code{u} is \eqn{> 1} or \eqn{< 0}, it is set to \eqn{1} and \eqn{0} respectively.
+  \item{\dots}{
+arguments to be passed to \code{\link{na.omit}}.
 }
 }
 \details{
-The estimated copula follows the formula \deqn{\widehat{C} \left(u_{1}, \dots, u_{d} \right) = n^{-1} \sum_{i=1}^{n} \prod_{j=1}^{d} \mathbf{I} \left\{ \widehat{F}_{j} \left( X_{ij} \right) \leq u_{j} \right\},} where \eqn{\widehat{F}_{j}} denotes the empirical marginal distribution function of variable j. So it is no smoothing implemented yet.
+The estimated copula follows the formula \deqn{\widehat{C} \left(u_{1}, \dots, u_{d} \right) = n^{-1} \sum_{i=1}^{n} \prod_{j=1}^{d} \mathbf{I} \left\{ \widehat{F}_{j} \left( X_{ij} \right) \leq u_{j} \right\},} where \eqn{\widehat{F}_{j}} denotes the empirical marginal distribution function of variable \eqn{X_{j}}.
 }
 \value{
 A vector containing the values of the empirical copula.
 }
-\author{
-Ostap Okhrin, Alexander Ristig
-}
-
 \seealso{
 \code{\link{pHAC}}
 }
@@ -59,7 +56,7 @@ which(((emp.copula.self(X[1:100, ], proc = "M") - emp.copula.self(X[1:100, ],
 proc = "A")) == 0) == "FALSE")
 # integer(0)
 
-# furthermore recognize the contour plot
+# the contour plot
 out = outer(z, z)
 contour(x = X[,1], y = X[,2], out, main = "Contour Plot", 
 xlab = "Cauchy Margin", ylab = "Standard Normal Margin", 

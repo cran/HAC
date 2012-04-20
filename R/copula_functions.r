@@ -1,25 +1,22 @@
 # copula_functions.r #####################################################################################################
-# FUNCTION:               	DESCRIPTION:
-#  definitions					In order that the package works appropriately some definitions are required.
+# FUNCTION:               DESCRIPTION:
+#  definitions					Global paramters.
 #  theta.eps					Is addressed during the estimation procedure.
-#  TAU							Possible argument of estimate.copula. Estimation bases on Kendall's tau.
-#  ML							Possible argument of estimate.copula. Estimation bases on Quasi Maximum Likelihood.
-#  tau2theta       			Converts Kendall's rank correlation coefficient into dependence parameter.
-#  theta2tau          		Converts dependence parameter into Kendall's rank correlation coefficient.
-#  phi        					The generator function.
+#  TAU							Possible argument of estimate.copula.
+#  ML								Possible argument of estimate.copula.
+#  tau2theta       				Convertes Kendall's rank correlation coefficient into dependence parameter.
+#  theta2tau          			Convertes dependence parameter into Kendall's rank correlation coefficient.
+#  phi        						The generator function.
 #  phi.inv				  		The inverse of the generator function.
-#  copMult        			Computes the value of copulae.
-#  cop2d						The 2-dimensional precursor of copMult.         
+#  copMult        				Computes the value of d-dimensional AC.      
 ##########################################################################################################################
 
-HAC_GUMBEL         = 0
-AC_GUMBEL          = 1
+HAC_GUMBEL = 0
+AC_GUMBEL = 1
 HAC_ROTATED_GUMBEL = 2
-HAC_CLAYTON        = 3
-AC_CLAYTON         = 4
-GAUSS              = 5
-
-theta.eps = 0.001
+HAC_CLAYTON = 3
+AC_CLAYTON = 4
+GAUSS = 5
 
 TAU = 0
 ML  = 1
@@ -58,7 +55,7 @@ theta2tau = function(theta, type = HAC_GUMBEL){
 
 phi = function(x, theta, type = HAC_GUMBEL){
 	n = length(x)
-	for(i in 1 : n){if(x[i] < 0){return(warning(paste("Element[", i,"] >= 0 is required.")))}}
+	for(i in 1:n){if(x[i] < 0){return(warning(paste("Element[", i,"] >= 0 is required.")))}}
 	
     if((type == AC_GUMBEL) || (type == HAC_GUMBEL) || (type == HAC_ROTATED_GUMBEL)){
 		if(theta >= 1){
@@ -77,7 +74,7 @@ phi = function(x, theta, type = HAC_GUMBEL){
 
 phi.inv = function(x, theta, type = HAC_GUMBEL){
 	n = length(x)
-	for(i in 1 : n){if((x[i] < 0) | (x[i] > 1)){return(warning(paste("Element[", i,"] > 0 and < 1 is required.")))}}
+	for(i in 1 : n){if((x[i] < 0) | (x[i] > 1)){return(warning(paste("Element[", i,"] >= 0 and =< 1 is required.")))}}
 	
     if((type == AC_GUMBEL) || (type == HAC_GUMBEL) || (type == HAC_ROTATED_GUMBEL)){
 		if(theta >= 1){
@@ -95,19 +92,5 @@ phi.inv = function(x, theta, type = HAC_GUMBEL){
 #-------------------------------------------------------------------------------------------------------------------------------
 
 copMult = function(X, theta = 1, type = HAC_GUMBEL){	
-	phi(rowSums(phi.inv(X, theta, type)), theta, type)
+	phi(rowSums(phi.inv(X, theta = theta, type)), theta = theta, type)
 }
-
-#-------------------------------------------------------------------------------------------------------------------------------
-
-# cop2d = function(x, y = NULL, theta = 1, type = HAC_GUMBEL){
-#	 x = as.matrix(x)
-#	if((dim(x)[2] == 2) & (is.null(y) == FALSE)){
-#		x = x}
-#	else
-#	if((dim(x)[2] < 2) & (is.null(y) == FALSE)){
-#		x = cbind(x, y)}
-#	if((dim(x)[2] < 2) & (is.null(y) == TRUE)){
-#		warnings(paste("No output for a copula with dimension 1."))}	
-#	phi(phi.inv(x[, 1], theta, type) + phi.inv(x[ ,2], theta, type), theta, type)
-# }

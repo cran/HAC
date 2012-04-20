@@ -1,57 +1,48 @@
 # copula_cdf.r ###########################################################################################################
-# FUNCTION:               	DESCRIPTION:
+# FUNCTION: 			DESCRIPTION:
 #  pHAC						Computes the values of the cdf for a given sample and 'hac' object.
 #  .cop.cdf           		A recursive function. Computes the values of the cdf for a given type of copula. (Internal function)
-#  .get.names.in.tree       Returns the columns of the sample for which the cdf is to compute. (Internal function)           
 ##########################################################################################################################
 
-pHAC = function(X, hac, margins = NULL, na.rm = FALSE, max.min = TRUE){
+pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
 	
 	X = .margins(X, margins)
 	
-	if(max.min == TRUE){
-			X = .max.min(X)}
-	
 	if(na.rm == TRUE){
-			X = .na.rm(X)}
+			X = na.omit(X, ...)}
 			
     if(hac$type == HAC_ROTATED_GUMBEL){
-        return((1 - .cop.cdf(hac$model, X, HAC_GUMBEL)))
+        return((1 - .cop.cdf(X, hac$tree, HAC_GUMBEL)))
     }else if((hac$type == HAC_GUMBEL) || (hac$type == HAC_CLAYTON)){
-        return(.cop.cdf(hac$model, X, hac$type))
+        return(.cop.cdf(X, hac$tree, hac$type))
     }else if(hac$type == GAUSS){
-        return(pcopula(normalCopula(hac$model[lower.tri(hac$model)], dim = dim(X)[2], dispstr = "un"), X))
+        return(pcopula(normalCopula(hac$tree[lower.tri(hac$tree)], dim = NCOL(X), dispstr = "un"), X))
     }else if(hac$type == AC_GUMBEL){
-        return(pcopula(gumbelCopula(hac$model$theta, dim = dim(X)[2]), X))
+    	n = length(unlist(hac$tree))
+        return(pcopula(gumbelCopula(hac$tree[[n]], dim = (n-1)), X))
     }else if(hac$type == AC_CLAYTON){
-        return(pcopula(claytonCopula(hac$model$theta, dim = dim(X)[2]), X))
+    	n = length(unlist(hac$tree))
+        return(pcopula(claytonCopula(hac$tree[[n]], dim = (n-1)), X))
     }
 }
 
 #------------------------------------------------------------------------------------------------------------------------
 
-.cop.cdf = function(Ltree, sample, copula_type){
-	if((class(Ltree$V1) == "character") & (class(Ltree$V2) == "character")){
-		return(copMult(cbind(sample[,Ltree$V1], sample[,Ltree$V2]), Ltree$theta, copula_type))
-	}else if((class(Ltree$V1) != "character") & (class(Ltree$V2) == "character")){
-		return(copMult(cbind(.cop.cdf(Ltree$V1, sample[,.get.names.in.tree(Ltree$V1)], copula_type), sample[,Ltree$V2]), Ltree$theta, copula_type))
-	}else if((class(Ltree$V1) == "character") & (class(Ltree$V2) != "character")){
-		return(copMult(cbind(sample[,Ltree$V1], .cop.cdf(Ltree$V2, sample[,.get.names.in.tree(Ltree$V2)], copula_type)), Ltree$theta, copula_type))
-	}else if((class(Ltree$V1) != "character") & (class(Ltree$V2) != "character")){
-		return(copMult(cbind(.cop.cdf(Ltree$V1, sample[,.get.names.in.tree(Ltree$V1)], copula_type), .cop.cdf(Ltree$V2, sample[,.get.names.in.tree(Ltree$V2)], copula_type)), Ltree$theta, copula_type))
-	}
-}
+.cop.cdf = function(sample, tree, type){
+	if(length(tree)==1){tree = tree[[1]]}
+	n = length(tree); m = matrix(0, nrow = NROW(sample)); names = colnames(sample)
+	s = sapply(tree, is.character)
 
-#------------------------------------------------------------------------------------------------------------------------
-	
-.get.names.in.tree = function(Ltree){
-	if((class(Ltree$V1) == "character") & (class(Ltree$V2) == "character")){
-		return(c(Ltree$V1, Ltree$V2))
-	}else if((class(Ltree$V1) != "character") & (class(Ltree$V2) == "character")){
-		return(c(.get.names.in.tree(Ltree$V1), Ltree$V2))
-	}else if((class(Ltree$V1) == "character") & (class(Ltree$V2) != "character")){
-		return(c(Ltree$V1, .get.names.in.tree(Ltree$V2)))
-	}else if((class(Ltree$V1) != "character") & (class(Ltree$V2) != "character")){
-		return(c(.get.names.in.tree(Ltree$V1), .get.names.in.tree(Ltree$V2)))
+	if(any(s[-n]==TRUE)){
+		if(any(s[-n]==FALSE)){
+			select = unlist(tree[s])
+				for(i in 1:length(select)){select[i]=(which(names==select[i]))}; select = as.numeric(select)
+				exclude = c(1:(n-1))[which(s[-n]==FALSE)]
+			m = copMult(cbind(sample[, select], sapply(tree[exclude], .cop.cdf, sample = sample[, -select], type = type)), theta = tree[[n]], type = type)
+		}else{
+			m = copMult(cbind(sample[, unlist(tree[s])]), theta = tree[[n]], type = type)
+	}}else{
+		m = copMult(sapply(tree[-n], .cop.cdf, sample = sample, type = type), theta = tree[[n]], type = type)
 	}
+	return(m)
 }

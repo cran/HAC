@@ -1,0 +1,43 @@
+2012-04-20 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* The package is generally upgraded and allows for general structures. The density is available for arbitrary structures as well. Note, the construction is `hac´ objects is modified.
+
+2011-12-24 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* rHAC with type = HAC_CLAYTON works for small copula parameters.
+
+2011-12-05 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* Due to an update of the copula-package, the dependencies of HAC were adjusted.
+
+2011-10-18 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+	
+	* estimate.copula is debugged. Estimation of a 2-dim HAC was not possible.
+
+	* estimate.copula is upgraded. The argument `margins´ specifies how the margins are computed. They can be determined nonparametrically denoted by "edf" or in parametric way , e.g. "norm". Following the latter approach the parameters of the selected distribution are estimated by ML. Basing on these estimates the values of the univariate margins are computed. If the argument is defined as scalar, all margins are computed according to this specification. Otherwise, one can define a different margin for each column of \code{X}, e.g. \code{c("norm", "t", "edf")} for a 3 dimensional sample. Almost all continuous functions of \code{\link{Distributions}} are available. Wrong usage of this argument might result in misspecified margins, e.g. application of \code{"exp"} though the sample contains negative values. If the sample contains the margins yet, the default value is to use.
+	
+	* pHAC, dHAC, emp.copula and emp.copula.self are upgraded with the argument `margins´.
+	
+	* pHAC and dHAC are upgraded. The arguments na.rm and max.min are introduced. So far the arguments are used for the functions estimate.copula, emp.copula and emp.copula.self
+
+2011-10-10 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* as.hac is introduced as further function to create hac objects.
+
+	* aggregate.hac and estimate.copula are upgraded. The variables "method" and "agg.method" are introduced. It allows to determine the new dependency parameter to be the mean, min or max of the two previous, if epsilon > 0.
+
+2011-09-18 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* The manual is revised.
+
+2011-08-02 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* emp.copula is upgraded. If na.rm = TRUE, values < 0 and > 1 are not removed anymore. However, the variable max.min is introduced. If max.min = TRUE, values > 1 are set to 1 and values < 0 are set to 0.
+	
+	* estimate.copula is upgraded. Two further variables are introduced. na.rm and max.min enables the user to remove NA values from the data and to set values >= 1 to 1-10^-6 as well as values <= 0 to 10^-6.
+
+	* estimate.copula is upgraded. Argument type of tau2theta was not specified in two cases.
+
+2011-07-28 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
+
+	* The description is cut.

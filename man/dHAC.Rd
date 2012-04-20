@@ -1,79 +1,103 @@
-\name{dAC, dHAC}
+\name{dHAC, pHAC, rHAC}
 \alias{dHAC}
-\alias{dAC}
-\title{Probability density function
+\alias{pHAC}
+\alias{rHAC}
+\title{pdf, cdf and random sampling
 }
 \description{
-\code{dHAC} returns the values of the pdf for 3-dimensional HAC, whereas the function \code{dAC} returns the values of a pdf for 2-dim AC.
+\code{dHAC} and \code{pHAC} compute the values of the copula's density and cumulative distribution function respectively. \code{rHAC} samples from arbitrary HAC.
 }
 \usage{
-dHAC(X, hac, margins = NULL, na.rm = FALSE, max.min = TRUE)
-dAC(x, y, theta = 1.0, type = AC_GUMBEL, na.rm = FALSE, max.min = TRUE)
+dHAC(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, \dots)
+pHAC(X, hac, margins = NULL, na.rm = FALSE, \dots)
+rHAC(n, hac)
 }
 \arguments{
-  \item{hac}{
-an object of the class \env{hac}.
-}
-  \item{theta}{
-  the dependency parameter of the copula.
-}
-  \item{type}{
-  choose between \code{AC_GUMBEL}, \code{AC_CLAYTON} and \code{GAUSS}.
-}
   \item{X}{
-a data matrix. The number of columns (\eqn{2} or \eqn{3}) has to coincide with the dimension of the corresponding copula model. \code{X} has to contain at least to rows (observations), because the values of the pdf cannot be computed else. The column names have to equal the names of the variables of the argument \code{hac}.
+a data matrix. The number of columns and the corresponding names have to coincide with the specifications of the copula model \code{hac}. The sample \code{X} has to contain at least \eqn{2} rows (observations), as the values of the pdf and cdf cannot be computed otherwise.
+} 
+  \item{hac}{
+an object of the class \code{\link{hac}}.
 }
-  \item{x, y}{
-data vectors.
+  \item{n}{
+number of observations.
 }
   \item{margins}{
-scalar or vector specifying how the margins are to compute. They can be determined nonparametrically denoted by \code{"edf"} or in parametric way , e.g. \code{"norm"}. See \code{\link{estimate.copula}} for a detailed explanation.
+  specifies the margins. The data matrix \code{X} is assumed to contain the values of the marginal distributions by default, i.e. \code{margins = NULL}. If raw data are used, the margins can be determined nonparametrically, \code{"edf"}, or in parametric way, e.g. \code{"norm"}. See \code{\link{estimate.copula}} for a detailed explanation.
 }
+
   \item{na.rm}{
-boolean. If \code{na.rm = TRUE} and a row of \code{X} contains \code{NA}, the row is removed and not used for the computation. Corresponding warnings are shown.
+boolean. If \code{na.rm = TRUE}, missing values, \code{NA}, contained in \code{X} are removed.
 }
-  \item{max.min}{
-boolean. If \code{max.min = TRUE} and an element of \code{X} is \eqn{\geq 1} or \eqn{\leq 0}, it is set to \eqn{1-10^{-6}} and \eqn{10^{-6}} respectively.
+  \item{eval}{
+boolean. If \code{eval = FALSE}, a non-evaluated \code{\link{function}} is returned.
+}
+  \item{\dots}{
+arguments to be passed to \code{\link{na.omit}}.
 }
 }
-\details{
-To do: extending the dimension of \code{dHAC}.
-}
+
 \value{
-A vector containing the values of the pdf.
+    \code{rHAC} retruns a \eqn{n \times d} matrix, where \eqn{d} refers to the dimension of the HAC. \code{dHAC} and \code{pHAC} return vectors. The computation of the density might be time consuming for high-dimensions, since the density is defined as \eqn{d}-th derivative of the HAC with respect to its arguments \eqn{u_1, \ldots, u_d}. 
 }
+
 \references{
+Hofert, M. 2011, Efficiently Sampling Nested Archimedean Copulas, \emph{Computational Statistics & Data Analysis} 55, 57-70.
+
+Joe, H. 1997, Multivariate Models and Dependence Concepts, \emph{Chapman & Hall}.
+
+McNeil, A.,J. 2008, Sampling Nested Archimedean Copulas, \emph{Journal of Statistical Computation and Simulation} 78, 567-581.
+
+Nelsen, R.,B. 2006, An Introduction to Copulas, \emph{Spinger}, 2nd Edition.
+
 Savu, C. and Trede, M. 2010, Hierarchies of Archimedean copulas, \emph{Quantitative Finance} 10, 295-304.
 }
-\author{
-Ostap Okhrin
-}
 \seealso{
-\code{\link{pHAC}}
+\code{\link{estimate.copula}}
 }
 \examples{
 # AC example
-# the underlying model
-g.model = hac(type = AC_GUMBEL, X = 1.5, dim = 2)
+# define the underlying model
+model = hac(type = AC_CLAYTON, tree = list("X1", "X2", 2))
 
-# sample from copula g.model
-sample = rHAC(100, g.model)
+# sample from model
+sample = rHAC(100, model)
 
-# returns the pdf at each point of the sample
-values_1 = dHAC(sample, g.model)
-values_2 = dAC(sample[, 1], sample[, 2], theta = 1.5, type = AC_GUMBEL)
-round(values_1) == round(values_2) # TRUE
-
+# returns the pdf/cdf at each vector of the sample
+d.values = dHAC(sample, model)
+p.values = pHAC(sample, model)
 
 # HAC example
 # the underlying model
-y = c(~X1, ~X2, ~X3)
+y = c("X1", "X2", "X3")
 theta = c(1.5, 3)
-g.model = hac.full(type = HAC_GUMBEL, y, theta)
+model = hac.full(type = HAC_GUMBEL, y, theta)
 
-# sample from copula g.model
-sample = rHAC(100, g.model)
+# define sample from copula model
+sample = rHAC(100, model)
 
-# returns the pdf at each point of the sample
-values = dHAC(sample, g.model)
+# returns the pdf/cdf at each point of the sample
+d.values = dHAC(sample, model)
+d.values = pHAC(sample, model)
+
+# construct a hac-model
+tree = list(list("X1", "X5", 3), list("X2", "X3", "X4", 4), 2)
+model = hac(tree = tree)
+
+# sample from copula model
+sample = rHAC(1000, model)
+
+# check the accurancy of the estimation procedure
+result1 = estimate.copula(sample)
+result2 = estimate.copula(sample, epsilon = 0.2)
+
+logLik1 = sum(log(dHAC(sample, result1)))
+logLik2 = sum(log(dHAC(sample, result2)))
+
+# sample from Gaussian-copula
+corr = diag(1, 3)
+corr[lower.tri(corr)] = corr[upper.tri(corr)] = seq(0.1, 0.3, by = 0.1)
+gauss = hac(type = GAUSS, corr = corr) 
+
+sample = rHAC(GAUSS, hac = gauss)
 }
