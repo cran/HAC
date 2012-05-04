@@ -1,14 +1,17 @@
 # copula_functions.r #####################################################################################################
-# FUNCTION:               DESCRIPTION:
-#  definitions					Global paramters.
-#  theta.eps					Is addressed during the estimation procedure.
-#  TAU							Possible argument of estimate.copula.
-#  ML								Possible argument of estimate.copula.
-#  tau2theta       				Convertes Kendall's rank correlation coefficient into dependence parameter.
-#  theta2tau          			Convertes dependence parameter into Kendall's rank correlation coefficient.
-#  phi        						The generator function.
-#  phi.inv				  		The inverse of the generator function.
-#  copMult        				Computes the value of d-dimensional AC.      
+# FUNCTION:         DESCRIPTION:
+#  definitions      Global paramters.
+#  theta.eps		Is addressed during the estimation procedure.
+#  TAU				Possible input argument of estimate.copula.
+#  ML				Possible input argument of estimate.copula.
+#  FML              Possible input argument of estimate.copula.
+#  tau2theta       	Convertes Kendall's rank correlation coefficient into dependence parameter.
+#  theta2tau        Convertes dependence parameter into Kendall's rank correlation coefficient.
+#  phi        		The generator function.
+#  phi.inv			The inverse of the generator function.
+#  copMult        	Computes the value of d-dimensional AC.
+#  par.pairs        Returns the pairwise arranged parameter in a matrix.
+#  .pair.matr       Supplementary function of par.pairs. (Internal function)       
 ##########################################################################################################################
 
 HAC_GUMBEL = 0
@@ -20,6 +23,7 @@ GAUSS = 5
 
 TAU = 0
 ML  = 1
+FML = 2
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
@@ -93,4 +97,54 @@ phi.inv = function(x, theta, type = HAC_GUMBEL){
 
 copMult = function(X, theta = 1, type = HAC_GUMBEL){	
 	phi(rowSums(phi.inv(X, theta = theta, type)), theta = theta, type)
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+
+par.pairs = function(hac, FUN = NULL, ...){
+    tree = hac$tree
+    vars = .get.leaves(tree)
+    d = length(vars)
+    matr = matrix(NA,nrow=d,ncol=d); colnames(matr)=rownames(matr)=vars
+    matr = .pairs.matr(tree, matr)
+    diag(matr) = NA
+    
+    if(class(FUN)=="function"){
+        matr[lower.tri(matr)] = FUN(matr[lower.tri(matr)], ...)
+        matr[upper.tri(matr)] = FUN(matr[upper.tri(matr)], ...)
+    }else{
+        if(!is.null(FUN)){
+           if(FUN==TAU)
+            matr[lower.tri(matr)] = theta2tau(matr[lower.tri(matr)], type=hac$type)
+            matr[upper.tri(matr)] = theta2tau(matr[upper.tri(matr)], type=hac$type)
+        }}
+    matr
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+
+.pairs.matr = function(tree, matr){
+     if(length(tree)==1){tree=tree[[1]]}
+     n = length(tree)
+     s = sapply(tree[-n], is.character)
+     
+     if(any(s==TRUE)){
+         if(any(s==FALSE)){
+            l = sapply(tree[which(!s)], .get.leaves)
+            for(i in 1:(length(l)-1))for(j in (i+1):length(l))matr[unlist(l[[i]]),unlist(l[[j]])]=matr[unlist(l[[j]]),unlist(l[[i]])]=tree[[n]]
+            for(i in 1:length(l))matr[unlist(l[[i]]),unlist(tree[which(s)])]=matr[unlist(tree[which(s)]),unlist(l[[i]])]=tree[[n]]
+            matr[unlist(tree[which(s)]), unlist(tree[which(s)])]=tree[[n]]
+            for(i in which(!s)){
+                matr = .pairs.matr(tree[i], matr)         
+            }
+         }else{
+            matr[unlist(tree[-n]), unlist(tree[-n])]=tree[[n]]
+         }}else{
+            l = sapply(tree[-n], .get.leaves)
+            for(i in 1:(length(l)-1))for(j in (i+1):length(l))matr[unlist(l[[i]]),unlist(l[[j]])]=matr[unlist(l[[j]]),unlist(l[[i]])]=tree[[n]]
+            for(i in 1:(n-1)){
+                 matr = .pairs.matr(tree[i], matr)            
+            }
+        }
+    return(matr)
 }

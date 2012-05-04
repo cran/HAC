@@ -7,8 +7,9 @@
 This function estimates the parameter and determines the structure of Hierarchical Archimedean Copulae.
 }
 \usage{
-estimate.copula(X, type = HAC_GUMBEL, method = ML, epsilon = 0, agg.method = "mean", 
-margins = NULL, theta.eps = 0.001, na.rm = FALSE, max.min = TRUE, \dots)
+estimate.copula(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilon = 0, 
+agg.method = "mean", margins = NULL, theta.eps = 0.001, na.rm = FALSE, 
+max.min = TRUE, \dots)
 }
 \arguments{
   \item{X}{
@@ -18,7 +19,10 @@ a \eqn{n \times d} matrix. The columns should be labeled. The default names \cod
   defines the model. Select between \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_CLAYTON} and \code{AC_CLAYTON}.
 }
   \item{method}{
-the estimation method. Either ``Quasi Maximum Likelihood'' denoted by \code{ML} or ``Kendall's \eqn{\tau}'' denoted by \code{TAU}.
+the estimation method. Select between Quasi Maximum Likelihood \code{ML}, Kendall's \eqn{\tau} \code{TAU} and Full Maximum Likelihood \code{FML}.
+}  
+   \item{hac}{
+a \code{\link{hac}} object, which determines the structure and provides initial values, if \code{method = FULL}.
 }
   \item{epsilon}{
   scalar \eqn{\geq 0}. The variables of consecutive nodes are aggregated, if the difference of the dependency parameters is smaller than \code{epsilon}. For a detailed explanation see also \code{\link{aggregate.hac}}.
@@ -70,4 +74,7 @@ plot(est.obj)
 # consider also the aggregation of the variables
 est.obj = estimate.copula(x, HAC_GUMBEL, ML, epsilon = 0.2)
 plot(est.obj)
+
+# full ML estimation to yield more precise parameter
+est.obj.full = estimate.copula(x, HAC_GUMBEL, FML, hac = est.obj)
 }

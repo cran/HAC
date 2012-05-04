@@ -1,11 +1,5 @@
-\name{emp.copula}
-\alias{emp.copula}
-\alias{emp.copula.self}
-\title{Empirical copula
-}
-\description{
-\code{emp.copula} and \code{emp.copula.self} compute the empirical copula for a given sample. The difference between these functions is, that \code{emp.copula.self} does not need a grid, at which the sample is evaluated.
-}
+\name{emp.copula} \alias{emp.copula} \alias{emp.copula.self} \title{Empirical copula } \description{\code{emp.copula} and \code{emp.copula.self} compute the empirical copula for a given sample. The difference between these 
+functions is, that \code{emp.copula.self} does not require a matrix \code{u}, at which the function is evaluated.} 
 
 \usage{
 emp.copula(u, x, proc = "M", sort = "none", margins = NULL, 
@@ -16,14 +10,12 @@ na.rm = FALSE, \dots)
 
 \arguments{
   \item{u}{
-the grid, at which the sample is evaluated. According to the dimension of the data matrix \code{x}, it can be a scalar, a vector or a matrix. The values of \code{u} should be within the interval \eqn{[0, 1]}. 
-}  
-\item{x}{
-denotes the matrix of marginal distributions, if \code{margins = NULL}. The number of columns should correspond to the number of variables \eqn{d}, whereas the number of rows should be equal to the number of observations \eqn{n}, with \eqn{n > d}.
-}
+a matrix, at which the function is evaluated. According to the dimension of the data matrix \code{x}, it can be a scalar, a vector or a matrix. The values of \code{u} should be within the interval \eqn{[0, 1]}. }  \item{x}{ 
+denotes the matrix of marginal distributions, if \code{margins = NULL}. The number of columns should correspond to the number of variables \eqn{d}, whereas the number of rows should be equal to the number of observations 
+\eqn{n}, with \eqn{n > d}. } 
   \item{proc}{
-enables the user to choose between two different methods. It is recommended to use the default method, \code{"M"}, because it takes only \eqn{1/25} of the computational time of method \code{"A"}. However, method \code{"M"} is sensitive with respect to the size of the working memory and therefore inapplicable for very large datasets.
-}
+enables the user to choose between two different methods. It is recommended to use the default method, \code{"M"}, because it takes only a small fraction of the computational time of method \code{"A"}. However, method 
+\code{"M"} is sensitive with respect to the size of the working memory and therefore inapplicable for very large datasets. } 
   \item{sort}{
 defines, whether the output is ordered. \code{sort = "asc"} refers to ascending values, which might be interesting for plotting and \code{sort = "desc"} refers to descending values.
 }

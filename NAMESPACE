@@ -18,7 +18,9 @@ export("pHAC",
 	"get.params",
 	"hac.full",
 	"hac",
-	"copMult"
+	"copMult",
+	"to.logLik",
+	"par.pairs"
 )
 
 
@@ -35,7 +37,8 @@ export("HAC_GUMBEL",
 	"AC_CLAYTON",
 	"GAUSS",
 	"TAU",
-	"ML"
+	"ML",
+	"FML"
 )
 
 
@@ -50,8 +53,10 @@ S3method(aggregate, hac)
 export("plot.hac", "print.hac", "aggregate.hac")
 
 
+# imports:
+
 importFrom("stabledist", rstable)
 
 importFrom("graphics", plot)
 
-importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull, numericDeriv, na.omit, D, deriv)
+importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull, na.omit, D, deriv)

@@ -1,7 +1,7 @@
 # copula_cdf.r ###########################################################################################################
 # FUNCTION: 			DESCRIPTION:
-#  pHAC						Computes the values of the cdf for a given sample and 'hac' object.
-#  .cop.cdf           		A recursive function. Computes the values of the cdf for a given type of copula. (Internal function)
+#  pHAC					Computes the values of the cdf for a given sample and 'hac' object.
+#  .cop.cdf           	Supplementary function for pHAC. (Internal function)
 ##########################################################################################################################
 
 pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){

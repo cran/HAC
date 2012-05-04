@@ -3,10 +3,12 @@
 #  .dAC						Computes the values of the density of 2-dimensional copulae. (Internal function)
 #  .gumb.12.density			2-dim density of Gumbel copulae. (Internal function)
 #  .clay.12.density			2-dim density of Clayton copulae. (Internal function)
-#  dHAC						Computes the values of the density of 2- or 3-dimensional copulae.
-#  .cop.pdf					Computes the values of the density. (Internal function)
+#  dHAC						Computes the values of the density.
+#  .cop.pdf					Supplementary function of dHAC. (Internal function)
 #  .d.dell                  Computes the deriavtive of an expression given by .constr.expr. (Internal function)
-#  .constr.expr             A recursive function. Computes an expression of the cdf for a given type of copula.(Internal function)
+#  .constr.expr             Computes an expression of the cdf for a given copula type. (Internal function)
+#  to.logLik                Returns the log-Likelihood function or its value.
+#  .tree.without.params     Tranforms a tree of a hac object to a tree with symbolic parameter. (Internal function)
 ##########################################################################################################################
 
 .dAC = function(x, y, theta = 1.0, type = AC_GUMBEL){	
@@ -51,10 +53,10 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
     }}else if(hac$type == GAUSS){
         return(dcopula(normalCopula(hac$tree[lower.tri(hac$model)], dim = dim(X)[2], dispstr = "un"), X))
     }else if(hac$type == AC_GUMBEL){
-    	n = length(hac$tree)
+        n = length(hac$tree)
         return(dcopula(gumbelCopula(hac$tree[[n]], dim = (n-1)), X))
     }else if(hac$type == AC_CLAYTON){
-    	n = length(hac$tree)
+        n = length(hac$tree)
         return(dcopula(claytonCopula(hac$tree[[n]], dim = (n-1)), X))
     }else if(hac$type == HAC_ROTATED_GUMBEL){
         stop("HAC-pdf for HAC_ROTATED_GUMBEL is not implemented yet.")
@@ -112,3 +114,48 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
                  paste("(", paste("((", sapply(tree[-n], .constr.expr, type=type),")^(-", tree[[n]],")-1)", collapse="+", sep = ""), "+1)^(-1/", tree[[n]], ")", sep="")
              }
 }}
+
+#---------------------------------------------------------------------------------------------------
+
+to.logLik = function(X, hac, eval = FALSE, margins = NULL, na.rm = FALSE, ...){
+	X = .margins(X, margins)
+			
+	if(na.rm == TRUE){
+			X = na.omit(X, ...)}
+    
+    tree = .tree.without.params(hac$tree)
+    thetas = .read.params(tree); values = get.params(hac); d = NCOL(X)
+    expr = .constr.expr(tree, hac$type)
+    f = .d.dell(parse(text=expr), c(colnames(X), thetas[order(values)]), order=d)
+    for(i in 1:d){formals(f)[[i]]=X[,i]}
+    
+    g = function(theta, density=f){
+            n.par = length(theta)
+            for(i in 1:n.par){formals(density)[[length(formals(density))-n.par+i]]=theta[i]}
+            sum(log(c(attr(density(), "gradient"))))    
+    }
+        
+    if(eval==FALSE){g}else{g(values)}
+}
+ 
+#---------------------------------------------------------------------------------------------------
+ 
+.tree.without.params = function(tree, k=1, l=1){
+     if(length(tree)==1){tree=tree[[1]]}
+     n = length(tree)
+     s = sapply(tree[-n], is.character)
+     tree[[n]] = paste("theta",k,".",l, sep="")
+     
+     if(any(s==TRUE)){
+         if(any(s==FALSE)){
+            for(i in which(!s)){
+                tree[[i]]=.tree.without.params(tree[[i]], k=k+1,l=i)
+            }       
+         }else{
+            tree = tree
+         }}else{
+         for(i in 1:(n-1)){
+                tree[[i]]=.tree.without.params(tree[[i]], k=k+1,l=i)
+         }}
+    return(tree)        
+}

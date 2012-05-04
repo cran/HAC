@@ -1,6 +1,16 @@
+2012-05-04 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@hu-berlin.de>
+
+	* dHAC and pHAC work for estimated ACs.
+
+	* to.logLik provides the log-Likelihood function for arbitrary HAC.
+
+	* Based on to.logLik, full Maximum-Likelihood estimation `FML' is implemented.
+
+	* par.pairs returns the pairwise parameter of a hac object.
+
 2012-04-20 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
 
-	* The package is generally upgraded and allows for general structures. The density is available for arbitrary structures as well. Note, the construction is `hac´ objects is modified.
+	* The package is generally upgraded and allows for general structures. The density is available for arbitrary structures as well. Note, the construction of `hac´ objects is modified.
 
 2011-12-24 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@cms.hu-berlin.de>
 

@@ -1,14 +1,14 @@
 # copula_simulate.r ######################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  rAC							Samples from AC.
+#  rAC						Samples from AC.
 #  .f_gumbel				Samples from the inverse Laplace-Stietjes transfrom of a Gumbel copula. (Internal function)
 #  .f_clayton				Samples from the inverse Laplace-Stietjes transfrom of a Clayton copula. (Internal function)
 #  rHAC						Samples from HAC.
 #  .theta      				Computes the ratio of two dependency parameters. (Internal function)
-#  .initial  					Samples from the inverse Laplace-Stietjes transfrom for the initial node of HAC. (Internal function) 
-#  .stayStage  			Samples from the initial node of HAC. (Internal function)     
-#  .fReject 					Samples from inverse Laplace-Stietjes transfrom for subsequent nodes, if type = HAC_CLAYTON. (Internal function)     
-#  .follow						Samples the inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)     
+#  .initial  				Samples from the inverse Laplace-Stietjes transfrom for the initial node of HAC. (Internal function) 
+#  .stayStage  			    Samples from the initial node of HAC. (Internal function)     
+#  .fReject 				Samples from inverse Laplace-Stietjes transfrom for subsequent nodes, if type = HAC_CLAYTON. (Internal function)     
+#  .follow					Samples the inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)     
 #  .simualte		  		The recursive sampling procedure. (Internal function)     
 #  .rHAC 					Initializes the recursion. (Internal function)     
 ##########################################################################################################################

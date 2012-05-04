@@ -40,7 +40,9 @@ arguments to be passed to \code{\link{na.omit}}.
 \value{
     \code{rHAC} retruns a \eqn{n \times d} matrix, where \eqn{d} refers to the dimension of the HAC. \code{dHAC} and \code{pHAC} return vectors. The computation of the density might be time consuming for high-dimensions, since the density is defined as \eqn{d}-th derivative of the HAC with respect to its arguments \eqn{u_1, \ldots, u_d}. 
 }
-
+\details{
+    Density and cdf of simple Archimedean copula are based on the functions \code{\link{dcopula}} and \code{\link{pcopula}} of the \env{copula} package.
+}
 \references{
 Hofert, M. 2011, Efficiently Sampling Nested Archimedean Copulas, \emph{Computational Statistics & Data Analysis} 55, 57-70.
 
@@ -53,7 +55,7 @@ Nelsen, R.,B. 2006, An Introduction to Copulas, \emph{Spinger}, 2nd Edition.
 Savu, C. and Trede, M. 2010, Hierarchies of Archimedean copulas, \emph{Quantitative Finance} 10, 295-304.
 }
 \seealso{
-\code{\link{estimate.copula}}
+\code{\link{estimate.copula}}, \code{\link{to.logLik}}
 }
 \examples{
 # AC example
@@ -91,13 +93,10 @@ sample = rHAC(1000, model)
 result1 = estimate.copula(sample)
 result2 = estimate.copula(sample, epsilon = 0.2)
 
-logLik1 = sum(log(dHAC(sample, result1)))
-logLik2 = sum(log(dHAC(sample, result2)))
-
 # sample from Gaussian-copula
 corr = diag(1, 3)
 corr[lower.tri(corr)] = corr[upper.tri(corr)] = seq(0.1, 0.3, by = 0.1)
 gauss = hac(type = GAUSS, corr = corr) 
 
-sample = rHAC(GAUSS, hac = gauss)
+sample = rHAC(1000, hac = gauss)
 }
