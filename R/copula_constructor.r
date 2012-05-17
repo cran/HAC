@@ -8,7 +8,7 @@
 ##########################################################################################################################
 
 .check.par = function(x){
-	if((x$type == AC_GUMBEL) || (x$type == HAC_GUMBEL) || (x$type == HAC_ROTATED_GUMBEL)){
+	if((x$type == AC_GUMBEL) || (x$type == HAC_GUMBEL)){
 		ober.theta = 1}
 	else
 	if((x$type = AC_CLAYTON) || (x$type = HAC_CLAYTON)){
@@ -57,7 +57,7 @@ hac = function(type = HAC_GUMBEL, tree = NULL, corr = NULL){
 	
 print.hac = function(x, digits = 2, ...){
         cat("Class: hac", "\n", ...)
-	if((x$type == 0) | (x$type == 1) | (x$type == 2)){
+	if((x$type == 0) | (x$type == 1)){
  		cat("Generator: Gumbel", "\n", ...)
  		cat(tree2str(x, theta = TRUE, digits = digits),  "\n", ...)
  		}

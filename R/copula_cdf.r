@@ -6,14 +6,14 @@
 
 pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
 	
+    if(any(!(colnames(X) %in% .get.leaves(hac$tree)))){stop("The names of X have to coincide with the specifications of the copula model hac.")}
+
 	X = .margins(X, margins)
 	
 	if(na.rm == TRUE){
 			X = na.omit(X, ...)}
 			
-    if(hac$type == HAC_ROTATED_GUMBEL){
-        return((1 - .cop.cdf(X, hac$tree, HAC_GUMBEL)))
-    }else if((hac$type == HAC_GUMBEL) || (hac$type == HAC_CLAYTON)){
+    if((hac$type == HAC_GUMBEL) || (hac$type == HAC_CLAYTON)){
         return(.cop.cdf(X, hac$tree, hac$type))
     }else if(hac$type == GAUSS){
         return(pcopula(normalCopula(hac$tree[lower.tri(hac$tree)], dim = NCOL(X), dispstr = "un"), X))

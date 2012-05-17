@@ -18,8 +18,6 @@
 		.clay.12.density(x, y, theta)       
 	}else if(type == GAUSS){
 		dcopula(normalCopula(theta, 2, dispstr = "un"), cbind(x, y))
-	}else if(type == HAC_ROTATED_GUMBEL){
-		.gumb.12.density(1 - x, 1 - y, theta)
 	}
 }
 
@@ -42,6 +40,9 @@
 #-------------------------------------------------------------------------------------------------------------------------------
 
 dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
+
+    if(any(!(colnames(X) %in% .get.leaves(hac$tree)))){stop("The names of X have to coincide with the specifications of the copula model hac.")}
+
 	X = .margins(X, margins)
 			
 	if(na.rm == TRUE){
@@ -58,8 +59,6 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
     }else if(hac$type == AC_CLAYTON){
         n = length(hac$tree)
         return(dcopula(claytonCopula(hac$tree[[n]], dim = (n-1)), X))
-    }else if(hac$type == HAC_ROTATED_GUMBEL){
-        stop("HAC-pdf for HAC_ROTATED_GUMBEL is not implemented yet.")
     }
 }
 

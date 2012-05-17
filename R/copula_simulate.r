@@ -49,13 +49,8 @@ rHAC = function(n, hac){
 	if(hac$type == GAUSS){
         res = rcopula(normalCopula(hac$tree[lower.tri(hac$tree)], dim = NCOL(hac$tree), dispstr = "un"), n)
 	}else{
-	if(hac$type != HAC_ROTATED_GUMBEL){
 		res = .rHAC(n, hac)
-	}else{
-	if(hac$type == HAC_ROTATED_GUMBEL){
-		hac$type = HAC_GUMBEL
-		res = (1 - .rHAC(n, hac))
-	}}}}}
+	}}}
 	res
 }
 
@@ -80,7 +75,7 @@ rHAC = function(n, hac){
 
 .stayStage = function(n, d, Y, Ltheta, type){
 	LU = matrix(rexp(n * d, rate = 1), nrow = n, ncol = d)
-		if((type == HAC_GUMBEL) || (type == AC_GUMBEL) || (type == HAC_ROTATED_GUMBEL)){
+		if((type == HAC_GUMBEL) || (type == AC_GUMBEL)){
 			L = phi(LU / matrix(c(rep(Y, d)), nrow = n), Ltheta, type = HAC_GUMBEL)
 			L}
 		else{

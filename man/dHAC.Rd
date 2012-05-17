@@ -80,7 +80,7 @@ sample = rHAC(100, model)
 
 # returns the pdf/cdf at each point of the sample
 d.values = dHAC(sample, model)
-d.values = pHAC(sample, model)
+p.values = pHAC(sample, model)
 
 # construct a hac-model
 tree = list(list("X1", "X5", 3), list("X2", "X3", "X4", 4), 2)

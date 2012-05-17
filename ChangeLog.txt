@@ -1,3 +1,11 @@
+2012-05-16 Alexander Ristig <ristigal@hu-berlin.de>
+
+	* Warnings are added to dHAC and pHAC, as an useless error message was shown, when the colnames of X and the variables' names of hac were not identical.
+
+	* type = HAC_ROTATED_GUMBEL is removed.
+
+	* Restrictions of full ML estimation are optimized.
+
 2012-05-04 Ostap Okhrin <ostap.okhrin@wiwi.hu-berlin.de> and Alexander Ristig <ristigal@hu-berlin.de>
 
 	* dHAC and pHAC work for estimated ACs.

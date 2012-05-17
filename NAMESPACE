@@ -32,7 +32,6 @@ exportClass("hac"
 
 export("HAC_GUMBEL",
 	"AC_GUMBEL",
-	"HAC_ROTATED_GUMBEL",
 	"HAC_CLAYTON",
 	"AC_CLAYTON",
 	"GAUSS",
@@ -59,4 +58,4 @@ importFrom("stabledist", rstable)
 
 importFrom("graphics", plot)
 
-importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull, na.omit, D, deriv)
+importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull, na.omit, D, deriv, constrOptim, optim)

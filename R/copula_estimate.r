@@ -6,13 +6,12 @@
 #  . one.mar				Estimates one marginal distributions for a given sample. (Internal function)   
 #  .max.min					0's contained in the data matrix are set to 0.000001 and 1's to 1-000001. (Internal function)
 #  .constraints.ui          Returns the matrix for the constraints, i.e. ui of constrOptim.
-#  .constraints.ui          Returns the vector of lower bounds, i.e. ci of constrOptim.
 #  .rebuild                 Creates the tree of an hac-object for an ordered parameter vector.
 ##########################################################################################################################
 
 estimate.copula = function(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilon = 0, agg.method = "mean", margins = NULL, theta.eps = 0.001, na.rm = FALSE, max.min = TRUE, ...){
 	
-	if(is.null(colnames(X))){g.names = names = paste("X", 1 : NCOL(X), sep = "")}else g.names = names = colnames(X)
+	if(is.null(colnames(X))){g.names = names = paste("X", 1 : NCOL(X), sep = "")}else names = colnames(X)
 	
 	X = .margins(X, margins)
 	colnames(X) = names
@@ -49,6 +48,7 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilo
             if(min(min(sub.min), matr[max.i,max.ii]) == matr[max.i,max.ii]){sub.min = matr[max.i,max.ii]}else{sub.min = min(sub.min) - theta.eps}
 
             co = copMult(cbind(X[,max.i], X[,max.ii]), max(sub.min, tau2theta(theta.eps, type)), type)
+
             X = matrix(X[,-max(max.i, max.ii)], ncol = (main.dim-main.i))
             X[,min(max.i, max.ii)] = co
 
@@ -60,7 +60,7 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilo
             res = c(list(tree[[1]]), list(tree[[2]]), tau2theta(max(cor(X[,1], X[,2], method = "kendall"), theta.eps), type))
             res = .union(res, epsilon, method = agg.method, ...)
         }else{  			
-            res = c(list(tree[[1]]), list(tree[[2]]), tau2theta(optimise(f = function(y, i, j){sum(log(.dAC(X[,1], X[,2], tau2theta(y, type), type)))}, i = 1, j = 2, interval = c(0 + theta.eps, .ub(tree[[1]][[length(tree[[1]])]], tree[[2]][[length(tree[[2]])]], type)), maximum = TRUE)$maximum, type))
+            res = c(list(tree[[1]]), list(tree[[2]]), tau2theta(optimise(f = function(y){sum(log(.dAC(X[,1], X[,2], tau2theta(y, type), type)))}, interval = c(0 + theta.eps, .ub(tree[[1]][[length(tree[[1]])]], tree[[2]][[length(tree[[2]])]], type)), maximum = TRUE)$maximum, type))
             res = .union(res, epsilon, method = agg.method, ...)
     }}else{
        if(is.null(hac)){
@@ -68,12 +68,10 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilo
        }else{
           values = get.params(hac, sort.v = TRUE, decreasing=FALSE)
           tree.full = hac$tree
-          n.params = length(values)
-          initial = numeric(n.params); initial[1]=if(type == HAC_GUMBEL){1}else{0}
-          constr = .constraints.ui(tree.full)
-          m = diag(1, nrow = constr+1, ncol = constr+1)
+		  initial=if(type == HAC_GUMBEL){1+theta.eps}else{0+theta.eps}
+          ui = .constraints.ui(tree.full, m = matrix(c(1, rep(0, length(values)-1)), nrow=1), values = values)
           LL = to.logLik(X, hac)
-          optim = constrOptim(values, f=LL, grad=NULL, ui=m, ci=as.vector(.constraints.ci(tree.full, values, init = initial)), control=list(fnscale=-1), hessian=FALSE)
+          optim = constrOptim(values, f=LL, grad=NULL, ui=ui, ci=as.vector(c(initial, rep(theta.eps, NROW(ui)-1))), control=list(fnscale=-1), hessian=FALSE)
           theta = optim$par
           res = .rebuild(tree.full, values, theta)
     }}}else{ 
@@ -90,8 +88,6 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilo
         }else{
             res = c(as.list(names), fitCopula(claytonCopula(1.5, dim = dim(X)[2]), X, method = "ml")@estimate)
         }
-    }else if(type == HAC_ROTATED_GUMBEL){
-        stop("no yet implemented")
     }}
 	hac(type = type, tree = res)
 }
@@ -169,7 +165,7 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilo
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-.constraints.ui = function(tree){
+.constraints.ui = function(tree, m, values){
      if(length(tree)==1){tree=tree[[1]]}
      n = length(tree)
      s = sapply(tree[-n], is.character)
@@ -177,39 +173,31 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilo
      if(any(s==TRUE)){
          if(any(s==FALSE)){
             n.constr = length(which(!s))
-            n.constr = sum(n.constr, sapply(tree[which(!s)], .constraints.ui))
-         }else{
-            n.constr = 0
-         }}else{
-            n.constr = sum(length(which(!s)), sapply(tree[-n], .constraints.ui))
-        }
-    return(n.constr)
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-.constraints.ci = function(tree, values, init){
-     if(length(tree)==1){tree=tree[[1]]}
-     n = length(tree)
-     s = sapply(tree[-n], is.character)
- 
-     if(any(s==TRUE)){
-         if(any(s==FALSE)){
-            n.constr = length(which(!s))
-            init[which(values %in% sort(sapply(tree[which(!s)], FUN=function(r){r[[length(r)]]})))] = rep(tree[[n]], n.constr)
-            
+            m.new = matrix(0, nrow = n.constr, ncol = length(values))
+         	params = sapply(tree[which(!s)], function(r)r[[length(r)]])
+			for(i in 1:n.constr){
+         		m.new[i, which(values==params[i])]=1
+         		m.new[i, which(values==tree[[n]])]=-1
+         	}
+            m = rbind(m, m.new)
             for(i in which(!s)){
-                init = .constraints.ci(tree[i], values, init)            
+            	m = .constraints.ui(tree[i], m, values)
             }
+         }else{
+            m = m
          }}else{
-            n.constr = length(s)
-            init[which(values %in% sort(sapply(tree[-n], FUN=function(r){r[[length(r)]]})))] = rep(tree[[n]], n.constr)
-            
+         	m.new = matrix(0, nrow = (n-1), ncol = length(values))
+         	params = sapply(tree[-n], function(r)r[[length(r)]])
+         	for(i in 1:(n-1)){
+         		m.new[i, which(values==params[i])]=1
+         		m.new[i, which(values==tree[[n]])]=-1
+         	}
+            m = rbind(m, m.new)
             for(i in 1:(n-1)){
-                 init = .constraints.ci(tree[i], values, init)            
+            	m = .constraints.ui(tree[i], m, values)
             }
         }
-    return(init)
+    return(m)
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

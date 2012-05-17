@@ -16,7 +16,7 @@ tau2theta(tau, type = HAC_GUMBEL)
 }
 \item{tau}{Kendall's rank correlation coefficient. It can be either a scalar, a vector or a matrix and it is to ensure, that \eqn{\tau \in [0,1)}. In the case of the Gaussian copula \eqn{\tau \in [-1, 1]}.
 }
-  \item{type}{all types are available: \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_ROTATED_GUMBEL}, \code{HAC_CLAYTON}, \code{AC_CLAYTON} and \code{GAUSS}.
+  \item{type}{all types are available: \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_CLAYTON}, \code{AC_CLAYTON} and \code{GAUSS}.
 }
 }
 \examples{

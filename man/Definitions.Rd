@@ -6,7 +6,6 @@
 \alias{FML}
 \alias{HAC_CLAYTON}
 \alias{HAC_GUMBEL}
-\alias{HAC_ROTATED_GUMBEL}
 \alias{GAUSS}
 \alias{theta.eps}
 
@@ -18,7 +17,6 @@ Global parameters are defined. If the user is asked for a copula type, choose be
 \arguments{
   \item{HAC_GUMBEL = 0}{--}
   \item{AC_GUMBEL = 1}{--}
-  \item{HAC_ROTATED_GUMBEL = 2}{Gumbel copula rotated by \eqn{180^\circ}.}
   \item{HAC_CLAYTON = 3}{--}
   \item{AC_CLAYTON = 4}{--}
   \item{GAUSS = 5}{--}

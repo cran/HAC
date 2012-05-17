@@ -16,7 +16,6 @@
 
 HAC_GUMBEL = 0
 AC_GUMBEL = 1
-HAC_ROTATED_GUMBEL = 2
 HAC_CLAYTON = 3
 AC_CLAYTON = 4
 GAUSS = 5
@@ -29,9 +28,9 @@ FML = 2
 
 tau2theta = function(tau, type = HAC_GUMBEL){
 	n = length(tau)
-	if((type == AC_GUMBEL) || (type == HAC_GUMBEL) || (type == HAC_ROTATED_GUMBEL) || (type == AC_CLAYTON) || (type == HAC_CLAYTON)){
+	if((type == AC_GUMBEL) || (type == HAC_GUMBEL) || (type == AC_CLAYTON) || (type == HAC_CLAYTON)){
 		for(i in 1 : n){if((tau[i] < 0) | (tau[i] > 1)){return(warning(paste("Element[", i,"] should be in [0, 1).")))}}
-    if((type == AC_GUMBEL) || (type == HAC_GUMBEL) || (type == HAC_ROTATED_GUMBEL))
+    if((type == AC_GUMBEL) || (type == HAC_GUMBEL))
         1 / (1-tau)
     else if((type == AC_CLAYTON) || (type == HAC_CLAYTON))
         2 * tau/ (1-tau)}
@@ -44,7 +43,7 @@ tau2theta = function(tau, type = HAC_GUMBEL){
 
 theta2tau = function(theta, type = HAC_GUMBEL){
 	n = length(theta)
-    if((type == AC_GUMBEL) || (type == HAC_GUMBEL) || (type == HAC_ROTATED_GUMBEL)){
+    if((type == AC_GUMBEL) || (type == HAC_GUMBEL)){
 		for(i in 1 : n){if(theta[i] < 1){return(warning(paste("Element[", i,"] >= 1 is required.")))}}
         1 - 1/theta}
     else if((type == AC_CLAYTON) || (type == HAC_CLAYTON)){
@@ -61,7 +60,7 @@ phi = function(x, theta, type = HAC_GUMBEL){
 	n = length(x)
 	for(i in 1:n){if(x[i] < 0){return(warning(paste("Element[", i,"] >= 0 is required.")))}}
 	
-    if((type == AC_GUMBEL) || (type == HAC_GUMBEL) || (type == HAC_ROTATED_GUMBEL)){
+    if((type == AC_GUMBEL) || (type == HAC_GUMBEL)){
 		if(theta >= 1){
 			exp(-x^(1 / theta))}
 		else
@@ -80,7 +79,7 @@ phi.inv = function(x, theta, type = HAC_GUMBEL){
 	n = length(x)
 	for(i in 1 : n){if((x[i] < 0) | (x[i] > 1)){return(warning(paste("Element[", i,"] >= 0 and =< 1 is required.")))}}
 	
-    if((type == AC_GUMBEL) || (type == HAC_GUMBEL) || (type == HAC_ROTATED_GUMBEL)){
+    if((type == AC_GUMBEL) || (type == HAC_GUMBEL)){
 		if(theta >= 1){
 			(-log(x))^theta}
 		else
