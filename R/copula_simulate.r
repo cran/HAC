@@ -1,6 +1,6 @@
 # copula_simulate.r ######################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  rAC						Samples from AC.
+#  .rAC						Samples from AC. (Internal function)
 #  .f_gumbel				Samples from the inverse Laplace-Stietjes transfrom of a Gumbel copula. (Internal function)
 #  .f_clayton				Samples from the inverse Laplace-Stietjes transfrom of a Clayton copula. (Internal function)
 #  rHAC						Samples from HAC.
@@ -13,11 +13,11 @@
 #  .rHAC 					Initializes the recursion. (Internal function)     
 ##########################################################################################################################
 
-rAC = function(n, theta = 1.5, dim = 2, type = AC_GUMBEL){
+.rAC = function(n, theta = 1.5, dim = 2, type = AC_GUMBEL){
     if(type == AC_GUMBEL)
-	I = .f_gumbel(n, theta)
+	   I = .f_gumbel(n, theta)
 	else if(type == AC_CLAYTON)
-	I = .f_clayton(n, theta)
+	   I = .f_clayton(n, theta)
 	
     X = matrix(runif(dim * n), n, dim)
     phi(-log(X) / I, theta, type)
@@ -38,19 +38,18 @@ rAC = function(n, theta = 1.5, dim = 2, type = AC_GUMBEL){
 #-------------------------------------------------------------------------------------------------------------------------------
 
 rHAC = function(n, hac){
-	if(hac$type == AC_CLAYTON){
-		m = length(unlist(hac$tree))
-		res = rAC(n, theta = hac$tree[[m]], dim = (m-1), type = AC_CLAYTON)
-	}else{
-	if(hac$type == AC_GUMBEL){
-		m = length(unlist(hac$tree))
-		res = rAC(n, theta = hac$tree[[m]], dim = (m-1), type = AC_GUMBEL)
+    tree = hac$tree
+    type = hac$type
+	if((type == AC_CLAYTON) | (type == AC_GUMBEL)){
+		m = length(unlist(tree))
+		res = .rAC(n, theta = tree[[m]], dim = (m-1), type = type)
+        colnames(res) = unlist(tree)[-m]
 	}else{
 	if(hac$type == GAUSS){
-        res = rcopula(normalCopula(hac$tree[lower.tri(hac$tree)], dim = NCOL(hac$tree), dispstr = "un"), n)
+        res = rcopula(normalCopula(tree[lower.tri(tree)], dim = NCOL(tree), dispstr = "un"), n)
 	}else{
-		res = .rHAC(n, hac)
-	}}}
+		res = .rHAC(n, tree, type)
+	}}
 	res
 }
 
@@ -102,8 +101,8 @@ rHAC = function(n, hac){
 		N =  M * G
 		U = runif(m.length * m.max)
 		Com = (U <= exp(-N))
-		while(any((Com == FALSE) | (is.na(Com)))){
-			fa = which((Com == FALSE) | (is.na(Com)))
+		while(any((!Com) | (is.na(Com)))){
+			fa = which((!Com) | (is.na(Com)))
 			n = length(fa)
 			N[fa] = stabledist::rstable(n, alpha = alpha, beta = 1, pm = 1) * G[fa]
 			Com[fa] = (runif(n) <= exp(-N[fa]))}
@@ -127,50 +126,46 @@ rHAC = function(n, hac){
 	
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.simulate = function(n, hac, First, ober.theta, type){
-    dd = length(hac)
+.simulate = function(n, tree, First, ober.theta, type){
+    dd = length(tree)
     m = matrix(, nrow = n)
-    Y = .follow(n, Ltheta = .theta(hac[[dd]], ober.theta), I = First, type)
+    Y = .follow(n, Ltheta = .theta(tree[[dd]], ober.theta), I = First, type)
   
-    select = sapply(hac[-dd], FUN = is.character)
-    if(any(select==TRUE)){
-        this.node = which(select == TRUE)
-        v = as.matrix(.stayStage(n, d = length(this.node), Y = Y, Ltheta = hac[[dd]], type))
-        colnames(v) = hac[this.node]
+    select = sapply(tree[-dd], FUN = is.character)
+    if(any(select)){
+        this.node = which(select)
+        v = as.matrix(.stayStage(n, d = length(this.node), Y = Y, Ltheta = tree[[dd]], type))
+        colnames(v) = tree[this.node]
         m = cbind(m, v)
     }
 
-    if(any(select==FALSE)){
-    later = which(select == FALSE)
-    for(i in later){
-       	v = .simulate(n, hac = hac[[i]], First = Y, ober.theta = hac[[dd]], type = type)
+    if(any(!select)){
+    for(i in which(!select)){
+       	v = .simulate(n, tree = tree[[i]], First = Y, ober.theta = tree[[dd]], type = type)
        	m = cbind(m, v)
 	}}
-	return(m[,-1])
+	return(m)
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.rHAC = function(n, L){
-    hac = L$tree
-    type = L$type
-    dd = length(hac)
+.rHAC = function(n, tree, type){
+    dd = length(tree)
     m = matrix(, nrow = n)
-    Y = .initial(n, Ltheta = hac[[dd]], type = type)
+    Y = .initial(n, Ltheta = tree[[dd]], type = type)
     
-    select = sapply(hac[-dd], FUN = is.character)
-    if(any(select==TRUE)){
-        this.node = which(select == TRUE)
-        v = as.matrix(.stayStage(n, d = length(this.node), Y = Y, Ltheta = hac[[dd]], type = type))
-        colnames(v) = hac[this.node]
+    select = sapply(tree[-dd], FUN = is.character)
+    if(any(select)){
+        this.node = which(select)
+        v = as.matrix(.stayStage(n, d = length(this.node), Y = Y, Ltheta = tree[[dd]], type = type))
+        colnames(v) = tree[this.node]
         m = cbind(m, v)
     }
     
-    if(any(select==FALSE)){   
-    later = which(select == FALSE)
-    for(i in later){
-            v = .simulate(n, hac = hac[[i]], First = Y, ober.theta = hac[[dd]], type = type)
+    if(any(!select)){
+    for(i in which(!select)){
+            v = .simulate(n, tree = tree[[i]], First = Y, ober.theta = tree[[dd]], type = type)
           	m = cbind(m, v)
 	}}
-	return(m[,-1])
+	return(m[,-which(is.na(m[1,]))])
 }

@@ -1,10 +1,10 @@
 # copula_constructor.r ###################################################################################################
 # FUNCTION:               DESCRIPTION:
-#  .check.par					Tests, whether the parameter are correctly specified. (Internal function)
-#  .check							Associated with .check.par. (Internal function)
-#  hac.full						Constructs hac-objects of fully nested Archimedean Copulae.
-#  hac								Constructs hac-objects of arbitrary nested Archimedean Copulae.
-#  print.hac     				Determines how objects of the class 'hac' are printed.
+#  .check.par			  Tests, whether the parameter are correctly specified. (Internal function)
+#  .check				  Associated with .check.par. (Internal function)
+#  hac.full				  Constructs hac-objects of fully nested Archimedean Copulae.
+#  hac					  Constructs hac-objects of arbitrary nested Archimedean Copulae.
+#  print.hac     		  Determines how objects of the class 'hac' are printed.
 ##########################################################################################################################
 
 .check.par = function(x){

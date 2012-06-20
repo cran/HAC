@@ -12,9 +12,9 @@
 ##########################################################################################################################
 
 .dAC = function(x, y, theta = 1.0, type = AC_GUMBEL){	
-	if((type == HAC_GUMBEL) || (type == AC_GUMBEL)){
+	if((type == HAC_GUMBEL) | (type == AC_GUMBEL)){
 		.gumb.12.density(x, y, theta)
-	}else if((type == HAC_CLAYTON) || (type == AC_CLAYTON)){
+	}else if((type == HAC_CLAYTON) | (type == AC_CLAYTON)){
 		.clay.12.density(x, y, theta)       
 	}else if(type == GAUSS){
 		dcopula(normalCopula(theta, 2, dispstr = "un"), cbind(x, y))
@@ -39,38 +39,40 @@
 	
 #-------------------------------------------------------------------------------------------------------------------------------
 
-dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
+dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){ 
 
-    if(any(!(colnames(X) %in% .get.leaves(hac$tree)))){stop("The names of X have to coincide with the specifications of the copula model hac.")}
-
-	X = .margins(X, margins)
+    X = .one.ob(X, margins)
+    names = colnames(X)    
+    if(any(!(names %in% .get.leaves(hac$tree)))){stop("The colnames of X have to coincide with the specifications of the copula model hac.")}
 			
-	if(na.rm == TRUE){
-			X = na.omit(X, ...)}
-		
-    if((hac$type == HAC_GUMBEL) | (hac$type == HAC_CLAYTON)){
-        if(NCOL(X) >= 3){
-        	.cop.pdf(tree = hac$tree, sample = X, type = hac$type, eval = eval)
-    }}else if(hac$type == GAUSS){
-        return(dcopula(normalCopula(hac$tree[lower.tri(hac$model)], dim = dim(X)[2], dispstr = "un"), X))
-    }else if(hac$type == AC_GUMBEL){
-        n = length(hac$tree)
-        return(dcopula(gumbelCopula(hac$tree[[n]], dim = (n-1)), X))
-    }else if(hac$type == AC_CLAYTON){
-        n = length(hac$tree)
-        return(dcopula(claytonCopula(hac$tree[[n]], dim = (n-1)), X))
+	if(na.rm){X = na.omit(X, ...)}
+    
+    type = hac$type; d = NCOL(X)
+    if(type != GAUSS){
+        if((d >= 3) & ((type == HAC_GUMBEL) | (type == HAC_CLAYTON))){
+           return(.cop.pdf(tree = hac$tree, sample = X, type = type, d = d, names = names, eval = eval))
+        }else{
+            colnames(X) = c()
+            if(type == AC_GUMBEL){
+                return(dcopula(gumbelCopula(hac$tree[[d+1]], dim = d), X)[-1])
+            }else{
+                if(type == AC_CLAYTON){
+                    return(dcopula(claytonCopula(hac$tree[[d+1]], dim = d), X)[-1])
+            }}
+    }}else{ 
+        colnames(X) = c()
+        return(dcopula(normalCopula(hac$tree[lower.tri(hac$model)], dim = d, dispstr = "un"), X)[-1]) 
     }
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.cop.pdf = function(tree, sample, type, eval){
-	d = NCOL(sample); names = colnames(sample)
+.cop.pdf = function(tree, sample, type, d, names, eval){     
 	string.expr = .constr.expr(tree, type)
     Dd = .d.dell(parse(text=string.expr), names, d)
     
     if(eval){
-        for(i in 1:d){formals(Dd)[[i]]=sample[,i]}
+        for(i in 1:d){formals(Dd)[[i]]=sample[-1 ,i]}
         c(attr(Dd(), "gradient"))
     }else{
         Dd
@@ -93,8 +95,8 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
      n = length(tree)
      s = sapply(tree[-n], is.character)
  
-     if(any(s==TRUE)){
-         if(any(s==FALSE)){
+     if(any(s)){
+         if(any(!s)){
            if(type==HAC_GUMBEL){
                  paste("exp(-(", paste("(-log(", unlist(tree[which(s)]),"))^", tree[[n]], collapse="+", sep = ""),"+", paste("(-log(",sapply(tree[which(!s)], .constr.expr, type=type),"))^", tree[[n]], collapse="+", sep = ""),")^(1/", tree[[n]],"))", sep="")
              }else{
@@ -119,8 +121,7 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
 to.logLik = function(X, hac, eval = FALSE, margins = NULL, na.rm = FALSE, ...){
 	X = .margins(X, margins)
 			
-	if(na.rm == TRUE){
-			X = na.omit(X, ...)}
+	if(na.rm){X = na.omit(X, ...)}
     
     tree = .tree.without.params(hac$tree)
     thetas = .read.params(tree); values = get.params(hac); d = NCOL(X)
@@ -134,7 +135,7 @@ to.logLik = function(X, hac, eval = FALSE, margins = NULL, na.rm = FALSE, ...){
             sum(log(c(attr(density(), "gradient"))))    
     }
         
-    if(eval==FALSE){g}else{g(values)}
+    if(!eval){g}else{g(values)}
 }
  
 #---------------------------------------------------------------------------------------------------
@@ -145,8 +146,8 @@ to.logLik = function(X, hac, eval = FALSE, margins = NULL, na.rm = FALSE, ...){
      s = sapply(tree[-n], is.character)
      tree[[n]] = paste("theta",k,".",l, sep="")
      
-     if(any(s==TRUE)){
-         if(any(s==FALSE)){
+     if(any(s)){
+         if(any(!s)){
             for(i in which(!s)){
                 tree[[i]]=.tree.without.params(tree[[i]], k=k+1,l=i)
             }       

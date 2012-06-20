@@ -2,27 +2,22 @@
 # FUNCTION: 			DESCRIPTION:
 #  pHAC					Computes the values of the cdf for a given sample and 'hac' object.
 #  .cop.cdf           	Supplementary function for pHAC. (Internal function)
+#  .one.ob              If X is a vector, one.ob modifies X, such that X is a real matrix.
 ##########################################################################################################################
 
 pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
-	
-    if(any(!(colnames(X) %in% .get.leaves(hac$tree)))){stop("The names of X have to coincide with the specifications of the copula model hac.")}
-
-	X = .margins(X, margins)
-	
-	if(na.rm == TRUE){
-			X = na.omit(X, ...)}
-			
-    if((hac$type == HAC_GUMBEL) || (hac$type == HAC_CLAYTON)){
-        return(.cop.cdf(X, hac$tree, hac$type))
-    }else if(hac$type == GAUSS){
-        return(pcopula(normalCopula(hac$tree[lower.tri(hac$tree)], dim = NCOL(X), dispstr = "un"), X))
-    }else if(hac$type == AC_GUMBEL){
-    	n = length(unlist(hac$tree))
-        return(pcopula(gumbelCopula(hac$tree[[n]], dim = (n-1)), X))
-    }else if(hac$type == AC_CLAYTON){
-    	n = length(unlist(hac$tree))
-        return(pcopula(claytonCopula(hac$tree[[n]], dim = (n-1)), X))
+    
+    X = .one.ob(X, margins)    
+    if(any(!(colnames(X) %in% .get.leaves(hac$tree)))){stop("The colnames of X have to coincide with the specifications of the copula model hac.")}
+	if(na.rm){X = na.omit(X, ...)}
+    
+    if(hac$type != GAUSS){
+        cop = .cop.cdf(X, hac$tree, hac$type)[-1]
+        names(cop) = c()
+        return(cop)
+    }else{ 
+        colnames(X) = c()
+        return(pcopula(normalCopula(hac$tree[lower.tri(hac$tree)], dim = NCOL(X), dispstr = "un"), X)[-1])
     }
 }
 
@@ -30,19 +25,35 @@ pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
 
 .cop.cdf = function(sample, tree, type){
 	if(length(tree)==1){tree = tree[[1]]}
-	n = length(tree); m = matrix(0, nrow = NROW(sample)); names = colnames(sample)
+	n = length(tree); names = colnames(sample)
 	s = sapply(tree, is.character)
 
-	if(any(s[-n]==TRUE)){
-		if(any(s[-n]==FALSE)){
+	if(any(s[-n])){
+		if(any(!s[-n])){
 			select = unlist(tree[s])
 				for(i in 1:length(select)){select[i]=(which(names==select[i]))}; select = as.numeric(select)
-				exclude = c(1:(n-1))[which(s[-n]==FALSE)]
-			m = copMult(cbind(sample[, select], sapply(tree[exclude], .cop.cdf, sample = sample[, -select], type = type)), theta = tree[[n]], type = type)
+				exclude = c(1:(n-1))[which(!s[-n])]
+			copMult(cbind(sample[, select], sapply(tree[exclude], .cop.cdf, sample = sample[, -select], type = type)), theta = tree[[n]], type = type)
 		}else{
-			m = copMult(cbind(sample[, unlist(tree[s])]), theta = tree[[n]], type = type)
+			copMult(cbind(sample[, unlist(tree[s])]), theta = tree[[n]], type = type)
 	}}else{
-		m = copMult(sapply(tree[-n], .cop.cdf, sample = sample, type = type), theta = tree[[n]], type = type)
+		copMult(sapply(tree[-n], .cop.cdf, sample = sample, type = type), theta = tree[[n]], type = type)
 	}
-	return(m)
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+
+.one.ob = function(X, margins = NULL){
+    if(class(X) != "matrix"){ 
+        names = names(X)
+        X = .margins(X, margins)
+        names(X) = names
+        d = length(names)
+        rbind(rep(0.5, d), t(X))
+    }else{
+        names = colnames(X)
+        d = length(names)
+        X = .margins(X, margins)
+        rbind(rep(0.5, d), X)
+    }
 }

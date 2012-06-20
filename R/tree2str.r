@@ -6,7 +6,6 @@
 #  .allocate.all					Asscosiated with .allocate.one.with.theta and .allocate.one.with.theta. (Internal function)
 #  .allocate.one.with.theta			Constructs the string, if theta = TRUE. (Internal function)
 #  .allocate.one.without.theta		Constructs the string, if theta = FALSE. (Internal function)
-#  ..allocate.all.for.plot          Produces the subsripts for the plot.
 ##########################################################################################################################
 
 get.params = function(hac, sort.v = FALSE, ...){
@@ -54,7 +53,7 @@ tree2str = function(hac, theta = TRUE, digits = 2){
 .allocate.all = function(tree, theta, digits){
 n = length(tree); x = character(1)
 	
-		if(theta == TRUE){
+		if(theta){
 			for(i in 1:n){
 				if(i == 1){
 					x = paste("(", .allocate.one.with.theta(tree[[i]], digits = digits, theta = theta), sep = "")
@@ -66,7 +65,7 @@ n = length(tree); x = character(1)
 					x = paste(x, ")_{", .allocate.one.with.theta(tree[[i]], digits = digits, theta = theta),"}", sep = "")
 			}}}}
 	}else{
-		if(theta == FALSE){
+		if(!theta){
 			for(i in 1:(n-1)){
 				if(i == 1){
 					x = paste("(", .allocate.one.without.theta(tree[[i]], theta = theta), sep = "")

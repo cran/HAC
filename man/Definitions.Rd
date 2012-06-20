@@ -4,6 +4,7 @@
 \alias{ML}
 \alias{TAU}
 \alias{FML}
+\alias{RML}
 \alias{HAC_CLAYTON}
 \alias{HAC_GUMBEL}
 \alias{GAUSS}
@@ -20,7 +21,7 @@ Global parameters are defined. If the user is asked for a copula type, choose be
   \item{HAC_CLAYTON = 3}{--}
   \item{AC_CLAYTON = 4}{--}
   \item{GAUSS = 5}{--}
-    \item{TAU = 0, ML = 1, FML = 2}{
-  there are three procedures regarding the estimation of HAC. It can be chosen between Kendalls's \eqn{\tau}, Quasi Maximum Likelihood and Full Maximum Likelihood.
+    \item{TAU = 0, ML = 1, FML = 2, RML = 3}{
+  there are four procedures regarding the estimation of HAC. It can be chosen between Kendalls's \eqn{\tau}, Quasi Maximum Likelihood, Full Maximum Likelihood and Recursive Maximum Likelihood.
 } 
 }

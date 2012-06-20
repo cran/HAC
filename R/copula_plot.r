@@ -19,8 +19,8 @@
 	n = length(tree)
 	m = integer(1)
 	s = sapply(tree, is.character)[-n]
-	if(any(s==TRUE)){
-		if(any(s == FALSE)){
+	if(any(s)){
+		if(any(!s)){
 			include = c(1:(n-1))[which(s==TRUE)]
 			exclude = c(1:(n-1))[which(s==FALSE)]
 			m = c(sapply(tree[include], paste), sapply(tree[exclude], .get.leaves))
@@ -44,7 +44,7 @@
 		if(class(tree) == "character"){
 			n = length(tree)
         	tree = list(tree, coord = list(x = integer(n), y = integer(n)))
-        	for(i in 1 : n){
+        	for(i in 1:n){
         		tree$coord$x[i] = which((tree[[1]][i] == s))
         	}
     }}
@@ -59,10 +59,10 @@
 	n = length(tree)
 	s = sapply(tree, .already.coord)[-n]
 	
-	if(any(s == TRUE)){
-		if(any(s == FALSE)){
-			include = c(1:(n-1))[which(s==TRUE)]
-			exclude = c(1:(n-1))[which(s==FALSE)]
+	if(any(s)){
+		if(any(!s)){
+			include = c(1:(n-1))[which(s)]
+			exclude = c(1:(n-1))[which(!s)]
 			tree[exclude] = tree.down = lapply(tree[exclude], FUN = .X.coord.par)
 			if(length(tree.down)==1){tree.down = tree.down[[1]]}			
 			m = c(mean(sapply(tree[include], .get.coord)), mean(sapply(tree.down, .get.coord)))
@@ -70,7 +70,7 @@
 			tree[[n]]$coord$x = mean(m)
 			tree[[n]]$coord$y = 0
 		}else{
-			include = c(1:(n-1))[which(s==TRUE)]
+			include = c(1:(n-1))[which(s)]
 			m = sapply(tree[include], FUN = .get.coord)
 			tree[[n]] = as.list(tree[[n]])
 			tree[[n]]$coord$x = mean(m)
@@ -115,7 +115,7 @@
 		exclude = c(1:(n-1))[which(s==0)]
 			for(i in 1:(n-1)){
 				d = length(tree[[i]])
-				if(is.character(tree[[i]][[1]])==TRUE){
+				if(is.character(tree[[i]][[1]])){
 					tree[[i]][[2]][[2]] = rep(tree[[n]][[2]][[2]], length(tree[[i]][[2]][[2]])) - 1
 				}else{
 					tree[[i]][[d]][[2]][[2]] = array(tree[[n]][[2]][[2]], dim = length(tree[[i]][[d]][[2]][[2]])) - 1
@@ -180,23 +180,23 @@
 
 .rectangle = function(a, b, L, l, h, z, index, numbering, s.params, theta, type, digits, fg, bg, col, lwd, col.t, ...){
 	n = length(L)
-	if(theta == TRUE){
-		if(index == FALSE){
+	if(theta){
+		if(!index){
 			symbols(a, b, rectangles = cbind(l, h), add = TRUE, inches = FALSE, fg = fg, bg = bg, lwd = lwd, ...)
 			text(a, b, label = bquote(paste(theta == .(round(L[[n]][[1]], digits = digits)))), col = col.t, ...)
 		}else{
-            if(numbering == FALSE){
+            if(!numbering){
                 symbols(a, b, rectangles = cbind(l, h), add = TRUE, inches = FALSE, fg = fg, bg = bg, lwd = lwd, ...)
 			    text(a, b, label = bquote(paste(theta[.(.allocate.all(L, theta = FALSE))]) == .(round(L[[n]][[1]], digits = digits))), col = col.t, ...)
             }else{
                 symbols(a, b, rectangles = cbind(l, h), add = TRUE, inches = FALSE, fg = fg, bg = bg, lwd = lwd, ...)
 			    text(a, b, label = bquote(paste(theta[.(which(s.params == L[[n]][[1]]))]) == .(round(L[[n]][[1]], digits = digits))), col = col.t, ...)
     }}}else{
-		if(index == FALSE){
+		if(!index){
 			symbols(a, b, rectangles = cbind(l, h), add = TRUE, inches = FALSE, fg = fg, bg = bg, lwd = lwd, ...)
 			text(a, b, label = bquote(paste(tau == .(round(theta2tau(L[[n]][[1]], type), digits = digits)))), col = col.t, ...)
 		}else{
-            if(numbering == FALSE){
+            if(!numbering){
                 symbols(a, b, rectangles = cbind(l, h), add = TRUE, inches = FALSE, fg = fg, bg = bg, lwd = lwd, ...)
 			    text(a, b, label = bquote(paste(tau[.(.allocate.all(L, theta = FALSE))]) == .(round(theta2tau(L[[n]][[1]], type), digits = digits))), col = col.t, ...)
             }else{
@@ -212,7 +212,7 @@
 	if(n == 1){tree = tree[[1]]}
 	
 	n = length(tree)
-	s = integer(n)
+	s = logical(n)
 	m = integer(1)
 	
 	for(i in 1:n){
@@ -222,10 +222,10 @@
 			s[i] = FALSE
 	}}
 	
-	if(any(s == TRUE)){
-		 m = sapply(tree[which(s == TRUE)], .min.y)
+	if(any(s)){
+		 m = sapply(tree[which(s)], .min.y)
 	}else{
-		m = min(tree[which(s == FALSE)][[1]]$coord$y)
+		m = min(tree[which(!s)][[1]]$coord$y)
 	}
 	min(unlist(m))
 }

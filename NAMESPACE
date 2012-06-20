@@ -12,7 +12,6 @@ export("pHAC",
 	"phi",
 	"phi.inv",
 	"dHAC",
-	"rAC",
 	"rHAC",
 	"tree2str",
 	"get.params",
@@ -37,7 +36,8 @@ export("HAC_GUMBEL",
 	"GAUSS",
 	"TAU",
 	"ML",
-	"FML"
+	"FML",
+	"RML"
 )
 
 

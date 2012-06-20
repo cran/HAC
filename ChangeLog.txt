@@ -1,8 +1,18 @@
+2012-06-19 Alexander Ristig <ristigal@hu-berlin.de>
+
+	* The Recursive ML (RML) procedure is added. It provides almost precise estimates as the FML procedure, but builds the structure simultaneously.
+
+	* rAC is removed. Use rHAC to sample from Archimedean copulas.
+
+
+
 2012-05-16 Alexander Ristig <ristigal@hu-berlin.de>
 
 	* Warnings are added to dHAC and pHAC, as an useless error message was shown, when the colnames of X and the variables' names of hac were not identical.
 
 	* type = HAC_ROTATED_GUMBEL is removed.
+
+	
 
 	* Restrictions of full ML estimation are optimized.
 

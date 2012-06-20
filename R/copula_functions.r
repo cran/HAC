@@ -1,10 +1,10 @@
 # copula_functions.r #####################################################################################################
 # FUNCTION:         DESCRIPTION:
 #  definitions      Global paramters.
-#  theta.eps		Is addressed during the estimation procedure.
 #  TAU				Possible input argument of estimate.copula.
 #  ML				Possible input argument of estimate.copula.
 #  FML              Possible input argument of estimate.copula.
+#  RML              Possible input argument of estimate.copula.
 #  tau2theta       	Convertes Kendall's rank correlation coefficient into dependence parameter.
 #  theta2tau        Convertes dependence parameter into Kendall's rank correlation coefficient.
 #  phi        		The generator function.
@@ -23,6 +23,7 @@ GAUSS = 5
 TAU = 0
 ML  = 1
 FML = 2
+RML = 3
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
@@ -127,8 +128,8 @@ par.pairs = function(hac, FUN = NULL, ...){
      n = length(tree)
      s = sapply(tree[-n], is.character)
      
-     if(any(s==TRUE)){
-         if(any(s==FALSE)){
+     if(any(s)){
+         if(any(!s)){
             l = sapply(tree[which(!s)], .get.leaves)
             for(i in 1:(length(l)-1))for(j in (i+1):length(l))matr[unlist(l[[i]]),unlist(l[[j]])]=matr[unlist(l[[j]]),unlist(l[[i]])]=tree[[n]]
             for(i in 1:length(l))matr[unlist(l[[i]]),unlist(tree[which(s)])]=matr[unlist(tree[which(s)]),unlist(l[[i]])]=tree[[n]]

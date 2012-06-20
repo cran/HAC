@@ -1,8 +1,8 @@
 # copula_aggregate.r #####################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  .union         					Aggregates the subtrees. (Internal function)
+#  .union         			Aggregates the subtrees. (Internal function)
 #  .compare.one        		Compares two subcopula. (Internal function)
-# .method							Computates the mean, min and max if abs(theta_1 - theta_2) < epsilon. (Internal function)
+#  .method					Computates the mean, min and max if abs(theta_1 - theta_2) < epsilon. (Internal function)
 #  aggregate.hac       		Aggregates an object of the class 'hac'.             
 ##########################################################################################################################
 

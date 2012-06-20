@@ -32,7 +32,7 @@ all copula-types are admissible, e.g. \code{\link{HAC_GUMBEL}}.
 a \env{hac} object.
 }
   \item{digits}{
-specifying the digits, see \code{\link{tree2str}}.
+specifies the digits, see \code{\link{tree2str}}.
 }
   \item{\dots}{
 arguments to be passed to \code{\link{cat}}.

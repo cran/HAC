@@ -19,7 +19,7 @@ a \eqn{n \times d} matrix. The columns should be labeled. The default names \cod
   defines the model. Select between \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_CLAYTON} and \code{AC_CLAYTON}.
 }
   \item{method}{
-the estimation method. Select between Quasi Maximum Likelihood \code{ML}, Kendall's \eqn{\tau} \code{TAU} and Full Maximum Likelihood \code{FML}.
+the estimation method. Select between Quasi Maximum Likelihood \code{ML}, Kendall's \eqn{\tau} \code{TAU}, Full Maximum Likelihood \code{FML} and Recursive Maximum Likelihood \code{RML}.
 }  
    \item{hac}{
 a \code{\link{hac}} object, which determines the structure and provides initial values, if \code{method = FULL}.
@@ -77,4 +77,7 @@ plot(est.obj)
 
 # full ML estimation to yield more precise parameter
 est.obj.full = estimate.copula(x, HAC_GUMBEL, FML, hac = est.obj)
+
+# recursive ML estimation leads to almost identical results
+est.obj.r = estimate.copula(x, HAC_GUMBEL, RML)
 }

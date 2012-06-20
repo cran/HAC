@@ -14,7 +14,7 @@ rHAC(n, hac)
 }
 \arguments{
   \item{X}{
-a data matrix. The number of columns and the corresponding names have to coincide with the specifications of the copula model \code{hac}. The sample \code{X} has to contain at least \eqn{2} rows (observations), as the values of the pdf and cdf cannot be computed otherwise.
+a data matrix. The number of columns and the corresponding names have to coincide with the specifications of the copula model \code{hac}.
 } 
   \item{hac}{
 an object of the class \code{\link{hac}}.
@@ -30,7 +30,7 @@ number of observations.
 boolean. If \code{na.rm = TRUE}, missing values, \code{NA}, contained in \code{X} are removed.
 }
   \item{eval}{
-boolean. If \code{eval = FALSE}, a non-evaluated \code{\link{function}} is returned.
+boolean. If \code{eval = FALSE}, a non-evaluated \code{\link{function}} is returned. Note, that \code{\link{attr}} \code{"gradient"} of the returned function corresponds to the values density.
 }
   \item{\dots}{
 arguments to be passed to \code{\link{na.omit}}.
@@ -41,7 +41,7 @@ arguments to be passed to \code{\link{na.omit}}.
     \code{rHAC} retruns a \eqn{n \times d} matrix, where \eqn{d} refers to the dimension of the HAC. \code{dHAC} and \code{pHAC} return vectors. The computation of the density might be time consuming for high-dimensions, since the density is defined as \eqn{d}-th derivative of the HAC with respect to its arguments \eqn{u_1, \ldots, u_d}. 
 }
 \details{
-    Density and cdf of simple Archimedean copula are based on the functions \code{\link{dcopula}} and \code{\link{pcopula}} of the \env{copula} package.
+    Densities of simple Archimedean copula are based on the functions of \code{\link{dcopula}} of the \env{copula} package.
 }
 \references{
 Hofert, M. 2011, Efficiently Sampling Nested Archimedean Copulas, \emph{Computational Statistics & Data Analysis} 55, 57-70.

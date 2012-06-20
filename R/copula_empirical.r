@@ -1,8 +1,8 @@
 # copula_empirical.r #####################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  emp.copula					Returns the values of the emprical copula for a given grid u and sample x.
+#  emp.copula				Returns the values of the emprical copula for a given grid u and sample x.
 #  emp.copula.self        	Returns the values of the emprical copula for a given sample x.  
-#  .emp   							Computes the values of the empirical copula. (Internal function)
+#  .emp   					Computes the values of the empirical copula. (Internal function)
 ##########################################################################################################################
 
 emp.copula = function(u, x, proc = "M", sort = "none", margins = NULL, na.rm = FALSE, ...){
@@ -14,9 +14,10 @@ emp.copula = function(u, x, proc = "M", sort = "none", margins = NULL, na.rm = F
 	
 	x = .margins(x, margins)
 	
-	if(na.rm == TRUE){
+	if(na.rm){
 		x = na.omit(x, ...)
-		u = na.omit(u, ...)}
+		u = na.omit(u, ...)
+    }
 	
 if(sort == "none"){
 	.emp(u = u, x = x, proc = proc, n = n, nn = nn, d = d)}
