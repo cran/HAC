@@ -54,14 +54,14 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
         }else{
             colnames(X) = c()
             if(type == AC_GUMBEL){
-                return(dcopula(gumbelCopula(hac$tree[[d+1]], dim = d), X)[-1])
+                return(dCopula(X, gumbelCopula(hac$tree[[d+1]], dim = d))[-1])
             }else{
                 if(type == AC_CLAYTON){
-                    return(dcopula(claytonCopula(hac$tree[[d+1]], dim = d), X)[-1])
+                    return(dCopula(X, claytonCopula(hac$tree[[d+1]], dim = d))[-1])
             }}
     }}else{ 
         colnames(X) = c()
-        return(dcopula(normalCopula(hac$tree[lower.tri(hac$model)], dim = d, dispstr = "un"), X)[-1]) 
+        return(dCopula(X, normalCopula(hac$tree[lower.tri(hac$model)], dim = d, dispstr = "un"))[-1]) 
     }
 }
 
@@ -81,11 +81,11 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.d.dell = function(expr, name, order){
+.d.dell = function(expr, names, order){
    if(order==1){
-        deriv(expr, name[order], function.arg = name)
+        deriv(expr, names[order], function.arg = names)
    }else{
-        .d.dell(D(expr, name[order]), name, order-1)}
+        .d.dell(D(expr, names[order]), names, order-1)}
 }
 
 #---------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 # copula_plot.r ###########################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  .get.leaves				Reads the number and labels of variables. (Internal function)
+#  .get.leaves				Reads labels of variables. (Internal function)
 #  .X.coord.var				Computes the x-coordinates for the vairables. (Internal function)
 #  .X.coord.par				Computes the x-coordinates for the parameters. (Internal function)
 #  .get.coord				Associated with .X.coord.par. (Internal function)
@@ -15,27 +15,12 @@
 ##########################################################################################################################
 
 .get.leaves = function(tree){
-	if(length(tree)==1){tree = tree[[1]]}
-	n = length(tree)
-	m = integer(1)
-	s = sapply(tree, is.character)[-n]
-	if(any(s)){
-		if(any(!s)){
-			include = c(1:(n-1))[which(s==TRUE)]
-			exclude = c(1:(n-1))[which(s==FALSE)]
-			m = c(sapply(tree[include], paste), sapply(tree[exclude], .get.leaves))
-		}else{
-			include = c(1:(n-1))[which(s==TRUE)]
-			m = c(mapply(paste, tree[include]))
-		}}else{
-			m = c(sapply(tree[-n], .get.leaves))
-		}
-	unlist(m)
+	rapply(tree, classes = "character", f = function(r)r, how = "unlist")
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.X.coord.var = function(tree, s = .get.leaves(tree)){
+.X.coord.var = function(tree, s){
 	if( (!("coord" %in% names(tree))) & (class(tree) != "character")){
 		n = length(tree) - 1
 			for(i in 1:n){

@@ -46,7 +46,7 @@ rHAC = function(n, hac){
         colnames(res) = unlist(tree)[-m]
 	}else{
 	if(hac$type == GAUSS){
-        res = rcopula(normalCopula(tree[lower.tri(tree)], dim = NCOL(tree), dispstr = "un"), n)
+        res = rCopula(n, normalCopula(tree[lower.tri(tree)], dim = NCOL(tree), dispstr = "un"))
 	}else{
 		res = .rHAC(n, tree, type)
 	}}
