@@ -119,7 +119,7 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
 #---------------------------------------------------------------------------------------------------
 
 to.logLik = function(X, hac, eval = FALSE, margins = NULL, na.rm = FALSE, ...){
-	X = .margins(X, margins)
+	  X = .margins(X, margins)
 			
 	if(na.rm){X = na.omit(X, ...)}
     
@@ -135,7 +135,7 @@ to.logLik = function(X, hac, eval = FALSE, margins = NULL, na.rm = FALSE, ...){
             sum(log(c(attr(density(), "gradient"))))    
     }
         
-    if(!eval){g}else{g(values)}
+    if(!eval){g}else{g(values[order(values)])}
 }
  
 #---------------------------------------------------------------------------------------------------

@@ -23,7 +23,7 @@
 .check = function(L, theta){
 	n = length(L)
 	if(L[[n]] < theta){
-		return(warning("The dependency parameter of the nested AC should be higher than the parameter at the initializing node."))
+		return(warning("The dependency parameter of the nested AC should be higher than the parameter at the initial node."))
 	}else{
 	for(i in 1:(n-1)){
 		if(class(L[[i]]) == "list"){
@@ -58,12 +58,12 @@ hac = function(type = HAC_GUMBEL, tree = NULL, corr = NULL){
 print.hac = function(x, digits = 2, ...){
         cat("Class: hac", "\n", ...)
 	if((x$type == 0) | (x$type == 1)){
- 		cat("Generator: Gumbel", "\n", ...)
- 		cat(tree2str(x, theta = TRUE, digits = digits),  "\n", ...)
+ 		   cat("Generator: Gumbel", "\n", ...)
+ 		   cat(tree2str(x, theta = TRUE, digits = digits),  "\n", ...)
  		}
 	if((x$type == 3) | (x$type == 4)){
- 		cat("Generator: Clayton", "\n", ...)
- 		cat(tree2str(x, theta = TRUE, digits = digits),  "\n", ...)
+ 		   cat("Generator: Clayton", "\n", ...)
+	     cat(tree2str(x, theta = TRUE, digits = digits),  "\n", ...)
  		}
     if(x$type == 5){
         cat("Family: Gaussian", "\n", ...)

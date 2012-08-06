@@ -6,9 +6,10 @@
 The function plots the structure of Hierarchical Archimedean Copulae.
 }
 \usage{ 
-\method{plot}{hac}(x, xlim = NULL, ylim = NULL, xlab = "", ylab = "", col = "black", 
-fg = "black", bg = "white", col.t = "black", lwd = 2, index = FALSE, numbering = FALSE,
-theta = TRUE, h = 0.4, l = 1.2, circles = 0.25, digits = 2, \dots)
+\method{plot}{hac}(x, xlim = NULL, ylim = NULL, xlab = "", ylab = "", 
+col = "black", fg = "black", bg = "white", col.t = "black", lwd = 2, 
+index = FALSE, numbering = FALSE, theta = TRUE, h = 0.4, l = 1.2, 
+circles = 0.25, digits = 2, \dots)
 }
 \arguments{
   \item{x}{

@@ -1,13 +1,13 @@
-015947c4bbf713f8ceb6455257cd9936 *ChangeLog
-7c85a3e0a8ed5882324f5a6e30038e13 *DESCRIPTION
-e500553ac28d6001361889f9f023f34b *NAMESPACE
+f7bd6b51c43a8565ff2b232421872525 *ChangeLog
+36cbc6a5e7ef3b8ec813ef22bf42291f *DESCRIPTION
+bf2103ccd2b983a8222fecf62b7716d9 *NAMESPACE
 e8d0b39c630ddc0678717e229d767266 *R/copula_aggregate.r
 4ed92dca11fd6edbf86dbbd7d4537d05 *R/copula_cdf.r
-57060452d4168419b098d04fdb68203d *R/copula_constructor.r
-3f60e7bcc026c7fe38f54d256e90f47a *R/copula_empirical.r
+995296d7547a726728a945872bb4cf15 *R/copula_constructor.r
+b19331defb70e216bdb981d1e4eb0a43 *R/copula_empirical.r
 a7b66a3d9eac624ca3963422bc077341 *R/copula_estimate.r
 b5dc0ec1e0d2f7e7962be619ae1c133a *R/copula_functions.r
-d116717ee1959ea5b3b34795acaf5b7e *R/copula_pdf.r
+d056ac751f8ea03ff74060dd20256db6 *R/copula_pdf.r
 97417dade4be127841bde1ea275f4e64 *R/copula_plot.r
 8a4fe90726b1b7dabab638760834453c *R/copula_simulate.r
 1bd24ba233ec1b10c5d6fb65cb8e3b32 *R/tree2str.r
@@ -22,6 +22,6 @@ cfaf8179917be7db858dc8c22338bb0a *man/hac.Rd
 fc0504a5729bdcbdbd3d272d10cb9619 *man/logLik.Rd
 769be09cb08b49f1137e37b445ae8752 *man/pairs.Rd
 bc419c0d7f16ae797c4aa51eb9b52dec *man/phi.Rd
-bf852624dd9ef5be75b0ebd90a70e553 *man/plot.hac.Rd
+fde0664e330dba2c08c3b4b0fb813209 *man/plot.hac.Rd
 0e221397901ef821b147a38727fefa48 *man/theta2tau.Rd
 452d7e04189e35c0d73d99150097ff62 *man/tree2str.Rd

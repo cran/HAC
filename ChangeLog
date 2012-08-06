@@ -1,3 +1,7 @@
+2012-10-11 Alexander Ristig <ristigal@hu-berlin.de>
+
+	* to.logLik is debugged for the argument eval = TRUE. This causes changes in the value of the log likelihood, if the values of the vector returned by get.params() are not ascendingly ordered.
+
 2012-08-06 Alexander Ristig <ristigal@hu-berlin.de>
 
 	* Updates regarding changes of the copula package.

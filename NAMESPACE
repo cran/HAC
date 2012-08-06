@@ -1,5 +1,4 @@
-## useDynLib(HAC)
-
+## useDynLib("HAC")
 
 ## regular functions:
 
@@ -55,7 +54,5 @@ export("plot.hac", "print.hac", "aggregate.hac")
 # imports:
 
 importFrom("stabledist", rstable)
-
 importFrom("graphics", plot)
-
 importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull, na.omit, D, deriv, constrOptim, optim)
