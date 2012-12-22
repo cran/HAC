@@ -1,22 +1,22 @@
 # copula_simulate.r ######################################################################################################
-# FUNCTION:               	DESCRIPTION:
-#  .rAC						Samples from AC. (Internal function)
-#  .f_gumbel				Samples from the inverse Laplace-Stietjes transfrom of a Gumbel copula. (Internal function)
-#  .f_clayton				Samples from the inverse Laplace-Stietjes transfrom of a Clayton copula. (Internal function)
-#  rHAC						Samples from HAC.
-#  .theta      				Computes the ratio of two dependency parameters. (Internal function)
-#  .initial  				Samples from the inverse Laplace-Stietjes transfrom for the initial node of HAC. (Internal function) 
-#  .stayStage  			    Samples from the initial node of HAC. (Internal function)     
-#  .fReject 				Samples from inverse Laplace-Stietjes transfrom for subsequent nodes, if type = HAC_CLAYTON. (Internal function)     
-#  .follow					Samples the inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)     
-#  .simualte		  		The recursive sampling procedure. (Internal function)     
-#  .rHAC 					Initializes the recursion. (Internal function)     
+# FUNCTION:       DESCRIPTION:
+#  .rAC					Samples from AC. (Internal function)
+#  .f_gumbel			Samples from the inverse Laplace-Stietjes transfrom of a Gumbel copula. (Internal function)
+#  .f_clayton			Samples from the inverse Laplace-Stietjes transfrom of a Clayton copula. (Internal function)
+#  rHAC					Samples from HAC.
+#  .theta      		    Computes the ratio of two dependency parameters. (Internal function)
+#  .initial  			    Samples from the inverse Laplace-Stietjes transfrom for the initial node of HAC. (Internal function) 
+#  .stayStage  	    Samples from the initial node of HAC. (Internal function)     
+#  .fReject 			    Samples from inverse Laplace-Stietjes transfrom for subsequent nodes, if type = HAC_CLAYTON. (Internal function)     
+#  .follow				    Samples the inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)     
+#  .simualte		    The recursive sampling procedure. (Internal function)     
+#  .rHAC 			    Initializes the recursion. (Internal function)     
 ##########################################################################################################################
 
 .rAC = function(n, theta = 1.5, dim = 2, type = AC_GUMBEL){
     if(type == AC_GUMBEL)
 	   I = .f_gumbel(n, theta)
-	else if(type == AC_CLAYTON)
+	  else if(type == AC_CLAYTON)
 	   I = .f_clayton(n, theta)
 	
     X = matrix(runif(dim * n), n, dim)
@@ -86,29 +86,36 @@ rHAC = function(n, hac){
 #-------------------------------------------------------------------------------------------------------------------------------
 
 .fReject = function(alpha, I){
-	if(alpha == 1){I}
-	else{
-		m = round(I) + (round(I) == 0) * 1
-		m.max = max(m)
-		m.length = length(m)
+	if(alpha == 1){
+      I
+  }else{
+		  m = round(I) + (round(I) == 0) * 1
+	   	  m.max = max(m); m.length = length(m)
 		
-		gamma = (cos(alpha * pi / 2) * I * 1 / m)^(1 / alpha)	
-		M = matrix(0, nrow = m.length, ncol = (m.max))
+		  gamma = (cos(alpha * pi / 2) * I * 1 / m)^(1 / alpha)	
+		  M = matrix(0, nrow = m.length, ncol = m.max)
+		  for(i in 1:m.length){M[i, (1:m[i])] = 1}	
+
+		   M[which(M > 0)] = stabledist::rstable(n = sum(m), alpha = alpha, beta = 1, gamma = 1, delta = 0, pm = 1)
+		   G = matrix(rep(gamma, m.max), ncol = m.max)
+		   N = M * G
+		   Com = (runif(m.length * m.max) <= exp(-N))
+		   fa = which((!Com) | (is.na(Com))); n = length(fa)
 		
-		for(i in 1:m.length){M[i, (1:m[i])] = 1}	
-		M[which(M > 0)] = stabledist::rstable(n = sum(m), alpha = alpha, beta = 1, gamma = 1, delta = 0, pm = 1)
-		G = matrix(rep(gamma, m.max), ncol = m.max)
-		N =  M * G
-		U = runif(m.length * m.max)
-		Com = (U <= exp(-N))
-		while(any((!Com) | (is.na(Com)))){
-			fa = which((!Com) | (is.na(Com)))
-			n = length(fa)
-			N[fa] = stabledist::rstable(n, alpha = alpha, beta = 1, pm = 1) * G[fa]
-			Com[fa] = (runif(n) <= exp(-N[fa]))}
-		rowSums(N)}
+		while(n > 0){
+			 true = numeric(0)
+			 while(length(true) == 0){
+			 			stab = stabledist::rstable(n, alpha = alpha, beta = 1, pm = 1)
+			 			stab[which(stab == 0)] = 10^(-23)
+			 			stab = stab * G[fa]
+			 			true = which(runif(n) <= exp(-stab))
+			 }
+             N[fa[true]] = stab[true]
+             fa = fa[-true]; n = length(fa)
+       }
+	   rowSums(N)}
 }
-												
+ 										
 #-------------------------------------------------------------------------------------------------------------------------------
 										
 .follow = function(n, Ltheta, I, type){
@@ -117,11 +124,12 @@ rHAC = function(n, hac){
 			gamma = (cos(pi/(2 * Ltheta)) * I)^(Ltheta)
 			delta = (Ltheta == 1) * I
 			mat = matrix(stabledist::rstable(n, alpha = 1 / Ltheta, beta = 1, pm = 1) * gamma + delta, nrow = n)
-			mat}
+		}
 		else{
 		if(type == HAC_CLAYTON){
 			mat = matrix(.fReject(alpha = 1 / Ltheta, I = I), nrow = n)
-			mat}}
+		}}
+  mat
 }
 	
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -166,6 +174,6 @@ rHAC = function(n, hac){
     for(i in which(!select)){
             v = .simulate(n, tree = tree[[i]], First = Y, ober.theta = tree[[dd]], type = type)
           	m = cbind(m, v)
-	}}
+	  }}
 	return(m[,-which(is.na(m[1,]))])
 }

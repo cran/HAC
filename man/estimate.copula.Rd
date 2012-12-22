@@ -22,7 +22,7 @@ a \eqn{n \times d} matrix. The columns should be labeled. The default names \cod
 the estimation method. Select between Quasi Maximum Likelihood \code{ML}, Kendall's \eqn{\tau} \code{TAU}, Full Maximum Likelihood \code{FML} and Recursive Maximum Likelihood \code{RML}.
 }  
    \item{hac}{
-a \code{\link{hac}} object, which determines the structure and provides initial values, if \code{method = FULL}.
+a \code{\link{hac}} object, which determines the structure and provides initial values, if \code{method = FML}.
 }
   \item{epsilon}{
   scalar \eqn{\geq 0}. The variables of consecutive nodes are aggregated, if the difference of the dependency parameters is smaller than \code{epsilon}. For a detailed explanation see also \code{\link{aggregate.hac}}.
