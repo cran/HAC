@@ -1,15 +1,15 @@
-# copula_estimate.r ###################################################################################################### 
+# estimate.r ############################################################################################################# 
 # FUNCTION:               	DESCRIPTION: 
-#  estimate.copula			Estimates the structure and the parameter of a HAC for a given sample. 
-#  .ML.TAU                  Estimation procedures for method = ML and method = TAU. (Internal function)
-#  .FML                     Full Maximum Likelihood (FML) estimation procedure. (Internal function)
-#  .RML                     Recursive Maximum Likelihood (RML) estimation procedure. (Internal function)
-#  .ub         			 	Assures the dependency parameter of the initial node being smaller than parameter of consecutive nodes. (Internal function) 
-#  . margins				Estimates the d marginal distributions for a d dimensional sample. (Internal function)   
-#  . one.mar				Estimates one marginal distributions for a given sample. (Internal function)   
-#  .max.min					0's contained in the data matrix are set to 0.000001 and 1's to 1-000001. (Internal function) 
-#  .constraints.ui          Returns the matrix for the constraints, i.e. ui of constrOptim. 
-#  .rebuild                 Creates the tree of an hac-object for an ordered parameter vector. 
+#  estimate.copula			    Estimates the structure and the parameter of a HAC for a given sample. 
+#  .ML.TAU                  Estimation procedures based on binary trees, i.e., for method = ML and method = TAU. (Internal function)
+#  .FML                     Full Maximum Likelihood (FML) estimation procedure. It needs an 'hac' object as argument to construct the log-likelihood which depends on the structure of the HAC. (Internal function)
+#  .RML                     Recursive Maximum Likelihood (RML) estimation procedure as discussed in Okhrin, Okhrin and Schmid (2013). (Internal function)
+#  .ub         			 	      Enures the dependency parameter of the initial node being smaller than parameter of consecutive nodes. (Internal function) 
+#  .margins				          Estimates the marginal distributions and returns the fitted values for a d-dimensional sample. (Internal function)   
+#  .one.mar				          Estimates one marginal distributions for a given univariate sample. (Internal function)   
+#  .max.min					        0's contained in the data matrix are set to 0.000001 and 1's to 1-0.00001. (Internal function) 
+#  .constraints.ui          Returns a matrix of constraints according to the matrix ui of constrOptim. This matrix ensures the parameters being increasing from the highest to the lowest hierarchical level for the full ML approach. (Internal function)
+#  .rebuild                 Matches the tree of a 'hac' object according to an ordered parameter vector. (Internal function) 
 ########################################################################################################################## 
 
 estimate.copula = function(X, type = HAC_GUMBEL, method = ML, hac = NULL, epsilon = 0, agg.method = "mean", margins = NULL, theta.eps = 0.001, na.rm = FALSE, max.min = TRUE, ...){

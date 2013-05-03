@@ -1,11 +1,11 @@
 # tree2str.r #############################################################################################################
-# FUNCTION:             		  	DESCRIPTION:
-#  get.params						Prints the parameter values.
-#  .read.params 					Reads the parameter values from the tree. (Internal function)
-#  tree2str							Prints the structure of HAC as string.
-#  .allocate.all					Asscosiated with .allocate.one.with.theta and .allocate.one.with.theta. (Internal function)
-#  .allocate.one.with.theta			Constructs the string, if theta = TRUE. (Internal function)
-#  .allocate.one.without.theta		Constructs the string, if theta = FALSE. (Internal function)
+# FUNCTION:             	DESCRIPTION:
+#  get.params						  Prints the non-sorted parameter values by default.
+#  .read.params 					Returns the parameter values from a copula tree. (Internal function)
+#  tree2str							  Prints the structure of HACs as string of class character.
+#  .allocate.all					Returns and constructs the tree, which is printed by tree2str. (Internal function)
+#  .one.with.theta	      Adds a leave to the string and calls .allocate.all with theta = TRUE. (Internal function)
+#  .one.without.theta	    Adds a leave to the string and calls .allocate.all with theta = FALSE. (Internal function)
 ##########################################################################################################################
 
 get.params = function(hac, sort.v = FALSE, ...){
@@ -49,6 +49,8 @@ tree2str = function(hac, theta = TRUE, digits = 2){
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
+# .allocate.all works recusively. 
+# It calls either .one.with.theta or .one.without.theta, which call .allocate.all again.
 
 .allocate.all = function(tree, theta, digits){
 n = length(tree); x = character(1)
@@ -56,22 +58,22 @@ n = length(tree); x = character(1)
 		if(theta){
 			for(i in 1:n){
 				if(i == 1){
-					x = paste("(", .allocate.one.with.theta(tree[[i]], digits = digits, theta = theta), sep = "")
+					x = paste("(", .one.with.theta(tree[[i]], digits = digits, theta = theta), sep = "")
 			}else{
 				if((i > 1) & (i < n)){
-					x = paste(x, ".", .allocate.one.with.theta(tree[[i]], digits = digits, theta = theta), sep = "")
+					x = paste(x, ".", .one.with.theta(tree[[i]], digits = digits, theta = theta), sep = "")
 			}else{
 				if(i == n){
-					x = paste(x, ")_{", .allocate.one.with.theta(tree[[i]], digits = digits, theta = theta),"}", sep = "")
+					x = paste(x, ")_{", .one.with.theta(tree[[i]], digits = digits, theta = theta),"}", sep = "")
 			}}}}
 	}else{
 		if(!theta){
 			for(i in 1:(n-1)){
 				if(i == 1){
-					x = paste("(", .allocate.one.without.theta(tree[[i]], theta = theta), sep = "")
+					x = paste("(", .one.without.theta(tree[[i]], theta = theta), sep = "")
 			}else{
 				if((i > 1) & (i < n)){
-					x = paste(x, ".", .allocate.one.without.theta(tree[[i]], theta = theta), sep = "")
+					x = paste(x, ".", .one.without.theta(tree[[i]], theta = theta), sep = "")
 			}}}}
 					x = paste(x, ")", sep = "")
 			}
@@ -80,7 +82,7 @@ n = length(tree); x = character(1)
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.allocate.one.with.theta = function(element, digits, theta){
+.one.with.theta = function(element, digits, theta){
 		if(class(element)=="character"){
 			d = length(element)
 			if(d ==1){
@@ -91,7 +93,7 @@ n = length(tree); x = character(1)
 		}}
 	}else{
 		if(class(element)=="list"){
-			.allocate.all(element, theta = theta, digits = digits)
+			.allocate.all(element, theta = theta, digits = digits) # back to .allocate.all
 	}else{
 		if(class(element)=="numeric"){
 			round(element, digits = digits)
@@ -100,7 +102,7 @@ n = length(tree); x = character(1)
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.allocate.one.without.theta = function(element, theta){
+.one.without.theta = function(element, theta){
 		if(class(element)=="character"){
 			d = length(element)
 			if(d ==1){
@@ -111,6 +113,6 @@ n = length(tree); x = character(1)
 		}}
 	}else{
 		if(class(element)=="list"){
-			return(.allocate.all(element, theta = theta))
+			return(.allocate.all(element, theta = theta)) # back to .allocate.all
 	}}
 }

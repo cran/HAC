@@ -1,27 +1,27 @@
-# copula_functions.r #####################################################################################################
+# functions.r ############################################################################################################
 # FUNCTION:         DESCRIPTION:
 #  definitions      Global paramters.
-#  TAU				Possible input argument of estimate.copula.
-#  ML				Possible input argument of estimate.copula.
+#  TAU				      Possible input argument of estimate.copula.
+#  ML				        Possible input argument of estimate.copula.
 #  FML              Possible input argument of estimate.copula.
 #  RML              Possible input argument of estimate.copula.
-#  tau2theta       	Convertes Kendall's rank correlation coefficient into dependence parameter.
-#  theta2tau        Convertes dependence parameter into Kendall's rank correlation coefficient.
-#  phi        		The generator function.
-#  phi.inv			The inverse of the generator function.
-#  copMult        	Computes the value of d-dimensional AC.
-#  par.pairs        Returns the pairwise arranged parameter in a matrix.
-#  .pair.matr       Supplementary function of par.pairs. (Internal function)       
+#  tau2theta       	Transforms Kendall's rank correlation coefficient to the dependence parameter of an Archimedean copula.
+#  theta2tau        Transfrorms the dependence parameter of an Archimedean copula to Kendall's rank correlation coefficient.
+#  phi        		  The generator function of Archimedean copula.
+#  phi.inv			    The inverse of the generator function.
+#  copMult        	Computes the value of d-dimensional AC for a given sample with values in [0,1]^d.
+#  par.pairs        Returns the pairwise arranged parameter in a matrix, so that the parameters correspond to the lowest hierarchical level at which the variables are joined. 
+#  .pair.matr       Supplementary function of par.pairs. Arranges the variables pairwise and returns the corresponding value. (Internal function)       
 ##########################################################################################################################
 
-HAC_GUMBEL = 0
-AC_GUMBEL = 1
+ HAC_GUMBEL = 0
+  AC_GUMBEL = 1
 HAC_CLAYTON = 3
-AC_CLAYTON = 4
-GAUSS = 5
+ AC_CLAYTON = 4
+      GAUSS = 5
 
 TAU = 0
-ML  = 1
+ ML = 1
 FML = 2
 RML = 3
 

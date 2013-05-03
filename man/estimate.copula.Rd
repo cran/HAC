@@ -53,9 +53,9 @@ If variables are negatively correlated and Kendall's \eqn{\tau} is chosen as est
 A \env{hac} object is returned.
 }
 \references{
-Okhrin, O., Okhrin, Y. and Schmid, W., Determining the structure and estimation of hierarchical Archimedean copulas, \emph{Journal of Econometrics}, under revision.
+Okhrin, O., Okhrin, Y. and Schmid, W. 2013, On the Structure and Estimation of Hierarchical Archimedean Copulas, \emph{Journal of Econometrics}, 173, 189-204.
 	
-Joe, H. 2005, Asymptotic efficiency of the two-stage estimation method for copula-based models, \emph{Journal of Multivariate Analysis, Volume 94 Issue 2}, 401-419.
+Joe, H. 2005, Asymptotic efficiency of the two-stage estimation method for copula-based models, \emph{Journal of Multivariate Analysis} 94(2), 401-419.
 	
 Genest, C., Ghoudi, K., and Rivest, L. P. 1995, A Semiparametric Estimation Procedure of Dependence Parameters in Multivariate Families of Distributions, \emph{Biometrika} 82, 543-552.
 }

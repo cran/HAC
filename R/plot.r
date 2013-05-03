@@ -1,17 +1,17 @@
-# copula_plot.r ###########################################################################################################
+# plot.r ##################################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  .get.leaves				Reads labels of variables. (Internal function)
-#  .X.coord.var				Computes the x-coordinates for the vairables. (Internal function)
-#  .X.coord.par				Computes the x-coordinates for the parameters. (Internal function)
-#  .get.coord				Associated with .X.coord.par. (Internal function)
-#  .already.coord			Associated with .X.coord.par. (Internal function)
-#  .shift				 	Computes the y-coordinates of the variables. (Internal function) 
-#  .line					Associated with .plot.lines.circles. (Internal function)
-#  .plot.lines.circles		Plots the lines, circles and the names of the variables. (Internal function)
-#  .plot.rectangles			Plots the rectangles and included text. (Internal function)
-#  .circle					Associated with .plot.lines.circles. (Internal function)
-#  .rectangle				Associated with .plot.rectanges. (Internal function)
-#  plot.hac					Produces the plot of the HAC's structure.
+#  .get.leaves				      Reads the labels of variables. (Internal function)
+#  .X.coord.var				      Computes the x-coordinates for the variables. (Internal function)
+#  .X.coord.par				      Computes the x-coordinates for the parameters. (Internal function)
+#  .get.coord				        Supplementary function of .X.coord.par. (Internal function)
+#  .already.coord			      Supplementary function of .X.coord.par. (Internal function)
+#  .shift				 	          Computes the y-coordinates of the variables. (Internal function) 
+#  .line					          Supplementary function of .plot.lines.circles. (Internal function)
+#  .plot.lines.circles		  Plots the lines, circles and the names of the variables. (Internal function)
+#  .plot.rectangles			    Plots the rectangles and included text. (Internal function)
+#  .circle					        Supplementary function of .plot.lines.circles. (Internal function)
+#  .rectangle				        Supplementary function of .plot.rectanges. (Internal function)
+#  plot.hac					        Produces the plot of the HAC structure.
 ##########################################################################################################################
 
 .get.leaves = function(tree){

@@ -48,9 +48,9 @@ Hofert, M. 2011, Efficiently Sampling Nested Archimedean Copulas, \emph{Computat
 
 Joe, H. 1997, Multivariate Models and Dependence Concepts, \emph{Chapman & Hall}.
 
-McNeil, A.,J. 2008, Sampling Nested Archimedean Copulas, \emph{Journal of Statistical Computation and Simulation} 78, 567-581.
+McNeil, A. J. 2008, Sampling Nested Archimedean Copulas, \emph{Journal of Statistical Computation and Simulation} 78, 567-581.
 
-Nelsen, R.,B. 2006, An Introduction to Copulas, \emph{Spinger}, 2nd Edition.
+Nelsen, R. B. 2006, An Introduction to Copulas, \emph{Spinger}, 2nd Edition.
 
 Savu, C. and Trede, M. 2010, Hierarchies of Archimedean copulas, \emph{Quantitative Finance} 10, 295-304.
 }

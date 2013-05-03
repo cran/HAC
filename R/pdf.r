@@ -1,14 +1,14 @@
-# copula_pdf.r ###########################################################################################################
+# pdf.r ##################################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  .dAC						Computes the values of the density of 2-dimensional copulae. (Internal function)
-#  .gumb.12.density			2-dim density of Gumbel copulae. (Internal function)
-#  .clay.12.density			2-dim density of Clayton copulae. (Internal function)
-#  dHAC						Computes the values of the density.
-#  .cop.pdf					Supplementary function of dHAC. (Internal function)
-#  .d.dell                  Computes the deriavtive of an expression given by .constr.expr. (Internal function)
-#  .constr.expr             Computes an expression of the cdf for a given copula type. (Internal function)
-#  to.logLik                Returns the log-Likelihood function or its value.
-#  .tree.without.params     Tranforms a tree of a hac object to a tree with symbolic parameter. (Internal function)
+#  .dAC						          Computes the values of the bivariate copula density. (Internal function)
+#  .gumb.12.density			    Bivariate density of Gumbel copulae. (Internal function)
+#  .clay.12.density			    Bivariate density of Clayton copulae. (Internal function)
+#  dHAC						          Returns the values of the an arbitrary HAC density.
+#  .cop.pdf					        Derives a function for the copula density or evalutes the derived function instantaneously. (Internal function)
+#  .d.dell                  Derives the copula expression given by .constr.expr with respect to the arguments of the copula, which are defined on [0,1]. (Internal function)
+#  .constr.expr             Returns an expression of the HAC for a given copula type. (Internal function)
+#  to.logLik                Returns the log-Likelihood function or evalutes the log-likelihood instantaneously.
+#  .tree.without.params     Tranforms a tree of a 'hac' object with numeric values as parameters into a tree with symbolic parameters. (Internal function)
 ##########################################################################################################################
 
 .dAC = function(x, y, theta = 1.0, type = AC_GUMBEL){	
@@ -17,7 +17,7 @@
 	}else if((type == HAC_CLAYTON) | (type == AC_CLAYTON)){
 		.clay.12.density(x, y, theta)       
 	}else if(type == GAUSS){
-		dcopula(normalCopula(theta, 2, dispstr = "un"), cbind(x, y))
+		dCopula(normalCopula(theta, 2, dispstr = "un"), cbind(x, y))
 	}
 }
 

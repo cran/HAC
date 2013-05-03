@@ -1,16 +1,16 @@
-# copula_simulate.r ######################################################################################################
+# simulate.r #############################################################################################################
 # FUNCTION:       DESCRIPTION:
-#  .rAC					Samples from AC. (Internal function)
-#  .f_gumbel			Samples from the inverse Laplace-Stietjes transfrom of a Gumbel copula. (Internal function)
-#  .f_clayton			Samples from the inverse Laplace-Stietjes transfrom of a Clayton copula. (Internal function)
-#  rHAC					Samples from HAC.
-#  .theta      		    Computes the ratio of two dependency parameters. (Internal function)
-#  .initial  			    Samples from the inverse Laplace-Stietjes transfrom for the initial node of HAC. (Internal function) 
-#  .stayStage  	    Samples from the initial node of HAC. (Internal function)     
-#  .fReject 			    Samples from inverse Laplace-Stietjes transfrom for subsequent nodes, if type = HAC_CLAYTON. (Internal function)     
-#  .follow				    Samples the inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)     
-#  .simualte		    The recursive sampling procedure. (Internal function)     
-#  .rHAC 			    Initializes the recursion. (Internal function)     
+#  .rAC					  Samples from simple Archimedean copulae. (Internal function)
+#  .f_gumbel			Samples from the inverse Laplace-Stietjes transfrom of a Gumbel copula generator. (Internal function)
+#  .f_clayton			Samples from the inverse Laplace-Stietjes transfrom of a Clayton copula generator. (Internal function)
+#  .theta      		Computes the ratio of two dependency parameters. (Internal function)
+#  .initial  			Samples from the inverse Laplace-Stietjes transfrom of the generator function given at the initial node of HAC. (Internal function) 
+#  .stayStage  	  Samples from the marginal copula given at the initial node of HAC. (Internal function)     
+#  .fReject 			Samples from inverse Laplace-Stietjes transfrom for subsequent nodes, if type = HAC_CLAYTON. (Internal function)     
+#  .follow				Samples from inverse Laplace-Stietjes transfrom of all successive nodes of nested AC. (Internal function)     
+#  .rHAC 			    Initializes the sampling recursion. (Internal function)     
+#  .simualte		  The recursive sampling procedure, i.e., .simulate calls itself again or returns the sampled vectors. (Internal function)     
+#  rHAC					  Returns simulated vectors from general HAC.
 ##########################################################################################################################
 
 .rAC = function(n, theta = 1.5, dim = 2, type = AC_GUMBEL){
@@ -33,24 +33,6 @@
 
 .f_clayton = function(n, theta){
 	as.vector(rgamma(n, shape = 1 / theta))
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------
-
-rHAC = function(n, hac){
-    tree = hac$tree
-    type = hac$type
-	if((type == AC_CLAYTON) | (type == AC_GUMBEL)){
-		m = length(unlist(tree))
-		res = .rAC(n, theta = tree[[m]], dim = (m-1), type = type)
-        colnames(res) = unlist(tree)[-m]
-	}else{
-	if(hac$type == GAUSS){
-        res = rCopula(n, normalCopula(tree[lower.tri(tree)], dim = NCOL(tree), dispstr = "un"))
-	}else{
-		res = .rHAC(n, tree, type)
-	}}
-	res
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -134,6 +116,29 @@ rHAC = function(n, hac){
 	
 #-------------------------------------------------------------------------------------------------------------------------------
 
+.rHAC = function(n, tree, type){
+    dd = length(tree)
+    m = matrix(, nrow = n)
+    Y = .initial(n, Ltheta = tree[[dd]], type = type)
+    
+    select = sapply(tree[-dd], FUN = is.character)
+    if(any(select)){
+        this.node = which(select)
+        v = as.matrix(.stayStage(n, d = length(this.node), Y = Y, Ltheta = tree[[dd]], type = type))
+        colnames(v) = tree[this.node]
+        m = cbind(m, v)
+    }
+    
+    if(any(!select)){
+    for(i in which(!select)){
+            v = .simulate(n, tree = tree[[i]], First = Y, ober.theta = tree[[dd]], type = type)
+          	m = cbind(m, v)
+	  }}
+	return(m[,-which(is.na(m[1,]))])
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+
 .simulate = function(n, tree, First, ober.theta, type){
     dd = length(tree)
     m = matrix(, nrow = n)
@@ -157,23 +162,18 @@ rHAC = function(n, hac){
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.rHAC = function(n, tree, type){
-    dd = length(tree)
-    m = matrix(, nrow = n)
-    Y = .initial(n, Ltheta = tree[[dd]], type = type)
-    
-    select = sapply(tree[-dd], FUN = is.character)
-    if(any(select)){
-        this.node = which(select)
-        v = as.matrix(.stayStage(n, d = length(this.node), Y = Y, Ltheta = tree[[dd]], type = type))
-        colnames(v) = tree[this.node]
-        m = cbind(m, v)
-    }
-    
-    if(any(!select)){
-    for(i in which(!select)){
-            v = .simulate(n, tree = tree[[i]], First = Y, ober.theta = tree[[dd]], type = type)
-          	m = cbind(m, v)
-	  }}
-	return(m[,-which(is.na(m[1,]))])
+rHAC = function(n, hac){
+    tree = hac$tree
+    type = hac$type
+	if((type == AC_CLAYTON) | (type == AC_GUMBEL)){
+		m = length(unlist(tree))
+		res = .rAC(n, theta = tree[[m]], dim = (m-1), type = type)
+        colnames(res) = unlist(tree)[-m]
+	}else{
+	if(hac$type == GAUSS){
+        res = rCopula(n, normalCopula(tree[lower.tri(tree)], dim = NCOL(tree), dispstr = "un"))
+	}else{
+		res = .rHAC(n, tree, type)
+	}}
+	res
 }

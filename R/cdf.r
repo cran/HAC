@@ -1,8 +1,8 @@
-# copula_cdf.r ###########################################################################################################
+# cdf.r ##################################################################################################################
 # FUNCTION: 			DESCRIPTION:
-#  pHAC					Computes the values of the cdf for a given sample and 'hac' object.
-#  .cop.cdf           	Supplementary function for pHAC. (Internal function)
-#  .one.ob              If X is a vector, one.ob modifies X, such that X is a real matrix.
+#  pHAC					  Computes the values of the cdf for a given sample and a 'hac' object.
+#  .cop.cdf       Supplementary recursive function of pHAC. (Internal function)
+#  .one.ob        If X is not a matrix, but a d-dimensional vector, .one.ob modifies X, such that X is a real matrix.
 ##########################################################################################################################
 
 pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
