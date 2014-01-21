@@ -223,15 +223,15 @@ plot.hac = function(x, xlim = NULL, ylim = NULL, xlab = "", ylab = "", col = "bl
 	main.var = .get.leaves(tree)
 	dd = length(main.var)
 	s = 0.3 * dd
-	if(is.null(xlim)){xlim = c(1-circles, dd + circles)}
+	if(is.null(xlim)){xlim = c(1 - circles, dd + circles)}
 	s.params = get.params(x, sort.v = TRUE, decreasing = TRUE)
 
 d = length(tree)
 tree.coord = .shift(.X.coord.par(.X.coord.var(tree, main.var)))
 
-if(is.null(ylim)){ylim = c((.min.y(tree.coord)- 2*(circles+0.05)), h/2)}
-graphics::plot(x = 0, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, axes = FALSE, col = "white", ...)
-.plot.lines.circles(tree.coord, circles = circles, bg = bg, fg = fg, col = col, col.t = col.t, lwd = lwd, ...)
-.plot.rectangles(tree.coord = tree.coord, tree = tree, h = h, l = l, z = s, index = index, numbering = numbering, s.params = s.params, theta = theta, type = x$type, digits = digits, bg = bg, fg = fg, col = col, col.t = col.t, lwd = lwd, ...)
-.rectangle(a = tree.coord[[d]]$coord$x, b = tree.coord[[d]]$coord$y, L = tree, l = l, h = h, z = s, index = index, numbering = numbering, s.params = s.params, theta = theta, type = x$type, digits = digits, fg = fg, bg = bg, col = col, col.t = col.t, lwd = lwd, ...)
+if(is.null(ylim)){ylim = c((.min.y(tree.coord) - 2 * (circles + 0.05)), h / 2)}
+	plot(x = 0, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, axes = FALSE, col = "white", ...)
+	.plot.lines.circles(tree.coord, circles = circles, bg = bg, fg = fg, col = col, col.t = col.t, lwd = lwd, ...)
+	.plot.rectangles(tree.coord = tree.coord, tree = tree, h = h, l = l, z = s, index = index, numbering = numbering, s.params = s.params, theta = theta, type = x$type, digits = digits, bg = bg, fg = fg, col = col, col.t = col.t, lwd = lwd, ...)
+	.rectangle(a = tree.coord[[d]]$coord$x, b = tree.coord[[d]]$coord$y, L = tree, l = l, h = h, z = s, index = index, numbering = numbering, s.params = s.params, theta = theta, type = x$type, digits = digits, fg = fg, bg = bg, col = col, col.t = col.t, lwd = lwd, ...)
 }

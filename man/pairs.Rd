@@ -14,7 +14,7 @@ par.pairs(hac, FUN = NULL, \dots)
 an object of the class \env{hac}.
 }
   \item{FUN}{
-the parameters of the HAC are returned by default. If \code{FUN = TAU}, \code{\link{theta2tau}} is applied to the parameters. \code{FUN} can also be a self-defined \code{\link{function}}.
+the parameters of the HAC are returned by default. If \code{FUN = "TAU"}, \code{\link{theta2tau}} is applied to the parameters. \code{FUN} can also be a self-defined \code{\link{function}}.
 }
   \item{\dots}{
 further arguments passed to \code{FUN}.
@@ -32,7 +32,7 @@ model = hac(HAC_GUMBEL, tree)
 par.pairs(model)
 
 # Kendall's TAU
-par.pairs(model, FUN = TAU)
+par.pairs(model, FUN = "TAU")
 
 # sqrt of the parameter
 par.pairs(model, function(r)sqrt(r))

@@ -1,10 +1,13 @@
 # pdf.r ##################################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  .dAC						          Computes the values of the bivariate copula density. (Internal function)
-#  .gumb.12.density			    Bivariate density of Gumbel copulae. (Internal function)
-#  .clay.12.density			    Bivariate density of Clayton copulae. (Internal function)
-#  dHAC						          Returns the values of the an arbitrary HAC density.
-#  .cop.pdf					        Derives a function for the copula density or evalutes the derived function instantaneously. (Internal function)
+#  .dAC						Computes the values of the bivariate copula density. (Internal function)
+#  .gumb.12.density			Bivariate density of the Gumbel copula. (Internal function)
+#  .clay.12.density			Bivariate density of the Clayton copula. (Internal function)
+#  .frank.12.density		Bivariate density of the Frank copula. (Internal function)
+#  .joe.12.density			Bivariate density of the Joe copula. (Internal function)
+#  .amh.12.density			Bivariate density of the Ali-Mikhail-Haq copula. (Internal function)
+#  dHAC						Returns the values of the an arbitrary HAC density.
+#  .cop.pdf					Derives a function for the copula density or evalutes the derived function instantaneously. (Internal function)
 #  .d.dell                  Derives the copula expression given by .constr.expr with respect to the arguments of the copula, which are defined on [0,1]. (Internal function)
 #  .constr.expr             Returns an expression of the HAC for a given copula type. (Internal function)
 #  to.logLik                Returns the log-Likelihood function or evalutes the log-likelihood instantaneously.
@@ -14,10 +17,18 @@
 .dAC = function(x, y, theta = 1.0, type = AC_GUMBEL){	
 	if((type == HAC_GUMBEL) | (type == AC_GUMBEL)){
 		.gumb.12.density(x, y, theta)
-	}else if((type == HAC_CLAYTON) | (type == AC_CLAYTON)){
+	}else 
+	if((type == HAC_CLAYTON) | (type == AC_CLAYTON)){
 		.clay.12.density(x, y, theta)       
-	}else if(type == GAUSS){
-		dCopula(normalCopula(theta, 2, dispstr = "un"), cbind(x, y))
+	}else 
+	if((type == HAC_FRANK) | (type == AC_FRANK)){
+		.frank.12.density(x, y, theta)
+	}else 
+	if((type == HAC_JOE) | (type == AC_JOE)){
+		.joe.12.density(x, y, theta)
+	}else 
+	if((type == HAC_AMH) | (type == AC_AMH)){
+		.amh.12.density(x, y, theta)
 	}
 }
 
@@ -26,7 +37,7 @@
 .gumb.12.density = function(x, y, theta){
 	lu1 = -log(x)
 	lu2 = -log(y)
-	(lu1^(-1 + theta)*(-1 + theta + (lu1^theta + lu2^theta)^(1/theta))*(lu1^theta + lu2^theta)^(-2 + 1/theta)*lu2^(-1 + theta))/(exp((lu1^theta + lu2^theta)^(1/theta))*x*y)
+	(lu1^(-1 + theta) * (-1 + theta + (lu1^theta + lu2^theta)^(1/theta)) * (lu1^theta + lu2^theta)^(-2 + 1/theta) * lu2^(-1 + theta))/(exp((lu1^theta + lu2^theta)^(1/theta)) *x*y)
 }
 	
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -34,7 +45,28 @@
 .clay.12.density = function(x, y, theta){
 	u1pt = x^(-theta)
 	u2pt = y^(-theta)
-	(1+theta)*u1pt*u2pt*((u1pt+u2pt-1)^(-1/theta - 2))/(x*y)
+	(1 + theta) * u1pt * u2pt * ((u1pt + u2pt - 1)^( -1/theta - 2))/(x * y)
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+	
+.frank.12.density = function(x, y, theta){
+	u1pt = exp(theta)
+	(u1pt^(1+x+y)*(u1pt-1)*theta)/(u1pt-u1pt^(1+x)+u1pt^(x+y)-u1pt^(1+y))^2
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+	
+.joe.12.density = function(x, y, theta){
+	u1pt = (1-x)^theta
+	u2pt = (1-y)^theta
+	(u1pt/(1-x)*(1-(u1pt-1)*(u2pt-1))^(1/theta)*(theta-(u1pt-1)*(u2pt-1))*u2pt/(1-y))/(u1pt+u2pt-u1pt*u2pt)^2
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------
+	
+.amh.12.density = function(x, y, theta){
+	(theta^2*(x+y-x*y-1)-theta*(x+y+x*y-2)-1)/(theta*(x-1)*(y-1)-1)^3
 }
 	
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -47,29 +79,34 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
 			
 	if(na.rm){X = na.omit(X, ...)}
     
-    type = hac$type; d = NCOL(X)
-    if(type != GAUSS){
-        if((d >= 3) & ((type == HAC_GUMBEL) | (type == HAC_CLAYTON))){
+    type = hac$type; d = NCOL(X);
+        if((d >= 3) & ((type == HAC_GUMBEL) | (type == HAC_CLAYTON) | (type == HAC_FRANK) | (type == HAC_JOE) | (type == HAC_AMH))){
            return(.cop.pdf(tree = hac$tree, sample = X, type = type, d = d, names = names, eval = eval))
         }else{
-            colnames(X) = c()
+            colnames(X) = c();
             if(type == AC_GUMBEL){
-                return(dCopula(X, gumbelCopula(hac$tree[[d+1]], dim = d))[-1])
-            }else{
-                if(type == AC_CLAYTON){
-                    return(dCopula(X, claytonCopula(hac$tree[[d+1]], dim = d))[-1])
-            }}
-    }}else{ 
-        colnames(X) = c()
-        return(dCopula(X, normalCopula(hac$tree[lower.tri(hac$model)], dim = d, dispstr = "un"))[-1]) 
-    }
+                copGumbel@dacopula(X, hac$tree[[d+1]])[-1]
+            }else
+            if(type == AC_CLAYTON){
+            	copClayton@dacopula(X, hac$tree[[d+1]])[-1]
+        	}else
+            if(type == AC_FRANK){
+            	copFrank@dacopula(X, hac$tree[[d+1]])[-1]
+        	}else
+            if(type == AC_JOE){
+            	copJoe@dacopula(X, hac$tree[[d+1]])[-1]
+        	}else
+            if(type == AC_AMH){
+            	copAMH@dacopula(X, hac$tree[[d+1]])[-1]
+        	}
+        }
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
 .cop.pdf = function(tree, sample, type, d, names, eval){     
 	string.expr = .constr.expr(tree, type)
-    Dd = .d.dell(parse(text=string.expr), names, d)
+    Dd = .d.dell(parse(text = string.expr), names, d)
     
     if(eval){
         for(i in 1:d){formals(Dd)[[i]]=sample[-1 ,i]}
@@ -99,22 +136,52 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
          if(any(!s)){
            if(type==HAC_GUMBEL){
                  paste("exp(-(", paste("(-log(", unlist(tree[which(s)]),"))^", tree[[n]], collapse="+", sep = ""),"+", paste("(-log(",sapply(tree[which(!s)], .constr.expr, type=type),"))^", tree[[n]], collapse="+", sep = ""),")^(1/", tree[[n]],"))", sep="")
-             }else{
+             }else
+           if(type==HAC_CLAYTON){
                  paste("(", paste("(", unlist(tree[which(s)]),"^(-", tree[[n]],")-1)", collapse="+", sep = ""),"+", paste("((", sapply(tree[which(!s)], .constr.expr, type=type),")^(-", tree[[n]],")-1)", collapse="+", sep = ""), "+1)^(-1/", tree[[n]], ")", sep="")
+             }else
+           if(type==HAC_FRANK){
+                 paste("-log(1-(1-exp(-", tree[[n]],"))*exp(", paste("log((exp(-(",unlist(tree[which(s)]),")*", tree[[n]],")-1)/(exp(-", tree[[n]],")-1))", collapse="+", sep = ""), "+", paste("log((exp(-(", sapply(tree[which(!s)], .constr.expr, type=type),")*", tree[[n]],")-1)/(exp(-", tree[[n]],")-1))", collapse="+", sep = ""),"))/",tree[[n]], sep="")
+             }else
+           if(type==HAC_JOE){
+                 paste("1-(1-exp(", paste("log(1-(1-", unlist(tree[which(s)]),")^(", tree[[n]],"))", collapse="+", sep = ""), "+", paste("log(1-(1-(", sapply(tree[which(!s)], .constr.expr, type=type),"))^(", tree[[n]],"))", collapse="+", sep = ""), "))^(1/", tree[[n]], ")", sep="")
+             }else
+           if(type==HAC_AMH){
+                  paste("(1-", tree[[n]],")/(", paste("((1-", tree[[n]],")/(", unlist(tree[which(s)]),")+", tree[[n]],")", collapse="*", sep = ""),"*", paste("((1-", tree[[n]],")/(", sapply(tree[which(!s)], .constr.expr, type=type), ")+", tree[[n]],")", collapse="*", sep = ""), "-", tree[[n]],")", sep="")
              }
  }else{
              if(type==HAC_GUMBEL){
                  paste("exp(-(", paste("(-log(", unlist(tree[-n]),"))^", tree[[n]], collapse="+", sep = ""),")^(1/", tree[[n]],"))", sep="")
-             }else{
+             }else
+             if(type==HAC_CLAYTON){
                  paste("(", paste("(",unlist(tree[-n]),"^(-", tree[[n]],")-1)", collapse="+", sep = ""), "+1)^(-1/", tree[[n]], ")", sep="")
+             }else
+             if(type==HAC_FRANK){
+                 paste("-log(1-(1-exp(-", tree[[n]],"))*exp(", paste("log((exp(-(",unlist(tree[-n]),")*", tree[[n]],")-1)/(exp(-", tree[[n]],")-1))", collapse="+", sep = ""), "))/",tree[[n]], sep="")
+             }else
+             if(type==HAC_JOE){
+                 paste("1-(1-exp(", paste("log(1-(1-", unlist(tree[-n]),")^(", tree[[n]],"))", collapse="+", sep = ""), "))^(1/", tree[[n]], ")", sep="")
+             }else
+             if(type==HAC_AMH){
+                 paste("(1-", tree[[n]],")/(", paste("((1-", tree[[n]],")/(", unlist(tree[-n]),")+", tree[[n]],")", collapse="*", sep = ""), "-", tree[[n]],")", sep="")
              }
  }}else{
              if(type==HAC_GUMBEL){
                  paste("exp(-(", paste("(-log(", sapply(tree[-n], .constr.expr, type=type),"))^", tree[[n]], collapse="+", sep = ""),")^(1/", tree[[n]],"))", sep="")           
-             }else{
+             }else
+             if(type==HAC_CLAYTON){
                  paste("(", paste("((", sapply(tree[-n], .constr.expr, type=type),")^(-", tree[[n]],")-1)", collapse="+", sep = ""), "+1)^(-1/", tree[[n]], ")", sep="")
-             }
+             }else
+           if(type==HAC_FRANK){
+                 paste("-log(1-(1-exp(-", tree[[n]],"))*exp(", paste("log((exp(-(", sapply(tree[-n], .constr.expr, type=type),")*", tree[[n]],")-1)/(exp(-", tree[[n]],")-1))", collapse="+", sep = ""),"))/",tree[[n]], sep="")
+             }else
+           if(type==HAC_JOE){
+                 paste("1-(1-exp(",paste("log(1-(1-(", sapply(tree[-n], .constr.expr, type=type),"))^(", tree[[n]],"))", collapse="+", sep = ""), "))^(1/", tree[[n]], ")", sep="")
+             }else
+           if(type==HAC_AMH){
+                  paste("(1-", tree[[n]],")/(", paste("((1-", tree[[n]],")/(", sapply(tree[-n], .constr.expr, type=type),")+", tree[[n]],")", collapse="*", sep = ""), "-", tree[[n]],")", sep="")
 }}
+}
 
 #---------------------------------------------------------------------------------------------------
 

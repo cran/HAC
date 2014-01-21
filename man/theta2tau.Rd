@@ -12,11 +12,11 @@ theta2tau(theta, type = HAC_GUMBEL)
 tau2theta(tau, type = HAC_GUMBEL)
 }
 \arguments{
-  \item{theta}{the dependency parameter. It can be either a scalar, a vector or a matrix and has to lie within a certain interval, i.e. \eqn{\theta \in [1, \infty)} for the Gumbel generator and \eqn{\theta \in (0, \infty)} for the Clayton generator. In the case of the Gaussian copula \eqn{\theta \in [-1, 1]}.
+  \item{theta}{the dependency parameter. It can be either a scalar, a vector or a matrix and has to lie within a certain interval, i.e. \eqn{\theta \in [1, \infty)} for the Gumbel generator and \eqn{\theta \in (0, \infty)} for the Clayton generator.
 }
-\item{tau}{Kendall's rank correlation coefficient. It can be either a scalar, a vector or a matrix and it is to ensure, that \eqn{\tau \in [0,1)}. In the case of the Gaussian copula \eqn{\tau \in [-1, 1]}.
+\item{tau}{Kendall's rank correlation coefficient. It can be either a scalar, a vector or a matrix and it is to ensure, that \eqn{\tau \in [0,1)}.
 }
-  \item{type}{all types are available: \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_CLAYTON}, \code{AC_CLAYTON} and \code{GAUSS}.
+  \item{type}{all types are available: \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_CLAYTON} and \code{AC_CLAYTON}.
 }
 }
 \examples{

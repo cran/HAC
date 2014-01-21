@@ -18,7 +18,7 @@ a scalar, vector or matrix at which the function is evaluated. The support of th
   the dependency parameter of the copula. It is to assure, that the dependency parameter lies within a certain interval, i.e. \eqn{\theta \in [1, \infty)} for the Gumbel generator and \eqn{\theta \in (0, \infty)} for the Clayton generator. 
 }
   \item{type}{
-  choose the model between \code{HAC_GUMBEL}, \code{AC_GUMBEL}, \code{HAC_CLAYTON} and \code{AC_CLAYTON}.
+  the copula model, e.g. \code{\link{HAC_GUMBEL}}.
 }
 }
 \examples{

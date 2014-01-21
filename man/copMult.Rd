@@ -17,7 +17,7 @@ a \eqn{n \times d} matrix, where \eqn{d} refers to the amount of variables.
 the dependency parameter of the copula.
 }
   \item{type}{
-all copula-types produced by Archimedean generators are admissible, e.g. \code{\link{HAC_GUMBEL}}.
+all copula-types produced by Archimedean generators, e.g. \code{\link{HAC_GUMBEL}}.
 }
 }
 \details{

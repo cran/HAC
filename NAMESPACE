@@ -2,7 +2,7 @@
 
 ## regular functions:
 
-export("pHAC",
+ export("pHAC",
 	"emp.copula",
 	"emp.copula.self",
 	"estimate.copula",
@@ -18,12 +18,12 @@ export("pHAC",
 	"hac",
 	"copMult",
 	"to.logLik",
-	"par.pairs"
+	"par.pairs",
+	"hac2nacopula"
 )
 
 
-exportClass("hac"
-)
+exportClass("hac")
 
 
 # definitions:
@@ -32,8 +32,12 @@ export("HAC_GUMBEL",
 	"AC_GUMBEL",
 	"HAC_CLAYTON",
 	"AC_CLAYTON",
-	"GAUSS",
-	"TAU",
+	"HAC_FRANK",
+	"AC_FRANK",
+	"HAC_JOE",
+	"AC_JOE",
+	"HAC_AMH",
+	"AC_AMH",
 	"ML",
 	"FML",
 	"RML"
@@ -41,18 +45,14 @@ export("HAC_GUMBEL",
 
 
 # generics:
-
+S3method(aggregate, hac)
 S3method(plot, hac)
-
 S3method(print, hac)
 
-S3method(aggregate, hac)
-
-export("plot.hac", "print.hac", "aggregate.hac")
-
+export("aggregate.hac", "plot.hac", "print.hac")
 
 # imports:
 
-importFrom("stabledist", rstable)
+importFrom("copula", copAMH, copClayton, copFrank, copGumbel, copJoe, onacopulaL, rnacopula, fitCopula, gumbelCopula, claytonCopula, frankCopula, joeCopula, amhCopula)
 importFrom("graphics", plot)
 importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull, na.omit, D, deriv, constrOptim, optim)

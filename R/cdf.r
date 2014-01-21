@@ -10,15 +10,10 @@ pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
     X = .one.ob(X, margins)    
     if(any(!(colnames(X) %in% .get.leaves(hac$tree)))){stop("The colnames of X have to coincide with the specifications of the copula model hac.")}
 	if(na.rm){X = na.omit(X, ...)}
-    
-    if(hac$type != GAUSS){
-        cop = .cop.cdf(X, hac$tree, hac$type)[-1]
-        names(cop) = c()
-        return(cop)
-    }else{ 
-        colnames(X) = c()
-        return(pcopula(normalCopula(hac$tree[lower.tri(hac$tree)], dim = NCOL(X), dispstr = "un"), X)[-1])
-    }
+     
+    cop = .cop.cdf(X, hac$tree, hac$type)[-1]
+    names(cop) = c()
+    return(cop)
 }
 
 #------------------------------------------------------------------------------------------------------------------------

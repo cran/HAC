@@ -9,14 +9,8 @@
 ##########################################################################################################################
 
 get.params = function(hac, sort.v = FALSE, ...){
-		res = numeric(1)
-	
-    if(hac$type != GAUSS){
-    	res = .read.params(hac$tree)
-    }else{ 
-    	if(hac$type == GAUSS){
-        res = "No tree for GAUSS models."
-    }}
+	res = numeric(1)
+    res = .read.params(hac$tree)
     if(sort.v == FALSE){res}else{sort(res, ...)}
 }
 
@@ -38,13 +32,7 @@ get.params = function(hac, sort.v = FALSE, ...){
 
 tree2str = function(hac, theta = TRUE, digits = 2){
 	res = character(1)
-	
-    if(hac$type != GAUSS){
-        res = .allocate.all(hac$tree, theta, digits)
-    }else{ 
-    	if(hac$type == GAUSS){
-        res = "No tree for GAUSS models"
-    }}
+    res = .allocate.all(hac$tree, theta, digits)
     res
 }
 

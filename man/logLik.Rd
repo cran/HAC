@@ -1,7 +1,7 @@
 \name{to.logLik}
 \alias{to.logLik}
 
-\title{log-Likelihood
+\title{log-likelihood
 }
 \description{
 \code{to.logLik} returns either the log-likehood function depending on a vector \code{theta} for a given sample \code{X} or the value of the log-likelihood, if \code{eval = TRUE}.
