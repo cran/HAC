@@ -60,7 +60,7 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = RML, hac = NULL, epsil
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-.ML = function(X, type, epsilon = 0, agg.method = "mean", names, ...){
+.ML = function(X, type, epsilon, agg.method = "mean", names, ...){
         main.dim = NCOL(X); tree = as.list(names); upper.b = if((type == AC_AMH) | (type == HAC_AMH)){1/3-1e-8}else{1-1e-8}
         for(main.i in 1:(main.dim-2)){
     

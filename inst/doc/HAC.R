@@ -48,7 +48,7 @@ names(formals(estimate.copula))
 ###################################################
 ### code chunk number 7: result-agg
 ###################################################
-    result.agg = estimate.copula(finData, margins = "edf", epsilon = 0.3)
+    result.agg = estimate.copula(finData, method = ML, margins = "edf", epsilon = 0.3)
     par(mai = c(0, 0, 0, 0))
     plot(result.agg, circles = 0.3, index = TRUE, l = 1.7)
 
@@ -127,14 +127,14 @@ pairs(sim.data, pch = 20)
 
 
 ###################################################
-### code chunk number 18: HAC.Rnw:526-528 (eval = FALSE)
+### code chunk number 18: HAC.Rnw:525-527 (eval = FALSE)
 ###################################################
 ## sim.data = rHAC(500, G.cop)
 ## pairs(sim.data, pch = 20)
 
 
 ###################################################
-### code chunk number 19: HAC.Rnw:544-545
+### code chunk number 19: HAC.Rnw:543-544
 ###################################################
 probs = pHAC(X = sim.data, hac = G.cop)
 
@@ -150,13 +150,13 @@ lines(c(0,1), c(0,1), col = "red3", lwd = 2)
 
 
 ###################################################
-### code chunk number 21: HAC.Rnw:572-573 (eval = FALSE)
+### code chunk number 21: HAC.Rnw:571-572 (eval = FALSE)
 ###################################################
 ## probs.emp = emp.copula.self(sim.data, proc = "M")
 
 
 ###################################################
-### code chunk number 22: HAC.Rnw:578-582 (eval = FALSE)
+### code chunk number 22: HAC.Rnw:577-581 (eval = FALSE)
 ###################################################
 ## emp.copula(u, x, proc = "M", sort = "none", margins = NULL,
 ##            na.rm = FALSE, ...)
@@ -197,7 +197,7 @@ lines(c(0,1), c(0,1), col = "red3", lwd = 2)
 
 
 ###################################################
-### code chunk number 24: HAC.Rnw:637-984 (eval = FALSE)
+### code chunk number 24: HAC.Rnw:636-983 (eval = FALSE)
 ###################################################
 ## 
 ## #####Table 4---------------------------------------------------------------------------------------------

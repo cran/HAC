@@ -1,3 +1,7 @@
+2014-02-13 Alexander Ristig <ristigal@hu-berlin.de>
+
+	* estimate.copula() was debugged. Even though the argument `epsilon > 0« in estimate.copula(), the structure was not aggregated anymore after the last update as `epsilon = 0« was set by default for `type = ML«.
+
 2014-01-12 Alexander Ristig <ristigal@hu-berlin.de>
 
 	* type = GAUSS is removed.
@@ -5,6 +9,7 @@
 	* The estimation method (method = TAU) is removed, as the asymptotic theory for Kendall's $\tau$ is usually restricted to the two-dimensional case and cannot be transferred to a higher-dimensional framework as necessary for the considered purpose.
 
 	* The package also covers the following generator families: Frank, Joe, Ali-Mikhail-Haq. 
+	
 	* From now, the simulation methods of all copula families are based on those of the copula-package.
 
 2013-05-03 Alexander Ristig <ristigal@hu-berlin.de>

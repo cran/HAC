@@ -84,19 +84,19 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
            return(.cop.pdf(tree = hac$tree, sample = X, type = type, d = d, names = names, eval = eval))
         }else{
             colnames(X) = c();
-            if(type == AC_GUMBEL){
+            if((type == AC_GUMBEL) | (type == HAC_GUMBEL)){
                 copGumbel@dacopula(X, hac$tree[[d+1]])[-1]
             }else
-            if(type == AC_CLAYTON){
+            if((type == AC_CLAYTON) | (type == HAC_CLAYTON)){
             	copClayton@dacopula(X, hac$tree[[d+1]])[-1]
         	}else
-            if(type == AC_FRANK){
+            if((type == AC_FRANK) | (type == HAC_FRANK)){
             	copFrank@dacopula(X, hac$tree[[d+1]])[-1]
         	}else
-            if(type == AC_JOE){
+            if((type == AC_JOE) | (type == HAC_JOE)){
             	copJoe@dacopula(X, hac$tree[[d+1]])[-1]
         	}else
-            if(type == AC_AMH){
+            if((type == AC_AMH) | (type == HAC_AMH)){
             	copAMH@dacopula(X, hac$tree[[d+1]])[-1]
         	}
         }
@@ -104,7 +104,8 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
 
 #-------------------------------------------------------------------------------------------------------------------------------
 
-.cop.pdf = function(tree, sample, type, d, names, eval){     
+.cop.pdf = function(tree, sample, type, d, names, eval){
+	if(is.null(colnames(sample))){stop("Specify colnames for X.")}
 	string.expr = .constr.expr(tree, type)
     Dd = .d.dell(parse(text = string.expr), names, d)
     

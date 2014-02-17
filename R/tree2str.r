@@ -1,10 +1,10 @@
 # tree2str.r #############################################################################################################
 # FUNCTION:             	DESCRIPTION:
-#  get.params						  Prints the non-sorted parameter values by default.
-#  .read.params 					Returns the parameter values from a copula tree. (Internal function)
-#  tree2str							  Prints the structure of HACs as string of class character.
-#  .allocate.all					Returns and constructs the tree, which is printed by tree2str. (Internal function)
-#  .one.with.theta	      Adds a leave to the string and calls .allocate.all with theta = TRUE. (Internal function)
+#  get.params				Prints the non-sorted parameter values by default.
+#  .read.params 			Returns the parameter values from a copula tree. (Internal function)
+#  tree2str					Prints the structure of HACs as string of class character.
+#  .allocate.all			Returns and constructs the tree, which is printed by tree2str. (Internal function)
+#  .one.with.theta	        Adds a leave to the string and calls .allocate.all with theta = TRUE. (Internal function)
 #  .one.without.theta	    Adds a leave to the string and calls .allocate.all with theta = FALSE. (Internal function)
 ##########################################################################################################################
 

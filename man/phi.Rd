@@ -15,7 +15,8 @@ phi.inv(x, theta, type = HAC_GUMBEL)
 a scalar, vector or matrix at which the function is evaluated. The support of the functions has to be taken into account, i.e. \eqn{x \in [0, \infty]} for the generator function and \eqn{x \in [0, 1]} for its inverse.
 }
   \item{theta}{
-  the dependency parameter of the copula. It is to assure, that the dependency parameter lies within a certain interval, i.e. \eqn{\theta \in [1, \infty)} for the Gumbel generator and \eqn{\theta \in (0, \infty)} for the Clayton generator. 
+  the feasible dependency parameter of the copula, i.e. \eqn{\theta \in [1, \infty)} for the Gumbel and Joe family, \eqn{\theta \in (0, \infty)} for the Clayton and Frank family and \eqn{\theta \in [0, 1)} for the Ali-Mikhail-Haq family.
+ 
 }
   \item{type}{
   the copula model, e.g. \code{\link{HAC_GUMBEL}}.

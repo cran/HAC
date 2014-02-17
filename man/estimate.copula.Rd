@@ -13,13 +13,13 @@ max.min = TRUE, \dots)
 }
 \arguments{
   \item{X}{
-a \eqn{n \times d} matrix. The columns should be labeled. The default names \code{X1, X2, X3, ...} are given otherwise.
+a \eqn{n \times d} matrix. If there are no \code{colnames} provided, the default names \code{X1, X2, ...} will be given.
 }
   \item{type}{
   defines the copula family, e.g., \code{\link{HAC_GUMBEL}}.
 }
   \item{method}{
-the estimation method. Select between Quasi Maximum Likelihood \code{ML}, Kendall's \eqn{\tau} \code{TAU}, Full Maximum Likelihood \code{FML} and Recursive Maximum Likelihood \code{RML}.
+the estimation method. Select between Quasi Maximum Likelihood \code{ML}, Full Maximum Likelihood \code{FML} and Recursive Maximum Likelihood \code{RML}.
 }  
    \item{hac}{
 a \code{\link{hac}} object, which determines the structure and provides initial values. To declare if \code{method = FML}.
