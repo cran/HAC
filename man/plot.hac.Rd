@@ -61,6 +61,9 @@ an integer specifying the number of digits of the dependence parameter.
 arguments to be passed to methods, e.g. graphical parameters (see \code{\link{par}}).
 }
 }
+\references{
+Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{http://www.jstatsoft.org/v58/i04/}.
+}
 \seealso{
 \code{\link{estimate.copula}}
 }
@@ -68,7 +71,7 @@ arguments to be passed to methods, e.g. graphical parameters (see \code{\link{pa
 # a hac object is created
 
 tree = list(list("X1", "X5", 3), list("X2", "X3", "X4", 4), 2)
-model = hac(tree = tree)
+model = hac(type = 1, tree = tree)
 plot(model)
 
 # the same procedure works for an estimated object

@@ -4,7 +4,7 @@
 \title{Dependency parameters of a HAC
 }
 \description{
-This function returns the dependency parameters. They are ordered from top to down and left to right.
+This function returns the copula parameter(s). They are ordered from top to down and left to right.
 }
 \usage{
 get.params(hac, sort.v = FALSE, \dots)
@@ -26,7 +26,7 @@ further arguments passed to \code{\link{sort}}.
 \examples{
 # construct a copula model
 tree = list(list("X1", "X5", "X2", 4), list("X3", "X4", "X6", 3), 2)
-model = hac(HAC_GUMBEL, tree)
+model = hac(type = 1, tree)
 
 # return the parameter
 get.params(model) # [1] 2 4 3

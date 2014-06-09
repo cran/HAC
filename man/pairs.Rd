@@ -4,7 +4,7 @@
 \title{Parameter of the HAC
 }
 \description{
-This function returns a matrix of dependency parameters. They are pairwise ordered, so that the parameters correspond to the lowest node, at which the variables are joined.
+This function returns a matrix of HAC parameters. They are pairwise ordered, so that the parameters correspond to the lowest node, at which the variables are joined.
 }
 \usage{
 par.pairs(hac, FUN = NULL, \dots)
@@ -26,7 +26,7 @@ further arguments passed to \code{FUN}.
 \examples{
 # construct a copula model
 tree = list(list("X1", "X5", "X2", 4), list("X3", "X4", "X6", 3), 2)
-model = hac(HAC_GUMBEL, tree)
+model = hac(type = 1, tree)
 
 # returns the pairwise parameter
 par.pairs(model)

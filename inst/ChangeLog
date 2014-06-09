@@ -1,6 +1,19 @@
+2014-06-09 Alexander Ristig <ristigal@hu-berlin.de>
+	
+	* The updated version of the HAC package is referred to the JSS manuscript:
+		
+		Ostap Okhrin, Alexander Ristig (2014). Hierarchical Archimedean Copulae: The HAC Package. 
+		Journal of Statistical Software, 58(4), 1-20. URL http://www.jstatsoft.org/v58/i04/.
+
+	* The assignments ML = 1, FML = 2, RML = 3, HAC_GUMBEL = 1, AC_GUMBEL = 2, HAC_CLAYTON = 3, AC_CLAYTON = 4, HAC_FRANK = 5, AC_FRANK = 6, HAC_JOE = 7, AC_JOE = 8, HAC_AMH = 9 and AC_AMH = 10 are removed, as they might cause error in the underlying functions. To avoid this kind of errors, please use the integer values themselves instead of the objects.
+
+	* to.logLik has an additional argument, called sum.log = TRUE (by default). If sum.log = FALSE, the log of the log-likelihood contributions are returned.
+
+	* A bug in the estimate.copula() function has been fixed, which might slightly improve the estimation results for large dimensional HAC based on complicated structures.
+
 2014-02-13 Alexander Ristig <ristigal@hu-berlin.de>
 
-	* estimate.copula() was debugged. Even though the argument `epsilon > 0« in estimate.copula(), the structure was not aggregated anymore after the last update as `epsilon = 0« was set by default for `type = ML«.
+	* estimate.copula() was debugged. Even though the argument `epsilon > 0« in estimate.copula(), the structure was not aggregated anymore. After the last update, `epsilon = 0« was set by default for `type = ML«.
 
 2014-01-12 Alexander Ristig <ristigal@hu-berlin.de>
 

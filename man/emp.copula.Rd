@@ -10,12 +10,12 @@ na.rm = FALSE, \dots)
 
 \arguments{
   \item{u}{
-a matrix, at which the function is evaluated. According to the dimension of the data matrix \code{x}, it can be a scalar, a vector or a matrix. The values of \code{u} should be within the interval \eqn{[0, 1]}. }  \item{x}{ 
-denotes the matrix of marginal distributions, if \code{margins = NULL}. The number of columns should correspond to the number of variables \eqn{d}, whereas the number of rows should be equal to the number of observations 
+a matrix, at which the function is evaluated. According to the dimension of the data matrix \code{x}, it can be a scalar, a vector or a matrix. The entries of \code{u} should be within the interval \eqn{[0, 1]}. }  \item{x}{ 
+denotes the matrix of marginal distributions, if \code{margins = NULL}. The number of columns should be equal the dimension \eqn{d}, whereas the number of rows should be equal to the number of observations 
 \eqn{n}, with \eqn{n > d}. } 
   \item{proc}{
 enables the user to choose between two different methods. It is recommended to use the default method, \code{"M"}, because it takes only a small fraction of the computational time of method \code{"A"}. However, method 
-\code{"M"} is sensitive with respect to the size of the working memory and therefore inapplicable for very large datasets. } 
+\code{"M"} is sensitive with respect to the size of the working memory and therefore, non-applicable for very large datasets.} 
   \item{sort}{
 defines, whether the output is ordered. \code{sort = "asc"} refers to ascending values, which might be interesting for plotting and \code{sort = "desc"} refers to descending values.
 }
@@ -35,12 +35,15 @@ The estimated copula follows the formula \deqn{\widehat{C} \left(u_{1}, \dots, u
 \value{
 A vector containing the values of the empirical copula.
 }
+\references{
+Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{http://www.jstatsoft.org/v58/i04/}.
+}
 \seealso{
 \code{\link{pHAC}}
 }
 \examples{
-v = seq(-4, 4, 0.005)
-X = cbind(matrix(pt(v, 1), 1601, 1), matrix(pnorm(v), 1601, 1))
+v = seq(-4, 4, 0.05)
+X = cbind(matrix(pt(v, 1), 161, 1), matrix(pnorm(v), 161, 1))
 
 # both methods lead to the same result 
 z = emp.copula.self(X, proc = "M") 

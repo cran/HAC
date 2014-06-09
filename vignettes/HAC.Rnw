@@ -1,32 +1,30 @@
-\documentclass[article, nojss]{jss}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% declarations for jss.cls%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[article, nojss]{jss}
 
-%% almost as usual
 \author{Ostap Okhrin \\Humboldt-Universit\"at zu Berlin \And
         Alexander Ristig \\Humboldt-Universit\"at zu Berlin}
 \title{Hierarchical Archimedean Copulae: The \pkg{HAC} Package}
 
-%% for pretty printing and a nice hypersummary also set:
-\Plainauthor{Ostap Okhrin, Alexander Ristig} %% comma-separated
-\Plaintitle{Hierarchical Archimedean Copulae: The HAC Package} %% without formatting
+\Plainauthor{Ostap Okhrin, Alexander Ristig} 
+\Plaintitle{Hierarchical Archimedean Copulae: The HAC Package} 
 
-%% an abstract and keywords
-\Abstract{This paper aims at explanation of the \proglang{R}-package \pkg{HAC}, which provides user friendly methods for dealing with hierarchical Archimedean copulae (HAC). Computationally efficient estimation procedures allow to recover the structure and the parameters of HAC from data. In addition, arbitrary HAC can be constructed to sample random vectors and to compute the values of the corresponding cumulative distribution plus density functions. Accurate graphics of the HAC structure can be produced by the generic \code{plot} function.}
+\Abstract{
 
-%% at least one keyword must be supplied
+  This paper presents the \proglang{R} package \pkg{HAC}, which
+  provides user friendly methods for dealing with hierarchical
+  Archimedean copulae (HAC). Computationally efficient estimation
+  procedures allow to recover the structure and the parameters of HAC
+  from data. In addition, arbitrary HAC can be constructed to sample
+  random vectors and to compute the values of the corresponding
+  cumulative distribution plus density functions. Accurate graphics of
+  the HAC structure can be produced by the \code{plot} method
+  implemented for these objects.
+
+}
+
 \Keywords{copula, \proglang{R}, hierarchical Archimedean copula, HAC}
-\Plainkeywords{copula, R, hierarchical Archimedean copula, HAC} %%without formatting
 
-%% publication information
-%% NOTE: Typically, this can be left commented and will be filled out by the technical editor
-%%\Volume{13}
-%% \Issue{9}
-%% \Month{September}
-%% \Year{2004}
-%% \Submitdate{2004-09-29}
-%% \Acceptdate{2004-09-29}
+\Plainkeywords{copula, R, hierarchical Archimedean copula, HAC}
 
-%% The address of (at least) one author should be given
-%% in the following format:
 \Address{
   Ostap Okhrin\\
   C.A.S.E - Center for Applied Statistics and Economics\\
@@ -45,103 +43,23 @@
   URL: \url{http://lehre.wiwi.hu-berlin.de/Professuren/quantitativ/statistik/members/personalpages/ar}\\
 }
 
-%% It is also possible to add a telephone and fax number
-%% before the e-mail in the following format:
-%% Telephone:+43/1/31336-5053
-%% Fax: +43/1/31336-734
-
-%% for those who use Sweave please include the following line (with % symbols):
-%%\usepackage{Sweave.sty}
+\usepackage{enumerate}
 \usepackage{amsmath}
-\usepackage{german}
-\usepackage{exscale}
-\usepackage{latexsym}
-\usepackage{pictex}
 \usepackage{amssymb}
-\usepackage{amsthm}
-%\usepackage{fancybox}
-\usepackage{lscape}
 \usepackage{multirow}
-%\usepackage[intlimits]{amsmath}
-%\usepackage[latin1]{inputenc}
-%\usepackage{bm}
-%\usepackage{harvard}
-%\usepackage{tree-dvips}
-
-%\renewcommand{\baselinestretch}{1.4}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{definition}{Definition}
-\newtheorem{proposition}{Proposition}
-\newtheorem{example}{Example}
-\newtheorem{corollary}{Corollary}
+\usepackage{amsthm}
+\usepackage{rotating}
 \newtheorem{algorithm}{Algorithm}
+\usepackage{german}
 \selectlanguage{english}
-\definecolor{corrected}{rgb}{0.0,0.0,0.0}
-%\definecolor{corrected}{rgb}{0.3,0.7,0.3}
-
-% \topmargin-2cm
-% \textheight25.3cm
-% \oddsidemargin-0cm
-% \textwidth16.0cm
-% \parindent0cm
-% \parskip2ex plus0.5exminus0.5ex
-
-\newcommand{\bol}[1]{\mbox{\boldmath$#1$}}
-\newcommand{\bmu}{\bol{\mu}}
- \newcommand{\bSigma}{\pmb{\Sigma}}
-\newcommand{\wf}{\widehat{f}}
-\newcommand{\ba}{\mathbf{a}}
-\newcommand{\bA}{\mathbf{A}}
-\newcommand{\wF}{\widehat{F}}
-\newcommand{\bu}{\mathbf{u}}
-\newcommand{\bg}{\mathbf{g}}
-\newcommand{\bI}{\mathbf{I}}
-\newcommand{\bF}{\mathbf{F}}
-\newcommand{\bK}{\mathbf{K}}
-\newcommand{\bH}{\mathbf{H}}
-\newcommand{\bB}{\mathbf{B}}
-\newcommand{\bX}{\mathbf{X}}
-\newcommand{\bx}{\mathbf{x}}
-\newcommand{\bz}{\mathbf{z}}
-\newcommand{\br}{\mathbf{r}}
-\newcommand{\bw}{\mathbf{w}}
-\newcommand{\by}{\mathbf{y}}
-\newcommand{\bh}{\mathbf{h}}
-\newcommand{\cL}{\mathcal{L}}
-\newcommand{\cT}{\mathcal{T}}
-\newcommand{\cI}{\mathcal{I}}
-\newcommand{\cJ}{\mathcal{J}}
- \newcommand{\hC}{\hat{C}}
-\newcommand{\hF}{\hat{F}}
-\newcommand{\hu}{\hat{u}}
-\newcommand{\halpha}{\hat{\alpha}}
-\newcommand{\boldeta}{\bol{\eta}}
-\newcommand{\bone}{\mathbf{1}}
-\newcommand{\bPhi}{\mathbf{\Phi}}
-\newcommand{\btheta}{\pmb{\theta}}
-\newcommand{\bTheta}{\pmb{\Theta}}
-\newcommand{\balpha}{\pmb{\alpha}}
-\newcommand{\bphi}{\pmb{\phi}}
-\newcommand{\rit}{\mathbb{R}}
-\def\trans{\top}
-% trans(x) = x^\trans
-\def\N{\mbox{N}} % Normal distribution
-%\newcommand{\E}{\mathop{\mbox{\sf E}}}
-\newcommand{\mcL}{\mathcal{L}}
-\newcommand{\cv}{{\mathfrak{z}}}
 \newsavebox\verbboxone
 \newsavebox\verbboxtwo
-
-%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\VignetteIndexEntry{HAC}
 %\VignetteDepends{HAC}
 %\VignetteDepends{copula}
 
 \begin{document}
-%% include your article here, just as usual
-%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
 
 <<preliminaries, echo = FALSE, results = hide>>=
 options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
@@ -149,133 +67,342 @@ library("HAC")
 @
 
 \section[Introduction]{Introduction}\label{sec:Intro}
-The use of copulae in applied statistics began in the end of the 90th, when \citet{embrechts_mcneil_straumann_1999} introduced copula to empirical finance in the context of risk management. Nowadays, quantitative orientated sciences like biostatistics and hydrology use copulae to attempt measuring the dependence of random variables, e.g., \citet{lakhal_2010, acar_craiu_yao_2011, bardossy_2006, genest_favre_2007, bardossy_li_2008}. In finance, copulae became a standard tool, explicitly on $\operatorname{VaR}$ measurement and in valuation of structured credit portfolios, see \citet{mendes_souza_2004, junker_may_2005} and \citet{li_2000}. This paper aims at providing the necessary tools for academics and practitioners for simple and effective use of hierarchical Archimedean copulae (HAC) in their statistical analysis.
+The use of copulae in applied statistics began in the end of the
+90ies, when \citet{embrechts_mcneil_straumann_1999} introduced copula
+to empirical finance in the context of risk management. Nowadays,
+quantitative orientated sciences like biostatistics and hydrology use
+copulae to attempt measuring the dependence of random variables, e.g.,
+\citet{lakhal_2010, acar_craiu_yao_2011, bardossy_2006,
+  genest_favre_2007, bardossy_li_2008}. In finance, copulae became a
+standard tool, explicitly on value at risk ($\operatorname{VaR}$)
+measurement and in valuation of structured credit portfolios, see
+\citet{mendes_souza_2004, junker_may_2005} and \citet{li_2000}. This
+paper aims at providing the necessary tools for academics and
+practitioners for simple and effective use of hierarchical Archimedean
+copulae (HAC) in their statistical analysis.
 
-Copula is the function splitting a multivariate distribution into its margins and a pure dependency component. Formally, copulae are introduced in \citet{sklar_1959} stating that if $F$ is an arbitrary $d$-dimensional continuous distribution function of the random vector $X=(X_1,\dots,X_d)^{\top}$, then the associated copula is unique and defined as the continuous mapping $C:[0,1]^d\rightarrow[0,1]$ which satisfies the equality \begin{eqnarray*}\label{eqn:f_C_explicit} C(u_1,\dots,u_d)&=&F\{F_1^{-1}(u_1),\dots,F_d^{-1}(u_d)\},\quad u_1,\ldots,u_d\in[0,1], \end{eqnarray*} where $F_1^{-1}(\cdot),\ldots,F_d^{-1}(\cdot)$ are the quantile functions of the corresponding continuous marginal distribution functions $F_1(x_1),\ldots,F_d(x_d)$. Accordingly, a $d$-dimensional density $f(\cdot)$ can be split in the copula density $c(\cdot)$ and the product of the marginal densities. For an overview and recent developments of copulae we refer to \citet{nelsen_2006}, \citet{cherubini_luciano_vecchiato_2004}, \citet{joe_1997} and \citet{jaworski_durante_haerdle_2013}. If $F(\cdot)$ belongs to the class of elliptical distributions, then $C(\cdot)$ is an elliptical copula, which in most cases cannot be given explicitly because the distribution function $F(\cdot)$ and the inverse marginal distributions $F_j(\cdot)$ usually have integral representations. One of the classes that overcomes this drawback of elliptical copulae is the class of Archimedean copulae, which, however, is very restrictive yet for moderate dimensions. Among other \proglang{R} packages (\citet{R}) dealing with Archimedean copula, we would like to mention the \pkg{copula} and the \pkg{fCopulae} package, c.f. \cite{yan_2007, kojadinovic_yan_2010, hofert_maechler_2011, copula} and \cite{fCopulae}.
+A copula is the function splitting a multivariate distribution into
+its margins and a pure dependency component. Formally, copulae are
+introduced in \citet{sklar_1959} stating that if $F$ is an arbitrary
+$d$-dimensional continuous distribution function of the random vector
+$X=(X_1,\dots,X_d)^{\top}$, then the associated copula is unique and
+defined as the continuous mapping $C:[0,1]^d\rightarrow[0,1]$ which
+satisfies the equality 
+\begin{align*}
+  C(u_1,\dots,u_d)&=F\{F_1^{-1}(u_1),\dots,F_d^{-1}(u_d)\},\quad
+  u_1,\ldots,u_d\in[0,1], 
+\end{align*} 
+where $F_1^{-1}(\cdot),\ldots,F_d^{-1}(\cdot)$ are the quantile
+functions of the corresponding continuous marginal distribution
+functions $F_1(x_1),\ldots,F_d(x_d)$. Accordingly, a $d$-dimensional
+density $f(\cdot)$ can be split in the copula density $c(\cdot)$ and
+the product of the marginal densities. For an overview and recent
+developments of copulae we refer to \citet{nelsen_2006},
+\citet{cherubini_luciano_vecchiato_2004}, \citet{joe_1997} and
+\citet{jaworski_durante_haerdle_2013}. If $F(\cdot)$ belongs to the
+class of elliptical distributions, then $C(\cdot)$ is an elliptical
+copula, which in most cases cannot be given explicitly because the
+distribution function $F(\cdot)$ and the inverse marginal
+distributions $F_j(\cdot)$ usually have integral representations. One
+of the classes that overcomes this drawback of elliptical copulae is
+the class of Archimedean copulae, which, however, is very restrictive
+yet for moderate dimensions. Among other \proglang{R} \citep{R}
+packages dealing with Archimedean copula \citep[see for
+example][]{task}, we would like to mention the \pkg{copula} and the
+\pkg{fCopulae} package, c.f.~\cite{yan_2007, kojadinovic_yan_2010,
+  hofert_maechler_2011, copula} and \cite{fCopulae}.
 
-HAC generalize the concept of simple Archimedean copulae by substituting (a) marginal distribution(s) by a further HAC. This class is thoroughly analyzed in \citet{embrechts_lindskog_mcneil_2003, whelan_2004, savu_trede_2010, hofert_11, okhrin_okhrin_schmid_2013b}. The first sampling algorithms for special HAC structures were provided by the \pkg{QRMlib} package of \citet{QRMlib_2011}, which is not updated anymore, but several functions were ported to the \pkg{QRM} package, see \citet{QRM_2012}. \citet{nacopula} presented the comprehensive \pkg{nacopula} package which, among other features, allows sampling from arbitrary HAC and was integrated into the package \pkg{copula} from version 0.8-1. The central contribution of the \pkg{HAC} package is the estimation of the parameter and the structure for this class of copulae, as discussed in \citet{okhrin_okhrin_schmid_2013a}, including a simple and intuitive representation of HAC as \proglang{R}-objects of the class \code{hac}. The main estimation procedure relies on a recursive multi-stage Maximum Likelihood (ML) procedure, which determines the parameter and the structure simultaneously. This elegant procedure endows the estimator with the usual asymptotic properties but avoids the computationally intensive one-step ML estimation, which is also implemented for a predetermined structure. Besides, the package offers functions for producing graphics of the copula's structure, for sampling random vectors from a given copula and for computing values of the corresponding distribution and density.
+HAC generalize the concept of simple Archimedean copulae by
+substituting (a) marginal distribution(s) by a further HAC. This class
+is thoroughly analyzed in \citet{embrechts_lindskog_mcneil_2003,
+  whelan_2004, savu_trede_2010, hofert_11,
+  okhrin_okhrin_schmid_2013b}. The first sampling algorithms for
+special HAC structures were provided by the \pkg{QRMlib} package of
+\citet{QRMlib_2011}, which is not updated anymore, but several
+functions were ported to the \pkg{QRM} package
+\citep[see][]{QRM_2012}. \citet{nacopula} presented the comprehensive
+\pkg{nacopula} package which, among other features, allows sampling
+from arbitrary HAC and was integrated into the package \pkg{copula}
+from version 0.8-1 on. The central contribution of the \pkg{HAC} package
+\citep{hac} is the estimation of the parameter and the structure for
+this class of copulae, as discussed in
+\citet{okhrin_okhrin_schmid_2013a}, including a simple and intuitive
+representation of HAC as \proglang{R} objects of the class
+`\code{hac}'. The main estimation procedure relies on a recursive
+multi-stage maximum likelihood (ML) procedure, which determines the
+parameter and the structure simultaneously. This elegant procedure
+endows the estimator with the usual asymptotic properties but avoids
+the computationally intensive one-step ML estimation, which is also
+implemented for a predetermined structure. Besides, the package offers
+functions for producing graphics of the copula's structure, for
+sampling random vectors from a given copula and for computing values
+of the corresponding distribution and density.
 
-The paper is organized as follows. Section \ref{sec:PHAC} describes shortly the theoretical aspects of HAC and its estimation. Section \ref{sec:AHAC} presents the functions of the \pkg{HAC} package and Section \ref{sec:sim} a simulation study. Section \ref{sec:Con} concludes.
+The paper is organized as follows. Section~\ref{sec:PHAC} describes
+shortly the theoretical aspects of HAC and its
+estimation. Section~\ref{sec:AHAC} presents the functions of the
+\pkg{HAC} package and Section~\ref{sec:sim} a simulation
+study. Section \ref{sec:Con}~concludes.
 
 \section[Hierarchical Archimedean copulae]{Hierarchical Archimedean copulae}\label{sec:PHAC}
-As mentioned above, the large class of copulae, which can describe tail dependency, non-ellipticity, and, most importantly, has close form representation
-\begin{eqnarray}\label{eqn:m_arch}
-    C(u_1,\ldots,u_d; \theta)&=&\phi_{\theta}\left\{\phi_{\theta}^{-1}(u_1)+\dots+\phi_{\theta}^{-1}(u_d)\right\},\quad
-    u_1,\ldots,u_d\in[0,1],
-\end{eqnarray}
-where $\phi_{\theta}(\cdot)\in\mathfrak{L} = \{\phi_{\theta}:[0;\infty)\rightarrow [0,1]\,|\, \phi_{\theta}(0)=1,\,\phi_{\theta}(\infty)=0;\,(-1)^j\phi_{\theta}^{(j)}\geq0;\,j \in \mathbb{N} \}$ and $(-1)^{j}\phi_{\theta}^{(j)}(x)$ being non-decreasing and convex on $[0,\infty)$, for $x>0$, is the class of Archimedean copulae. The function $\phi(\cdot)$ is called the generator of the copula and commonly depends on a single parameter $\theta$. For example, the Gumbel generator is given by $\phi_{\theta}(x) = \exp(-x^{1/\theta})$ for $0\leq x<\infty,\ 1\leq \theta< \infty$. Detailed reviews of the properties of Archimedean copulae can be found in \citet{mcneil_neslehova_2008} and in \citet{joe_1996}.
+As mentioned above, the large class of copulae, which can describe
+tail dependency, non-ellipticity, and, most importantly, has close
+form representation
+\begin{align}\label{eqn:m_arch}
+  C(u_1,\ldots,u_d; \theta)&=\phi_{\theta}\left\{\phi_{\theta}^{-1}(u_1)+\dots+\phi_{\theta}^{-1}(u_d)\right\},\quad
+  u_1,\ldots,u_d\in[0,1],
+\end{align}
+where $\phi_{\theta}(\cdot)\in\mathfrak{L} =
+\{\phi_{\theta}:[0;\infty)\rightarrow [0,1]\,|\,
+\phi_{\theta}(0)=1,\,\phi_{\theta}(\infty)=0;\,(-1)^j\phi_{\theta}^{(j)}\geq0;\,j
+\in \mathbb{N} \}$ and $(-1)^{j}\phi_{\theta}^{(j)}(x)$ being
+non-decreasing and convex on $[0,\infty)$, for $x>0$, is the class of
+Archimedean copulae. The function $\phi(\cdot)$ is called the
+generator of the copula and commonly depends on a single parameter
+$\theta$. For example, the Gumbel generator is given by
+$\phi_{\theta}(x) = \exp(-x^{1/\theta})$ for $0\leq x<\infty,\ 1\leq
+\theta< \infty$. Detailed reviews of the properties of Archimedean
+copulae can be found in \citet{mcneil_neslehova_2008} and in
+\citet{joe_1997}.
 
-A disadvantage of Archimedean copulae is the fact that the multivariate dependency structure is very restricted, since it typically depends on a single parameter of the generator function $\phi(\cdot)$. Moreover, the rendered dependency is symmetric with respect to the permutation of variables, i.e., the distribution is exchangeable. HAC (also called nested Archimedean copulae) overcome this problem by considering the compositions of simple Archimedean copulae. For example, the special case of four-dimensional fully nested HAC can be given by
-\begin{eqnarray}\label{eqn:fully_nested_a}
-    C(u_1, u_2, u_3, u_4) &=& C_3\{C_2(u_1, u_2, u_3), u_4\}\\
-                        &=& \phi_3\{\phi^{-1}_3\circ C_2(u_1,u_2,u_3)+\phi^{-1}_3(u_4)\},\nonumber
-\end{eqnarray}
-where $C_j(u_1, \ldots, u_{j+1})=\phi_j[\phi^{-1}_j \{C_{j-1}(u_1,\ldots,u_{j})\}+\phi^{-1}_j(u_{j+1})]$, $j=2,\ldots,d-1$, and $C_1 = \phi_1\{\phi^{-1}_1(u_1)+\phi^{-1}_1(u_2)\}$. The functional form of $C_j(\cdot)$ indicates that the composition can be applied recursively. A different segmentation of the variables leads naturally to more complex HAC. In the following, let $d$-dimensional HAC be denoted by $C(u_1,\dots,u_d; s,\btheta)$, where $\btheta$ denotes the vector of feasible dependency parameters and $s=(\ldots(i_g i_k)i_{\ell}\ldots)$ the structure of the entire HAC, where $i_m\in\{1,\ldots,d\}$ is a reordering of the indices of the variables with $m=1\ldots,d$, and $g,k,\ell\in\{1,\ldots,d: g\neq k\neq\ell\}$. Structures of subcopulae are denoted by $s_j$ with $s=s_{d-1}$. For instance, the structure according to Equation~\ref{eqn:fully_nested_a} is $s=(s_2)4$ with $s_j=(s_{j-1}(j+1))$, $j=2,3$, for the sucopulae and $s_1=(12)$. A clear definition of the structure is essential, as $s$ is in fact a parameter to estimate. Thus, Equation~\ref{eqn:fully_nested_a} can be rewritten as
-\begin{eqnarray*}\label{eqn:fully_nested_b}
-    & C(u_1, u_2, u_3, u_4; s=(((12)3)4), \btheta) =
-       C\{u_1, u_2, u_3, u_4; (s_{2}4),(\theta_1, \theta_2, \theta_3)^\trans\}\\
-    & = \quad \phi_{\theta_{3}}(\phi^{-1}_{\theta_{3}}\circ C_2\{u_1, u_2, u_3; (s_{1}(3)),
-    (\theta_1,\theta_{2})^\trans\}+\phi^{-1}_{\theta_{3}}(u_4)).
-\end{eqnarray*}
-Figure~\ref{fig:4dimHAC} presents the four-dimensional fully and partially nested Archimedean copula.
+A disadvantage of Archimedean copulae is the fact that the
+multivariate dependency structure is very restricted, since it
+typically depends on a single parameter of the generator function
+$\phi(\cdot)$. Moreover, the rendered dependency is symmetric with
+respect to the permutation of variables, i.e., the distribution is
+exchangeable. HAC (also called nested Archimedean copulae) overcome
+this problem by considering the compositions of simple Archimedean
+copulae. For example, the special case of four-dimensional fully
+nested HAC can be given by
+\begin{align}\label{eqn:fully_nested_a}
+  C(u_1, u_2, u_3, u_4) &= C_3\{C_2(u_1, u_2, u_3), u_4\}\\
+  &= \phi_3\{\phi^{-1}_3\circ C_2(u_1,u_2,u_3)+\phi^{-1}_3(u_4)\},\nonumber
+\end{align}
+where $C_j(u_1, \ldots, u_{j+1})=\phi_j[\phi^{-1}_j
+\{C_{j-1}(u_1,\ldots,u_{j})\}+\phi^{-1}_j(u_{j+1})]$,
+$j=2,\ldots,d-1$, and $C_1 =
+\phi_1\{\phi^{-1}_1(u_1)+\phi^{-1}_1(u_2)\}$. The functional form of
+$C_j(\cdot)$ indicates that the composition can be applied
+recursively. A different segmentation of the variables leads naturally
+to more complex HAC. In the following, let $d$-dimensional HAC be
+denoted by $C(u_1,\dots,u_d; s,\pmb{\theta})$, where $\pmb{\theta}$ denotes the
+vector of feasible dependency parameters and $s=(\ldots(i_g
+i_k)i_{\ell}\ldots)$ the structure of the entire HAC, where
+$i_m\in\{1,\ldots,d\}$ is a reordering of the indices of the variables
+with $m=1\ldots,d$, and $g,k,\ell\in\{1,\ldots,d: g\neq
+k\neq\ell\}$. Structures of subcopulae are denoted by $s_j$ with
+$s=s_{d-1}$. For instance, the structure according to
+Equation~\ref{eqn:fully_nested_a} is $s=(s_2)4$ with
+$s_j=(s_{j-1}(j+1))$, $j=2,3$, for the sucopulae and $s_1=(12)$. A
+clear definition of the structure is essential, as $s$ is in fact a
+parameter to estimate. Thus, Equation~\ref{eqn:fully_nested_a} can be
+rewritten as
+\begin{align*}
+  C(u_1, u_2, u_3, u_4; s=(((12)3)4), \pmb{\theta}) &=
+  C\{u_1, u_2, u_3, u_4; (s_{2}4),(\theta_1, \theta_2, \theta_3)^\top\}\\
+  & = \quad \phi_{\theta_{3}}(\phi^{-1}_{\theta_{3}}\circ C_2\{u_1, u_2, u_3; (s_{1}(3)),
+  (\theta_1,\theta_{2})^\top\}+\phi^{-1}_{\theta_{3}}(u_4)). 
+\end{align*}
+Figure~\ref{fig:4dimHAC} presents the four-dimensional fully and
+partially nested Archimedean copula.
 
 <<label = fourfully, pdf = TRUE, fig = TRUE, echo=FALSE, height=3, width=3, eval=TRUE, include = FALSE>>=
-Obj1 = hac.full(type = HAC_GUMBEL, y = c("u4", "u3", "u2", "u1"), theta = c(2, 3, 4))
+Obj1 = hac.full(type = 1, y = c("u4", "u3", "u2", "u1"), theta = c(2, 3, 4))
 par(mai = c(0, 0, 0, 0))
 plot(Obj1, index = TRUE, l = 1.6)
 @
 
 <<label = fourpartially, pdf = TRUE, fig=TRUE, echo=FALSE, height=3, width=3, eval=TRUE, include = FALSE>>=
-Obj2 = hac(tree = list(list("u4", "u3", 3), list("u1", "u2", 4), 2))
+Obj2 = hac(type = 1, tree = list(list("u4", "u3", 3), list("u1", "u2", 4), 2))
 par(mai = c(0, 0, 0, 0))
 plot(Obj2, index = TRUE, l = 1.6)
 @
 
-\begin{figure}[htb]
-    \begin{minipage}[t]{0.5\textwidth}
-	   \centering 	
-        \includegraphics[width=2in]{HAC-fourfully.pdf}
-    \end{minipage}
-    \begin{minipage}[t]{0.5\textwidth}
-	   \centering 	
-        \includegraphics[width=2in]{HAC-fourpartially.pdf}
-    \end{minipage}
-    \vspace{-10mm}
-    \caption{Fully and partially nested Archimedean copulae of dimension $d=4$ with structures $s=(((12)3)4)$ on the left and $s=((43)(12))$ on the right.}
-\label{fig:4dimHAC} \end{figure}
+\begin{figure}[t!]
+  \begin{minipage}[t]{0.5\textwidth}
+    \centering 	
+    \includegraphics[width=2in, trim=0 25 0 0, clip]{HAC-fourfully.pdf}
+  \end{minipage}
+  \begin{minipage}[t]{0.5\textwidth}
+    \centering 	
+    \includegraphics[width=2in, trim=0 30 0 0, clip]{HAC-fourpartially.pdf}
+  \end{minipage}
+  \caption{Fully and partially nested Archimedean copulae of dimension $d=4$ with structures $s=(((12)3)4)$ on the left and $s=((43)(12))$ on the right.}
+  \label{fig:4dimHAC} 
+\end{figure}
 
-HAC can adopt arbitrarily complex structures $s$. This makes it a very flexible and simultaneously parsimonious distribution model. The generators $\phi_{\theta_j}(\cdot)$ within a single nested Archimedean copula can come either from a single generator family or from different generator families. If the $\phi_{\theta_j}(\cdot)$'s belong to the same family, then the required complete monotonicity of $\phi_{\theta_{i+j}}^{-1}(\cdot)\circ\phi_{\theta_{j}}(\cdot)$ usually imposes some constraints on the parameters $\theta_1,\dots,\theta_{d-1}$. Theorem 4.4 of \citet{mcneil_2008} provides sufficient conditions on the generator functions to guarantee that $C$ is a copula. It holds that if $\phi_{\theta_{j}}(\cdot)\in \mathfrak{L}$, for $j=1,\dots,d-1$, and $\phi_{\theta_{j+1}}^{-1}(\cdot)\circ\phi_{\theta_{j}}(\cdot)$ have completely monotone derivatives, then $C(\cdot)$ is a copula for $d\geq2$. For the majority of generators feasible HAC require decreasing parameters from the highest to the lowest hierarchical level. However, in the case of different families within a single HAC, the condition of complete monotonicity is not always fulfilled, see \citet{hofert_11}. In our study, we consider HAC with generators from the same family only. If we use the same single-parameter generator function on each level, but with a different value of $\theta$, we may specify the whole distribution with at most $d-1$ parameters. From this point of view, the HAC approach can be seen as an alternative to covariance driven models. Nevertheless, for HAC not only the parameters are unknown, but also the structure has to be determined. One possible procedure for estimating both the parameters and the structure is to enumerate all possible structures and to estimate at first the parameters only. Next, the optimal structure can be determined by a suitable goodness-of-fit test. This approach is, however, unrealistic in practice because the variety of different structures is enormously large even in moderate dimensions. \citet{okhrin_okhrin_schmid_2013a} suggest computationally efficient procedures, which allow to estimate HAC recursively. The \pkg{HAC} package provides these methods for estimating the parameters and structure in a user-friendly way.
+HAC can adopt arbitrarily complex structures $s$. This makes it a very
+flexible and simultaneously parsimonious distribution model. The
+generators $\phi_{\theta_j}(\cdot)$ within a single nested Archimedean
+copula can come either from a single generator family or from
+different generator families. If the $\phi_{\theta_j}(\cdot)$'s belong
+to the same family, then the required complete monotonicity of
+$\phi_{\theta_{i+j}}^{-1}(\cdot)\circ\phi_{\theta_{j}}(\cdot)$ usually
+imposes some constraints on the parameters
+$\theta_1,\dots,\theta_{d-1}$. Theorem 4.4 of \citet{mcneil_2008}
+provides sufficient conditions on the generator functions to guarantee
+that $C(\cdot)$ is a copula. It holds that if
+$\phi_{\theta_{j}}(\cdot)\in \mathfrak{L}$, for $j=1,\dots,d-1$, and
+$\phi_{\theta_{j+1}}^{-1}(\cdot)\circ\phi_{\theta_{j}}(\cdot)$ have
+completely monotone derivatives, then $C(\cdot)$ is a copula for
+$d\geq2$. For the majority of generators feasible HAC require
+decreasing parameters from the highest to the lowest hierarchical
+level. However, in the case of different families within a single HAC,
+the condition of complete monotonicity is not always fulfilled, see
+\citet{hofert_11}. In our study, we consider HAC with generators from
+the same family only. If we use the same single-parameter generator
+function on each level, but with a different value of $\theta$, we may
+specify the whole distribution with at most $d-1$ parameters. From
+this point of view, the HAC approach can be seen as an alternative to
+covariance driven models. Nevertheless, for HAC not only the
+parameters are unknown, but also the structure has to be
+determined. One possible procedure for estimating both the parameters
+and the structure is to enumerate all possible structures and to
+estimate at first the parameters only. Next, the optimal structure can
+be determined by a suitable goodness-of-fit test. This approach is,
+however, unrealistic in practice because the variety of different
+structures is enormously large even in moderate
+dimensions. \citet{okhrin_okhrin_schmid_2013a} suggest computationally
+efficient procedures, which allow to estimate HAC recursively. The
+\pkg{HAC} package provides these methods for estimating the parameters
+and structure in a user-friendly way.
 
 \subsection[Estimation of HAC]{Estimation of HAC}\label{sec:EHAC}
-In most cases the discussion is constrained to binary copulae, i.e., at each node of structure only two variables are joined together. We impose this restriction because the numerical values of the estimated parameters are compared during the procedure. Certainly, these comparisons cannot be justified if one parameter corresponds to a tertiary or higher dimensional copula. The entire procedure can be described in a recursive way where at the first iteration step we fit a bivariate copula to every couple of the variables. The couple of variables with the strongest dependency is selected. We denote the respective estimator of the parameter at the first level by $\hat{\theta}_1$ and the set of indices  of the variable{\color{corrected}s} by $I_1$. The selected couple is joined together to define the pseudo-variable $ Z_{I_1} \overset{\operatorname{def}}{=} C\{(I_1);\hat{\theta}_1, \phi_1\}$. At the next step, we proceed in the same way by considering the remaining variables and the new pseudo-variable as the new set of variables. This procedure allows us to determine the estimated structure of the copula. If the restrictions on the parameters are always fulfilled, it leads to a feasible copula function with $d-1$ parameters. Nevertheless, if the true copula is not binary, the procedure might return a slightly misspecified structure. Despite a difference in the structures, the difference in the distribution functions is in general minor. To allow more sophisticated structures, we aggregate the variables of the estimated copula afterwards. This is possible if the absolute value of the difference of two successive nodes is smaller than a fixed small threshold, i.e., $\theta_{1} - \theta_{2} < \epsilon $, with $ \theta_{1} > \theta_{2} $, as suggested by \citet{okhrin_okhrin_schmid_2013a}.
+The entire procedure can be described in a recursive way where at the
+first iteration step we fit a bivariate copula to every couple of the
+variables. The couple of variables with the strongest dependency is
+selected. We denote the respective estimator of the parameter at the
+first level by $\hat{\theta}_1$ and the set of indices of the
+variables by $I_1$. The selected couple is joined together to define
+the pseudo-variable $ Z_{I_1} \overset{\operatorname{def}}{=}
+C\{(I_1);\hat{\theta}_1, \phi_1\}$. At the next step, we proceed in
+the same way by considering the remaining variables and the new
+pseudo-variable as the new set of variables. This procedure allows us
+to determine the estimated structure of the copula.  As the
+restrictions on the parameters are always fulfilled due to shortening
+the parameter space, the procedure leads to a feasible copula funciton
+with $d-1$ parameters.  Nevertheless, if the true copula is not
+binary, the procedure might return a slightly misspecified
+structure. Despite a difference in the structures, the difference in
+the distribution functions is in general minor. To allow more
+sophisticated structures, we aggregate the variables of the estimated
+copula afterwards. This is possible if the absolute value of the
+difference of two successive nodes is smaller than a fixed small
+threshold, i.e., $\theta_{1} - \theta_{2} < \epsilon $, with $
+\theta_{1} > \theta_{2} $, as suggested by
+\citet{okhrin_okhrin_schmid_2013a}.
 
-For better understanding, let us consider a three-dimensional example with $u_j$, $j=1,2,3$, being uniformly distributed on $[0,1]$. All possible pairs $C_{(12)}(u_1,u_2,\hat{\theta}_{(12)})$, $C_{(13)}(u_1,u_3,\hat{\theta}_{(13)})$ and $C_{(23)}(u_2,u_3,\hat{\theta}_{(23)})$ are estimated by regular ML, see \citet{franke_haerdle_hafner_2011}. To compare the strengths of the fit one can use computationally complicated goodness-of-fit tests, which do not necessarily lead to a function which will be a copula on the final level of aggregation due to the restrictions on $\btheta$. For that reason we compare simply the estimates $\hat\theta_{(12)}$, $\hat\theta_{(13)}$ and $\hat\theta_{(23)}$. This is due to the fact that for most Archimedean copulae, the larger the parameter the stronger is the dependency (the larger the parameter the larger is Kendall's correlation coefficient). Let the strongest dependence be in the first pair $\hat\theta_{1}\overset{\operatorname{def}}{=} \hat\theta_{(12)}=\max\{\hat\theta_{(12)}, \hat\theta_{(13)}, \hat\theta_{(23)}\}$, then $I_1 = \{1,2\}$ and we introduce the pseudo-variable $Z_1 \overset{\operatorname{def}}{=} C_1(I_1;\hat\theta_1) = C_1(u_1,u_2;\hat\theta_{(12)})$. At the next and final step for this example we join together $u_3$ and $Z_1$. The theoretical validation is also reported by Proposition 1 of \citet{okhrin_okhrin_schmid_2013b} stating that HAC can be uniquely recovered from the marginal distribution functions and all bivariate copula functions. Crucially for the superior recursive ML estimation procedure, pseudo-variables are regarded as functions of the underlying random variables $X_1,\ldots,X_d$ and are not explicitly computed.
+For better understanding, let us consider a three-dimensional example
+with $u_j$, $j=1,2,3$, being uniformly distributed on $[0,1]$. All
+possible pairs $C_{(12)}(u_1,u_2,\hat{\theta}_{(12)})$,
+$C_{(13)}(u_1,u_3,\hat{\theta}_{(13)})$ and
+$C_{(23)}(u_2,u_3,\hat{\theta}_{(23)})$ are estimated by regular ML,
+see \citet{franke_haerdle_hafner_2011}. To compare the strengths of
+the fit one can use computationally complicated goodness-of-fit tests,
+which do not necessarily lead to a function which will be a copula on
+the final level of aggregation due to the restrictions on
+$\pmb{\theta}$. For that reason we compare simply the estimates
+$\hat\theta_{(12)}$, $\hat\theta_{(13)}$ and $\hat\theta_{(23)}$. This
+is due to the fact that for most Archimedean copulae, the larger the
+parameter the stronger is the dependency (the larger the parameter the
+larger is Kendall's correlation coefficient). Let the strongest
+dependence be in the first pair
+$\hat\theta_{1}\overset{\operatorname{def}}{=}
+\hat\theta_{(12)}=\max\{\hat\theta_{(12)}, \hat\theta_{(13)},
+\hat\theta_{(23)}\}$, then $I_1 = \{1,2\}$ and we introduce the
+pseudo-variable $Z_1 \overset{\operatorname{def}}{=}
+C_1(I_1;\hat\theta_1) = C_1(u_1,u_2;\hat\theta_{(12)})$. At the next
+and final step for this example we join together $u_3$ and $Z_1$. The
+theoretical validation is also reported by Proposition 1 of
+\citet{okhrin_okhrin_schmid_2013b} stating that HAC can be uniquely
+recovered from the marginal distribution functions and all bivariate
+copula functions. Crucially for the superior recursive ML estimation
+procedure, pseudo-variables are regarded as functions of the
+underlying random variables $X_1,\ldots,X_d$ and are not explicitly
+computed.
 
-In practice, the marginal distributions $F_j$, $j=1,\ldots,d$, are either parametrically $\widehat{F}_j(\cdot) =F_j(\cdot,\hat\balpha_j)$, where $\balpha_j$ denotes the vector of parameters of the $j$-th margin, or non-parametrically
-\begin{eqnarray}\label{eqn:nonp}
-\widehat{F}\left( x \right) &= \left( n+1 \right)^{-1} \sum_{i=1}^{n}\bI \left( X_i \leq x \right)
-\end{eqnarray}
-estimated in advance. Accordingly, the marginal densities $\hat{f}_j(\cdot)$, $j,\ldots,d,$ are estimated by an appropriate kernel density estimator or using a parametric density.
+In practice, the marginal distributions $F_j$, $j=1,\ldots,d$, are
+either parametrically $\widehat{F}_j(\cdot)
+=F_j(\cdot,\hat{\pmb{\alpha}}_j)$, where $\pmb{\alpha}_j$ denotes the vector of
+parameters of the $j$th margin, or non-parametrically
+\begin{align}\label{eqn:nonp}
+\widehat{F}\left( x \right) &= \left( n+1 \right)^{-1} \sum_{i=1}^{n}\mathbf{I} \left( X_i \leq x \right)
+\end{align}
+estimated in advance. Accordingly, the marginal densities
+$\hat{f}_j(\cdot)$, $j,\ldots,d,$ are estimated by an appropriate
+kernel density estimator or using a parametric density.
 
-Following \citet{okhrin_okhrin_schmid_2013a}, the estimation of the copula parameters at each step of the iteration can be sketched as follows: at first stage, we estimate the parameter of the copula at the first hierarchical level assuming that the marginal distributions are known. At further stages, the next level copula parameter is estimated assuming that the margins as well as the copula parameters at lower levels are known. Let $\mathbf{X}=\{x_{ij}\}^{\top}$ be the respective sample, for $i=1,\ldots,n$, $j=1,\ldots,d$, and $\btheta=(\theta_1,\ldots,\theta_{d-1})^\trans$ be the parameters of the copula starting with the lowest up to the highest level. The recursive multi-stage ML estimator $\widehat{\btheta}$ solves the system
-\begin{eqnarray}\label{eqn:MLp}
-    &&\left(\frac{\partial \mcL_1}{\partial \theta_1},
-    \dots,\frac{\partial \mcL_{d-1}}{\partial
-    \theta_{d-1}}\right)^\trans=\mathbf{0}, \\
-    %
-    \text{where}\quad
-    %
-     \mcL_j&=&\sum_{i=1}^n l_j(\bX_i), \text{ for } j=1,\dots,d-1, \nonumber \\
-    %
-     l_{j}(\bX_i) &=& \log \, \left\{c_j\big[ \{\widehat F_m(x_{im})\}_{m\in s_j};\,s_j, \theta_j\big]\prod_{m\in s_j}\hat
-     f_m(x_{im})\right\}
-     \nonumber\\
-    &&
-    \text{for } j=1,\dots,d-1,\;i=1,\dots,n,\nonumber
-\end{eqnarray}
-where $s_j$ is referred to the (pseudo)-variables considered at the $j$-th estimation stage. \citet{chen_fan_2006} and \citet{okhrin_okhrin_schmid_2013a} provide asymptotic behaviour of the estimates. At the moment, there are three different ways to estimate HAC:
-
-(i) Ordinary (full) ML estimation, also denoted by \code{FML}, which is based on the complete log-likelihood and hence on a predetermined structure.
-
-%(ii) As long as the structure is determined through grouping binary structures, it seems to be reasonable to estimate Kendall's $ \tau$ at each step of the iteration and exploit the bivariate relationship between Archimedean copulae and Kendall's $\tau(\cdot)$, implied through Proposition 1.1 of \citet{genest_rivest_1993}, see Table~\ref{tab:Basics}. On the other hand, the asymptotic theory for Kendall's $\tau$ is usually restricted to the two-dimensional case and cannot be transferred to a higher-dimensional framework as necessary for the considered purpose. Moreover, the copula parameters $\theta_j$, $j=1,\ldots,d-1$, estimated with Kendall's $\tau$ cannot be guaranteed to be increasing from the lowest to the highest hierarchical level and therefore, the estimated copula can fail to be a properly defined HAC. Nevertheless, this method has also been implemented in the package.
-
-(ii) The \code{ML} setup is based on realized pseudo-variables, i.e., the values of the pseudo-variables for the given sample are explicitly computed, so that the bivariate density is maximized with respect to the copula parameter at each step of the procedure. The benefits of the ML method hold in particular for binary and non-complex structures. If the structure of the HAC is, however, complex, the estimates around the initial node seem to be slightly biased. Note that this procedure is not supported by asymptotic theory.
-
-(iii) More precise results can be obtained by the recursive ML (\code{RML}) procedure discussed in \citet{okhrin_okhrin_schmid_2013a}. The difference between the ML method and the recursive ML procedure results from the maximized log-likelihood. While the bivariate log-likelihood is considered at each estimation step of the ML method, the log-likelihood of the recursive ML procedure corresponds at each estimation step to the full log-likelihood for the marginal HAC regarded at that step. Compared to the full ML approach, the log-likelihood is only optimized with respect to the parameter at the root node taken the estimated parameter(s) at lower hierarchical levels as given, so that the final HAC being a copula is ensured by shortening the feasible parameter interval from above. From this point of view, the computational challenge is to build the log-likelihood for the full ML estimation, which is almost solved by constructing the $d$-dimensional density, see Section \ref{sec:cdf}.
+Following \citet{okhrin_okhrin_schmid_2013a}, the estimation of the
+copula parameters at each step of the iteration can be sketched as
+follows: at first stage, we estimate the parameter of the copula at
+the first hierarchical level assuming that the marginal distributions
+are known. At further stages, the next level copula parameter is
+estimated assuming that the margins as well as the copula parameters
+at lower levels are known. Let $\mathbf{X}=\{x_{ij}\}^{\top}$ be the
+respective sample, for $i=1,\ldots,n$, $j=1,\ldots,d$, and
+$\pmb{\theta}=(\theta_1,\ldots,\theta_{d-1})^\top$ be the parameters of
+the copula starting with the lowest up to the highest level. The
+recursive multi-stage ML estimator $\widehat{\pmb{\theta}}$ solves the
+system
+\begin{align}\label{eqn:MLp}
+  \left(\frac{\partial \mathcal{L}_1}{\partial \theta_1}\right.,
+  \left.\dots,\frac{\partial \mathcal{L}_{d-1}}{\partial
+      \theta_{d-1}}\right)^\top&=\mathbf{0}, \\
+  % 
+  \intertext{where for $j=1,\ldots,d-1$}
+  % 
+  \mathcal{L}_j&=\sum_{i=1}^n l_j(\mathbf{X}_i), \nonumber \\
+  % 
+  \intertext{with for $i=1\ldots,n$}
+  %
+  l_{j}(\mathbf{X}_i) &= \log \, \left\{c_j\big[ \{\widehat F_m(x_{im})\}_{m\in s_j};\,s_j, \theta_j\big]\prod_{m\in s_j}\hat
+    f_m(x_{im})\right\}, \nonumber
+\end{align}
+where $s_j$ refers to the (pseudo)-variables considered at the
+$j$th estimation stage. \citet{chen_fan_2006} and
+\citet{okhrin_okhrin_schmid_2013a} provide asymptotic behaviour of the
+estimates. At the moment, there are three different ways to estimate
+HAC:
+\begin{enumerate}[(i)]
+\item Ordinary (full) ML estimation, also denoted by FML, which is
+  based on the complete log-likelihood and hence on a predetermined
+  structure.
+\item The ML setup is based on realized pseudo-variables, i.e., the
+  values of the pseudo-variables for the given sample are explicitly
+  computed, so that the bivariate density is maximized with respect to
+  the copula parameter at each step of the procedure. The benefits of
+  the ML method hold in particular for binary and non-complex
+  structures. If the structure of the HAC is, however, complex, the
+  estimates around the initial node seem to be slightly biased. Note
+  that this procedure is not supported by asymptotic theory.
+\item More precise results can be obtained by the recursive ML (RML)
+  procedure discussed in \citet{okhrin_okhrin_schmid_2013a}. The
+  difference between the ML method and the recursive ML procedure
+  results from the maximized log-likelihood. While the bivariate
+  log-likelihood is considered at each estimation step of the ML
+  method, the log-likelihood of the recursive ML procedure corresponds
+  at each estimation step to the full log-likelihood for the marginal
+  HAC regarded at that step. Compared to the full ML approach, the
+  log-likelihood is only optimized with respect to the parameter at
+  the root node taken the estimated parameter(s) at lower hierarchical
+  levels as given, so that the final HAC being a copula is ensured by
+  shortening the feasible parameter interval from above. From this
+  point of view, the computational challenge is to build the
+  log-likelihood for the full ML estimation, which is almost solved by
+  constructing the $d$-dimensional density, see Section \ref{sec:cdf}.
+\end{enumerate}
 
 \section[Applications of HAC]{Applications of \pkg{HAC}}\label{sec:AHAC}
-Core of the \pkg{HAC} package is the function \code{estimate.copula} estimating the parameter and determining the structure for given data. Let us consider the dataset \code{finData} included in the \pkg{HAC} package. It contains the residuals of the filtered daily log-returns of four oil corporations: Chevron Corporation (\code{CVX}), Exxon Mobil Corporation (\code{XOM}), Royal Dutch Shell (\code{RDSA}) and Total (\code{FP}), covering $n = 283$ observations from 20110202 to 20120319. Intertemporal dependence is removed by usual ARMA-GARCH models, whose standardized residuals are plotted in Figure~\ref{fig:scatter1} and used in the subsequent analysis:
-
-%<<echo = FALSE, eval = FALSE>>=
-%    library("xts")
-%    library("fGarch")
-%    XOM =
-%    read.csv("http://ichart.finance.yahoo.com/table.csv?s=XOM&a=01&b=01&c=2011&d=02&e=19&f=2012&g=d&ignore=.csv")[,c("Date","Close")]
-%    XOM = as.xts(XOM[,2], order.by = as.Date(XOM[,1]))
-%    FP =
-%    read.csv("http://ichart.finance.yahoo.com/table.csv?s=FP.PA&a=01&b=01&c=2011&d=02&e=19&f=2012&g=d&ignore=.csv")[,c("Date","Close")]
-%    FP = as.xts(FP[,2], order.by = as.Date(FP[,1]))
-%    RDSA =
-%    read.csv("http://ichart.finance.yahoo.com/table.csv?s=RDSA.AS&a=01&b=01&c=2011&d=02&e=19&f=2012&g=d&ignore=.csv")[,c("Date","Close")]
-%    RDSA = as.xts(RDSA[,2], order.by = as.Date(RDSA[,1]))
-%    CVX =
-%    read.csv("http://ichart.finance.yahoo.com/table.csv?s=CVX&a=1&b=01&c=2011&d=02&e=19&f=2012&g=d&ignore=.csv")[,c("Date","Close")]
-%    CVX = as.xts(CVX[,2], order.by = as.Date(CVX[,1]))
-
-%finData = na.omit(merge(XOM, FP, RDSA, CVX))
-%finData = diff(log(finData))[-1,]
-%model1 = garchFit(~ arma(1,1)+garch(1,1), data = finData[,1], trace = FALSE)
-%model2 = garchFit(~ garch(1,1), data = finData[,2], trace = FALSE)
-%model3 = garchFit(~garch(1,1), data = finData[,3], trace = FALSE)
-%model4 = garchFit(~ arma(1,1)+garch(1,1), data = finData[,4], trace = FALSE)
-
-%finData[,1] = model1@residuals/model1@sigma.t
-%finData[,2] = model2@residuals/model2@sigma.t
-%finData[,3] = model3@residuals/model3@sigma.t
-%finData[,4] = model4@residuals/model4@sigma.t
-
-%finData = as.matrix(finData); colnames(finData) = c("XOM", "FP", "RDSA", "CVX")
-%@
+Core of the \pkg{HAC} package is the function \code{estimate.copula}
+estimating the parameter and determining the structure for given
+data. Let us consider the dataset \code{finData} included in the
+\pkg{HAC} package. It contains the residuals of the filtered daily
+log-returns of four oil corporations: Chevron Corporation
+(\code{CVX}), Exxon Mobil Corporation (\code{XOM}), Royal Dutch Shell
+(\code{RDSA}) and Total (\code{FP}), covering $n = 283$ observations
+from 2011-02-02 to 2012-03-19. Intertemporal dependence is removed by
+usual ARMA-GARCH models, whose standardized residuals are plotted in
+Figure~\ref{fig:scatter1} and used in the subsequent analysis:
 
 <<>>=
 library("HAC")
@@ -283,14 +410,17 @@ data("finData")
 system.time(result <- estimate.copula(finData, margins = "edf"))
 result
 @
-The returned object \code{result} is of class \code{hac}, whose properties are explored below.
 
+The returned object \code{result} is of class `\code{hac}', whose
+properties are explored below. A practical illustration of the
+mechanism of \code{estimate.copula} related to the previous real data
+example is presented in Table~\ref{tab:est_proc}.
 <<label = Scatter1, fig=TRUE, pdf = TRUE, echo=FALSE, height=6, width=6, eval=TRUE, include=FALSE>>=
 par(mai = c(0, 0, 0, 0))
 pairs(finData, pch = 20)
 @
 
-\begin{figure}
+\begin{figure}[t!]
     \centering
     \includegraphics[width=0.7\textwidth]{HAC-Scatter1.pdf}
     \vspace{-0.75cm}
@@ -298,62 +428,92 @@ pairs(finData, pch = 20)
     \label{fig:scatter1}
 \end{figure}
 
-The multi-stage estimation procedure is illustrated in Table~\ref{tab:est_proc} for the four-dimensional example from above. At the lowest hierarchical level, the parameter of all bivariate copulae are estimated. The couple $(X_{\tiny{\verb/CVX/}},X_{\tiny{\verb/XOM/}})$ produces the strongest dependency, hence the best fit. Then, the pseudo-variable
+At the lowest hierarchical level, the parameters of all
+bivariate copulae are estimated. The couple
+$(X_{\tiny{\verb/CVX/}},X_{\tiny{\verb/XOM/}})$ produces the strongest
+dependency, hence the best fit. Then, the pseudo-variable
 \begin{eqnarray}\label{eqn:Z}
-    Z_{(\tiny{\verb/CVX.XOM/})}&\overset{\operatorname{def}}{=}&\phi_{\hat{\theta}_{(\tiny{\verb/CVX.XOM/}})}\left[\phi_{\hat{\theta}_{(\tiny{\verb/CVX.XOM/}})}^{-1}\left\{\widehat{F}_{\tiny{\verb/XOM/}}\left(X_{\tiny{\verb/XOM/}}\right)\right\}+\phi_{(\hat{\theta}_{\tiny{\verb/CVX.XOM/}})}^{-1}\left\{\widehat{F}_{\tiny{\verb/CVX/}}\left(X_{\tiny{\verb/CVX/}}\right)\right\}\right] \end{eqnarray}
-is defined. As the \code{RML} method is used by default, the involved variables $X_{\tiny{\verb/XOM/}}$ and $X_{\tiny{\verb/CVX/}}$ are not substituted by the in the dataset. At the next nesting level the parameters of all bivariate subsets are estimated and the variables $X_{\tiny{\verb/FP/}}$ and $X_{\tiny{\verb/RDSA/}}$ exhibit the best fit. Finally, the realizations of the remaining random variables $Z_{(\tiny{\verb/CVX.XOM/})}$ and $Z_{(\tiny{\verb/FP.RDSA/})}$ are grouped at the highest level of the hierarchy, where $Z_{(\tiny{\verb/FP.RDSA/})}$ is defined analogously to $Z_{(\tiny{\verb/CVX.XOM/})}$.
+  Z_{(\tiny{\verb/CVX.XOM/})}&\overset{\operatorname{def}}{=}&
+  \phi_{\hat{\theta}_{(\tiny{\verb/CVX.XOM/}})}\left[\phi_{\hat{\theta}_{(\tiny{\verb/CVX.XOM/}})}^{-1}\left\{\widehat{F}_{\tiny{\verb/XOM/}}\left(X_{\tiny{\verb/XOM/}}\right)\right\}+\phi_{(\hat{\theta}_{\tiny{\verb/CVX.XOM/}})}^{-1}\left\{\widehat{F}_{\tiny{\verb/CVX/}}\left(X_{\tiny{\verb/CVX/}}\right)\right\}\right] 
+\end{eqnarray}
+is defined, whose values are however not computed in practice, as the
+recursive ML procedure (\code{method = 3}) is used by default.  At the
+next nesting level the parameters of all bivariate subsets are
+estimated and the variables $X_{\tiny{\verb/FP/}}$ and
+$X_{\tiny{\verb/RDSA/}}$ exhibit the best fit. Finally, the
+realizations of the remaining random variables
+$Z_{(\tiny{\verb/CVX.XOM/})}$ and $Z_{(\tiny{\verb/FP.RDSA/})}$ are
+grouped at the highest level of the hierarchy, where
+$Z_{(\tiny{\verb/FP.RDSA/})}$ is defined analogously to
+$Z_{(\tiny{\verb/CVX.XOM/})}$.
 
-\begin{table}
-    \hspace{-1.25cm}
-    \setlength{\tabcolsep}{1mm}
-    \begin{tabular}{l|lll|lll}
-        &
-        \multicolumn{3}{c}{$z_{i,
-        (\tiny{\verb"CVX.XOM"})}\overset{\operatorname{def}}{=}\widehat{C}\{\widehat{F}_{\tiny{\verb"CVX"}}(x_{i,
-        \tiny{\verb"CVX"}}),\widehat{F}_{\tiny{\verb"XOM"}}(x_{i, \tiny{\verb"XOM"}})\}$} & \multicolumn{3}{|c}{$z_{i,
-        (\tiny{\verb"FP.RDSA"})}\overset{\operatorname{def}}{=}\widehat{C}\{\widehat{F}_{\tiny{\verb"FP"}}(x_{i,
-        \tiny{\verb"FP"}}),\widehat{F}_{\tiny{\verb"RDSA"}}(x_{i, \tiny{\verb"RDSA"}})\}$}
-        \\
-        \begin{tabular}{ccl}
-        \\
-            (\verb/CVX.FP/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/CVX.FP/})}$\\
-            (\verb/CVX.XOM/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/CVX.XOM/})}$\\
-            (\verb/FP.RDSA/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/FP.RDSA/})}$\\
-            (\verb/FP.XOM/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/FP.XOM/})}$\\
-            (\verb/RDSA.XOM/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/RDSA.XOM/})}$\\
-        \\
-            %\hline
-            %(\verb/CVX.FP.RDSA/) $\rightsquigarrow$ $\hat{\theta}_{\tiny{\verb/CVX.FP.RDSA/}}$\\
-            %(\verb/CVX.FP.XOM/) $\rightsquigarrow$ $\hat{\theta}_{\tiny{\verb/CVX.FP.XOM/}}$\\
-            %(\verb/FP.RDSA.XOM/) $\rightsquigarrow$ $\hat{\theta}_{\tiny{\verb/FP.RDSA.XOM/}}$\\
-            %(\verb/CVX.RDSA.XOM/) $\rightsquigarrow$ $\hat{\theta}_{\tiny{\verb/CVX.RDSA.XOM/}}$\\
-            %(\verb/CVX.FP.RDSA.XOM/) $\rightsquigarrow$ $\hat{\theta}_{\tiny{\verb/CVX.FP.RDSA.XOM/}}$
-        \end{tabular}
-
-        & \rotatebox[origin=c]{90}{best fit}
-        & \rotatebox[origin=c]{90}{(\code{CVX.XOM})}\;\;$\Rightarrow$ &
-        \begin{tabular}{ccl}
-        \\
-        \\
-            (\verb/CVX.XOM/)\verb/FP/ & $\rightsquigarrow$ & $\hat{\theta}_{\tiny{(\verb/CVX.XOM/)\verb/FP/}}$\\
-            (\verb/CVX.XOM/)\verb/RDSA/ & $\rightsquigarrow$ & $\hat{\theta}_{\tiny{(\verb/CVX.XOM/)\verb/RDSA/}}$\\
-            (\verb/FP.RDSA/) & $\rightsquigarrow$ & $\hat{\theta}_{\tiny{(\verb/FP.RDSA/)}}$\\
-            %\hline
-            %(13)24 $\rightsquigarrow$ $\hat{\theta}_{(13)24}$
-        \\
-        \\
-        \end{tabular}
-        & \rotatebox[origin=c]{90}{best fit}
-        & \rotatebox[origin=c]{90}{(\code{FP.RDSA})}\;\;$\Rightarrow$
-        \begin{tabular}{c}
-            \\
-            ((\code{CVX.XOM})(\code{FP.RDSA}))\\
-            $\rightsquigarrow \hat{\theta}_{((\tiny{\verb/CVX.XOM/})(\tiny{\verb/FP.RDSA/}))}$\\
-        \end{tabular}
+\begin{sidewaystable}
+  \centering
+  \begin{tabular}{l|lll|lll}
+    \hline
+    &&&&&&\\
+    &
+    \multicolumn{3}{c}{$z_{i,
+         (\tiny{\verb"CVX.XOM"})}\overset{\operatorname{def}}{=}\widehat{C}\{\widehat{F}_{\tiny{\verb"CVX"}}(x_{i,
+         \tiny{\verb"CVX"}}),\widehat{F}_{\tiny{\verb"XOM"}}(x_{i, \tiny{\verb"XOM"}})\}$} 
+    & \multicolumn{3}{|c}{$z_{i,
+         (\tiny{\verb"FP.RDSA"})}\overset{\operatorname{def}}{=}\widehat{C}\{\widehat{F}_{\tiny{\verb"FP"}}(x_{i,
+         \tiny{\verb"FP"}}),\widehat{F}_{\tiny{\verb"RDSA"}}(x_{i, \tiny{\verb"RDSA"}})\}$}
+     \\
+    \begin{tabular}{ccl}
+      \\
+      (\verb/CVX.FP/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/CVX.FP/})}$\\
+      (\verb/CVX.XOM/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/CVX.XOM/})}$\\
+      (\verb/FP.RDSA/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/FP.RDSA/})}$\\
+      (\verb/FP.XOM/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/FP.XOM/})}$\\
+      (\verb/RDSA.XOM/) & $\rightsquigarrow$ & $\hat{\theta}_{(\tiny{\verb/RDSA.XOM/})}$\\
+      \\
     \end{tabular}
-    \caption{The estimation procedure in practice.}
-    \label{tab:est_proc}
-\end{table}
+    & \rotatebox[origin=c]{90}{best fit}
+    & \rotatebox[origin=c]{90}{(\code{CVX.XOM})}\;\;$\Rightarrow$ &
+    \begin{tabular}{ccl}
+      \\
+      \\
+      (\verb/CVX.XOM/)\verb/FP/ & $\rightsquigarrow$ & $\hat{\theta}_{\tiny{(\verb/CVX.XOM/)\verb/FP/}}$\\
+      (\verb/CVX.XOM/)\verb/RDSA/ & $\rightsquigarrow$ & $\hat{\theta}_{\tiny{(\verb/CVX.XOM/)\verb/RDSA/}}$\\
+      (\verb/FP.RDSA/) & $\rightsquigarrow$ & $\hat{\theta}_{\tiny{(\verb/FP.RDSA/)}}$\\
+      \\
+      \\
+    \end{tabular}
+    & \rotatebox[origin=c]{90}{best fit}
+    & \rotatebox[origin=c]{90}{(\code{FP.RDSA})}\;\;$\Rightarrow$
+    \begin{tabular}{c}
+      \\
+      ((\code{CVX.XOM})(\code{FP.RDSA}))\\
+      $\rightsquigarrow \hat{\theta}_{((\tiny{\verb/CVX.XOM/})(\tiny{\verb/FP.RDSA/}))}$\\
+    \end{tabular}
+    \\
+    \hline
+  \end{tabular}
+  \caption{The estimation procedure in practice.}
+  \label{tab:est_proc}
+  \vspace*{2cm}
+  \begin{tabular}{llcc}
+    \hline
+    Generator & Parameter & $\phi\left(u; \theta \right)$&$\tau \left(\theta\right)$\\
+    \hline
+    AMH & $\theta\in[0,1)$ &  $(1-\theta)/\{\exp(u)-\theta\}$ & $1-2/(3 \theta^2)\left\{\theta+(1-\theta)^2\log(1-\theta)\right\}$\\
+    
+    Clayton & $\theta\in(0,\infty)$& $\left(u+1\right)^{-1/\theta}$ & $\theta/(\theta+2)$\\
+    
+    Frank & $\theta\in(0,\infty)$& $-\log\left[1-\left\{1-\exp(-\theta)\right\}\exp(-u)\right]/\theta$ & $1+4/\theta\left\{D(\theta)-1\right\}$\\
+    
+    Gumbel & $\theta\in[1,\infty)$& $\exp\left(-u^{1/ \theta}\right)$ &$1-1/\theta$\\
+    
+    Joe & $\theta\in[1,\infty)$ & $1-\left\{1-\exp(-u)\right\}^{1/\theta}$ & $1-4\sum_{\ell=1}^{\infty}\left[\ell(\theta\ell+2)\left\{2+\theta(\ell-1)\right\}\right]^{-1}$\\
+    \hline
+  \end{tabular}
+  \caption{Generator functions and the relations between the copula
+    parameter and Kendall's $\tau(\cdot)$. The Debye function
+    $D(\cdot)$ involved in $\tau(\cdot)$ for the family Frank is given
+    by $D(\theta)=1/\theta\int_0^{\theta}u/\{\exp(u)-1\}du$.}
+  \label{tab:Basics}
+\end{sidewaystable}
 
 In general, \code{estimate.copula} includes the following arguments:
 
@@ -361,25 +521,80 @@ In general, \code{estimate.copula} includes the following arguments:
 names(formals(estimate.copula))
 @
 
-The whole procedure is divided in three (optional) computational blocks. First, the margins are specified. Secondly, the copula parameter, $\btheta$, is estimated and finally the HAC is checked for aggregation possibilities. The \code{margins} of the $(n \times d)$ data matrix, \code{X}, are assumed to follow the standard Uniform distribution by default, i.e., \code{margins = NULL}, but the function also permits non-uniformly distributed data as input if the argument \code{margins} is specified. The marginal distributions can be determined non-parametrically, \verb/margins = "edf"/, or in a parametric way, e.g., \verb/margins = "norm"/. Following the latter approach, the log-likelihood of the marginal \code{Distributions} is optimized with respect to the first (and second) parameter(s) of the density \code{dxxx}. Based on these estimates, the values of the univariate margins are computed. If the argument is defined as scalar, all margins are computed according to this specification. Otherwise, different margins can be defined, e.g., \verb/margins = c("norm", "t", "edf")/ for a three-dimensional sample. Except the Uniform distribution, all continuous \code{Distributions} of the \pkg{stats} package provided by the \citet{R} are available: \verb/"beta"/, \verb/"cauchy"/, \verb/"chisq"/, \verb/"exp"/, \verb/"f"/, \verb/"gamma"/, \verb/"lnorm"/, \verb/"norm"/, \verb/"t"/ and \verb/"weibull"/. The values of non-parametrically estimated distributions are computed according to Equation~\ref{eqn:nonp}.
+The whole procedure is divided in three (optional) computational
+blocks. First, the margins are specified. Secondly, the copula
+parameter, $\pmb{\theta}$, is estimated and finally the HAC is checked
+for aggregation possibilities. The \code{margins} of the $(n \times
+d)$ data matrix, \code{X}, are assumed to follow the standard uniform
+distribution by default, i.e., \code{margins = NULL}, but the function
+also permits non-uniformly distributed data as input if the argument
+\code{margins} is specified. The marginal distributions can be
+determined non-parametrically, \verb/margins = "edf"/, or in a
+parametric way, e.g., \verb/margins = "norm"/. Following the latter
+approach, the log-likelihood of the marginal distributions is
+optimized with respect to the first (and second) parameter(s) of the
+density \code{dxxx}. Based on these estimates, the values of the
+univariate margins are computed. If the argument is defined as scalar,
+all margins are computed according to this specification. Otherwise,
+different margins can be defined, e.g.,
+\verb/margins = c("norm", "t", "edf")/ for a three-dimensional
+sample. Except the uniform distribution, all continuous distributions
+of the \pkg{stats} package \citep[see \code{?Distributions};][]{R} are
+available: \verb/"beta"/, \verb/"cauchy"/, \verb/"chisq"/,
+\verb/"exp"/, \verb/"f"/, \verb/"gamma"/, \verb/"lnorm"/,
+\verb/"norm"/, \verb/"t"/ and \verb/"weibull"/. The values of
+non-parametrically estimated distributions are computed according to
+Equation~\ref{eqn:nonp}.
 
-Inappropriate usage of this argument might lead to misspecified margins, e.g., \linebreak \verb/margins = "exp"/ although the sample contains negative values. Even though the margins might be assumed to follow parametric distributions if \code{margins != NULL}, no joint log-likelihood is maximized, but the margins are estimated in advance. As the asymptotic theory works well for parametric and nonparametric estimation of margins, for the univariate analysis we refer to other built-in packages. In practice, the column names of \code{X} should be specified, as the default names \code{X1, X2, ...} are given otherwise.
+Inappropriate usage of this argument might lead to misspecified
+margins, e.g., \linebreak \verb/margins = "exp"/ although the sample
+contains negative values. Even though the margins might be assumed to
+follow parametric distributions if \code{margins != NULL}, no joint
+log-likelihood is maximized, but the margins are estimated in
+advance. As the asymptotic theory works well for parametric and
+nonparametric estimation of margins, for the univariate analysis we
+refer to other built-in packages. In practice, the column names of
+\code{X} should be specified, as the default names \code{X1, X2, ...}
+are given otherwise.
 
-A further optional argument of \code{estimate.copula} determines the estimation \code{method}. As discussed above, we present three procedures: \code{ML}, which is based on the bivariate density, full ML (\code{FML}) and recursive ML (\code{RML}) respectively. The routines of the \pkg{copula} package are imported if a simple Archimedean copula is fitted to the data, see \cite{yan_2007, kojadinovic_yan_2010, hofert_maechler_2011}.
+A further optional argument of \code{estimate.copula} determines the
+estimation \code{method}. As discussed above, we present three
+procedures: ML (\code{method = 1}), which is based on the bivariate
+density, full ML (\code{method = 2}) and recursive ML (\code{method =
+  3}) respectively. The routines of the \pkg{copula} package are
+imported if a simple Archimedean copula is fitted to the data, see
+\cite{yan_2007, kojadinovic_yan_2010, hofert_maechler_2011}.
 
-At the final computational step of the procedure the binary HAC is checked for aggregation possibilities, if \code{epsilon > 0}. The new dependency parameter is computed according to the specification \code{agg.method}, i.e., the \verb/"min"/, \verb/"max"/ or \verb/"mean"/ of the original parameters. To emphasize this point, recall the four-dimensional binary HAC
+At the final computational step of the procedure the binary HAC is
+checked for aggregation possibilities, if \code{epsilon > 0}. The new
+dependency parameter is computed according to the specification
+\code{agg.method}, i.e., the \verb/"min"/, \verb/"max"/ or
+\verb/"mean"/ of the original parameters. To emphasize this point,
+recall the four-dimensional binary HAC
 \begin{eqnarray}\label{eqn:agg_b}
-    C(u_1,\dots,u_4; (((12)3)4), \btheta) &= \phi_{\theta_{3}}\left\{\phi^{-1}_{\theta_{3}}\circ C\{u_1,\dots,u_{3}; ((12)3), (\theta_1,\theta_{2})^\trans\}+\phi^{-1}_{\theta_{3}}(u_4)\right\},
+  C(u_1,\dots,u_4; (((12)3)4), \pmb{\theta}) &= \phi_{\theta_{3}}\left\{\phi^{-1}_{\theta_{3}}\circ C\{u_1,\dots,u_{3}; ((12)3), (\theta_1,\theta_{2})^\top\}+\phi^{-1}_{\theta_{3}}(u_4)\right\},
 \end{eqnarray}
-from Section \ref{sec:PHAC}. If we assume additionally $ \theta_{1} \approx \theta_{2}$, such that $ \theta_{1} - \theta_{2} < \varepsilon $, the copula $C(\cdot)$ can be approximated by
+from Section~\ref{sec:PHAC}. If we assume additionally $ \theta_{1}
+\approx \theta_{2}$, such that $ \theta_{1} - \theta_{2} < \varepsilon
+$, the copula $C(\cdot)$ can be approximated by
 
 \begin{eqnarray}\label{eqn:agg_a}
-    C^{*}(u_1,\dots,u_4; ((123)4), \btheta) &= \phi_{\theta_3}\left\{\phi^{-1}_{\theta_3}\circ C\{u_1, \ldots, u_{3}; (123), \theta^{*}\}+\phi^{-1}_{\theta_3}(u_4)\right\},
+  C^{*}(u_1,\dots,u_4; ((123)4), \pmb{\theta}) &= \phi_{\theta_3}\left\{\phi^{-1}_{\theta_3}\circ C\{u_1, \ldots, u_{3}; (123), \theta^{*}\}+\phi^{-1}_{\theta_3}(u_4)\right\},
 \end{eqnarray}
-where $\theta^{*} = (\theta_1+\theta_2)/2$ for instance. This is referred to as the associativity property of Archimedean copulae, see Theorem 4.1.5 of \citet{nelsen_2006}. If the variables of two nodes are aggregated, the new copula is checked for aggregation possibilities as well. Beside this threshold approach, the realized estimates $\hat{\theta}_1$ and $\hat{\theta}_2$ can obviously be used to test $H_0: \, \theta_1 - \theta_2 = 0 $, since the asymptotic distribution is known. On the other hand, this approach is extremely expensive computationally. The estimation results for the non-aggregated and the aggregated cases are presented in the following:
+where $\theta^{*} = (\theta_1+\theta_2)/2$ for instance. This is
+referred to as the associativity property of Archimedean copulae, see
+Theorem 4.1.5 of \citet{nelsen_2006}. If the variables of two nodes
+are aggregated, the new copula is checked for aggregation
+possibilities as well. Beside this threshold approach, the realized
+estimates $\hat{\theta}_1$ and $\hat{\theta}_2$ can obviously be used
+to test $H_0: \, \theta_1 - \theta_2 = 0 $, since the asymptotic
+distribution is known. On the other hand, this approach is extremely
+expensive computationally. The estimation results for the
+non-aggregated and the aggregated cases are presented in the
+following:
 
 <<label = result-agg, fig=TRUE, pdf = TRUE, echo = FALSE, height = 4.5, width = 4.5, eval = TRUE, include = FALSE>>=
-    result.agg = estimate.copula(finData, method = ML, margins = "edf", epsilon = 0.3)
+    result.agg = estimate.copula(finData, method = 1, margins = "edf", epsilon = 0.3)
     par(mai = c(0, 0, 0, 0))
     plot(result.agg, circles = 0.3, index = TRUE, l = 1.7)
 @
@@ -395,75 +610,93 @@ plot(result, circles = 0.3, index = TRUE, l = 1.7)
 plot(result.agg, circles = 0.3, index = TRUE, l = 1.7)
 @
 
-\begin{figure}[htb]
-    \begin{minipage}[t]{0.5\textwidth}
-	   \centering 	
-        \includegraphics[width=2in]{HAC-result.pdf}
-    \end{minipage}
-    \begin{minipage}[t]{0.5\textwidth}
-	   \centering 	
-        \includegraphics[width=2in]{HAC-result-agg.pdf}
-    \end{minipage}
-    \vspace{-15mm}
-    \caption{Plot of \code{result} on the left and \code{result.agg} on the right hand side.}
-    \label{fig:result}
+\begin{figure}[t!]
+  \begin{minipage}[t]{0.5\textwidth}
+    \centering 	
+    \includegraphics[width=2in, trim=0 45 0 0, clip]{HAC-result.pdf}
+  \end{minipage}
+  \begin{minipage}[t]{0.5\textwidth}
+    \centering 	
+    \includegraphics[width=2in, trim=0 45 0 0, clip]{HAC-result-agg.pdf}
+  \end{minipage}
+  \caption{Plot of \code{result} on the left and \code{result.agg} on the right hand side.}
+  \label{fig:result}
 \end{figure}
 
-\begin{table}
-    \begin{center}
-        \begin{tabular}{ll|l}
-            \hline\hline
-            Generator & Parameter & \qquad\quad$\phi\left(u; \theta \right)$ \qquad\qquad\qquad\qquad\qquad\qquad $\tau \left(\theta\right)$\\
-            \hline
-            \code{AMH} & $\theta\in[0,1)$ &  $(1-\theta)/\{\exp(u)-\theta\}$  \qquad $1-2/(3 \theta^2)\left\{\theta+(1-\theta)^2\log(1-\theta)\right\}$\\
-            
-            \code{CLAYTON} & $\theta\in(0,\infty)$& \qquad $\left(u+1\right)^{-1/\theta}$ \qquad\qquad\qquad\qquad\qquad $\theta/(\theta+2)$\\
-            
-            \code{FRANK} & $\theta\in(0,\infty)$& $-\log\left[1-\left\{1-\exp(-\theta)\right\}\exp(-u)\right]/\theta$ \qquad $1+4/\theta\left\{D(\theta)-1\right\}$\\
-            
-            \code{GUMBEL} & $\theta\in[1,\infty)$& \qquad $\exp\left(-u^{1/ \theta}\right)$ \qquad\qquad\qquad\qquad\qquad $1-1/\theta$\\
-            
-            \code{JOE} & $\theta\in[1,\infty)$ & $1-\left\{1-\exp(-u)\right\}^{1/\theta}$ \qquad $1-4\sum_{\ell=1}^{\infty}\left[\ell(\theta\ell+2)\left\{2+\theta(\ell-1)\right\}\right]^{-1}$\\
-            \hline\hline
-        \end{tabular}
-    \caption{Generator functions and the relations between the copula parameter and Kendall's $\tau(\cdot)$. The Debye function $D(\cdot)$ involved in $\tau(\cdot)$ for the family Frank is given by $D(\theta)=1/\theta\int_0^{\theta}u/\{\exp(u)-1\}du$.}
-    \label{tab:Basics}
-    \end{center}
-\end{table}
-
-\subsection[The hac object]{The \code{hac} object}\label{sec:hac_object}
-\code{hac} objects can be constructed by the general function \code{hac}, with the same name as the object it creates, and its simplified version \code{hac.full} for building fully nested HAC. For instance, consider the construction of a four-dimensional fully nested HAC with Gumbel generator, i.e.,
+\subsection[The `hac' object]{The `\code{hac}' object}\label{sec:hac_object}
+`\code{hac}' objects can be constructed by the general function
+\code{hac}, with the same name as the object it creates, and its
+simplified version \code{hac.full} for building fully nested HAC. For
+instance, consider the construction of a four-dimensional fully nested
+HAC with Gumbel generator, i.e.,
 <<>>=
-G.cop = hac.full(type  = HAC_GUMBEL,
+G.cop = hac.full(type  = 1,
                  y     = c("X4", "X3", "X2", "X1"),
                  theta = c(1.1, 1.8, 2.5))
 G.cop
 @
-where \code{y} denotes the vector of variables of class \code{character} and \code{theta} denotes the vector of dependency parameters. The parameters should be ascending ordered, so that the first parameter, \code{1.1}, is referred to the initial node of the HAC and the last parameter, \code{2.5}, corresponds to the first hierarchical level with variables \verb/"X1"/ and \verb/"X2"/. The vector \code{y} has to contain one element more than the vector \code{theta}.
+where \code{y} denotes the vector of variables of class
+`\code{character}' and \code{theta} denotes the vector of dependency
+parameters. The parameters should be in ascending order, so that the
+first parameter, \code{1.1}, refers to the initial node of the
+HAC and the last parameter, \code{2.5}, corresponds to the first
+hierarchical level with variables \verb/"X1"/ and \verb/"X2"/. The
+vector \code{y} has to contain one element more than the vector
+\code{theta}.
 
-The returned output of \code{hac} objects is structured by three lines: (i) the object's \code{Class}, (ii) the \code{Generator} family and (iii) the HAC structure $s$. The structure can also be produced by the supplementary function \code{tree2str}. Variables, grouped at the same node are separated by a dot ``\code{.}'' and the dependency parameters are printed within the curly parentheses.
+The \proglang{S}3 \code{print} method for `\code{hac}' objects gives
+an output structured in three lines: (i) the object's \code{Class},
+(ii) the \code{Generator} family and (iii) the HAC structure $s$. The
+structure can also be produced by the supplementary function
+\code{tree2str}. Variables, grouped at the same node are separated by
+a dot ``\code{.}'' and the dependency parameters are printed within
+the curly parentheses.
 
-Partially nested Archimedean copulae are constructed by \code{hac} with the main argument \code{tree}. For a better understanding let us first consider a four-dimensional simple Archimedean copula with dependency parameter $\theta = 2$:
+Partially nested Archimedean copulae are constructed by \code{hac}
+with the main argument \code{tree}. For a better understanding let us
+first consider a four-dimensional simple Archimedean copula with
+dependency parameter $\theta = 2$:
 <<>>=
-hac(tree = list("X1", "X2", "X3", "X4", 2))
+hac(type = 1, tree = list("X1", "X2", "X3", "X4", 2))
 @
-The copula \code{tree} is constructed by a \code{list} consisting of four \code{character} objects, i.e., \linebreak \verb/"X1", "X2", "X3", "X4"/, and a number, which denotes the dependency parameter of the Archimedean copula. According to the theoretical construction of HAC in Section \ref{sec:PHAC}, we can induce structure by substituting margins through a subcopula. The four variables \verb/"X1"/, \verb/"X2"/, \verb/"X3"/, \verb/"X4"/ can, for example, be structured by
+The copula \code{tree} is constructed by a \code{list} consisting of
+four \code{character} objects, i.e., \linebreak
+\verb/"X1", "X2", "X3", "X4"/, and a number, which denotes the
+dependency parameter of the Archimedean copula. According to the
+theoretical construction of HAC in Section \ref{sec:PHAC}, we can
+induce structure by substituting margins through a subcopula. The four
+variables \verb/"X1"/, \verb/"X2"/, \verb/"X3"/, \verb/"X4"/ can, for
+example, be structured by
 <<>>=
-hac(tree = list(list("X1", "X2", 2.5), "X3", "X4", 1.5))
+hac(type = 1, tree = list(list("X1", "X2", 2.5), "X3", "X4", 1.5))
 @
-where the nested component, \verb/list("X1", "X2", 2.5)/, is the subcopula at the lowest hierarchical level. Note that the nested component is of the same general form \code{list(..., numeric(1))} as the simple Archimedean copula, where \code{numeric(1)} denotes the dependency parameter and ``\code{...}'' refers to arbitrary variables and subcopulae, which may contain subcopulae as well, like presented in the following:
+where the nested component, \verb/list("X1", "X2", 2.5)/, is the
+subcopula at the lowest hierarchical level. Note that the nested
+component is of the same general form \code{list(..., numeric(1))} as
+the simple Archimedean copula, where \code{numeric(1)} denotes the
+dependency parameter and ``\code{...}'' refers to arbitrary variables
+and subcopulae, which may contain subcopulae as well, like shown
+in the following:
 
 <<>>=
-HAC = hac(tree = list(list("Y1", list("Z3", "Z4", 3), "Y2", 2.5),
+HAC = hac(type = 1, tree = list(list("Y1", list("Z3", "Z4", 3), "Y2", 2.5),
                       list("Z1", "Z2", 2), list("X1", "X2", 2.4),
                       "X3", "X4", 1.5))
 HAC
 @
 
-We cannot avoid the notation becoming more cumbersome for higher dimensions, but the principle stays the same for arbitrary dimensions, i.e., variables are substituted by \code{list}s of the general form \code{list(..., numeric(1))}. The function \code{hac} provides a further argument for specifying the \code{type} of the HAC.
+We cannot avoid the notation becoming more cumbersome for higher
+dimensions, but the principle stays the same for arbitrary dimensions,
+i.e., variables are substituted by lists of the general form
+\code{list(..., numeric(1))}. The function \code{hac} provides a
+further argument for specifying the \code{type} of the HAC.
 
 \subsection[Graphics]{Graphics}\label{sec:graphics}
-As the string representation of the structure becomes more unclear as dimension increases, the package allows to produce graphics of \code{hac} objects by the generic \code{plot} function. Figure~\ref{fig:HAC} illustrates for example the dependence structure of the lastly defined object \code{HAC}.
+As the string representation of the structure becomes more unclear as
+dimension increases, the package allows to produce graphics of
+`\code{hac}' objects using the \proglang{S}3 \code{plot} method for
+these objects. Figure~\ref{fig:HAC} illustrates for example the
+dependence structure of the already defined object \code{HAC}.
 
 <<label = HAC, fig=TRUE, pdf = TRUE, echo=FALSE, height = 3, width = 5, eval=TRUE, include=FALSE>>=
 par(mai = c(0, 0, 0, 0))
@@ -482,38 +715,76 @@ plot(HAC, cex = 0.8, circles = 0.35)
     \label{fig:HAC}
 \end{figure}
 
-The explanatory power of these plots can be enhanced by several of the usual \code{plot} parameters:
+The explanatory power of these plots can be enhanced by several of the
+usual \code{plot} parameters:
 
 <<>>=
 names(formals(plot.hac))
 @
 
-The optional, boolean argument \code{theta} determines whether the dependency parameter of the copula $\theta$ or Kendall's $\tau$ is printed, whereby Kendall's $\tau$ cannot be easily interpreted in the usual way for more than two dimensions.  The supplementary function \code{theta2tau} computes Kendall's rank correlation coefficient based on the value of the dependency parameter, whereas \code{tau2theta} corresponds to the inverse function, see Table~\ref{tab:Basics}. If \code{index = TRUE}, strings illustrating the subcopulae of the nodes are used as subscripts of the dependency parameters. If, additionally, \code{numbering = TRUE}, the parameters are numbered, such that the subscripts correspond to the estimation stages if the non-aggregated output of \code{estimate.copula} is plotted. The radius of the \code{circles}, the width \code{l} and the height \code{h} of the rectangles and the specific colors of the lines and the text can be adjusted. Further arguments ``\code{...}'' can, for example, be used to modify the font size \code{cex} or to include a subtitle \code{sub}.
+The optional, boolean argument \code{theta} determines whether the
+dependency parameter of the copula $\theta$ or Kendall's $\tau$ is
+printed, whereby Kendall's $\tau$ cannot be easily interpreted in the
+usual way for more than two dimensions.  The supplementary function
+\code{theta2tau} computes Kendall's rank correlation coefficient based
+on the value of the dependency parameter, whereas \code{tau2theta}
+corresponds to the inverse function, see Table~\ref{tab:Basics}. If
+\code{index = TRUE}, strings illustrating the subcopulae of the nodes
+are used as subscripts of the dependency parameters. If, additionally,
+\code{numbering = TRUE}, the parameters are numbered, such that the
+subscripts correspond to the estimation stages if the non-aggregated
+output of \code{estimate.copula} is plotted. The radius of the
+\code{circles}, the width \code{l} and the height \code{h} of the
+rectangles and the specific colors of the lines and the text can be
+adjusted. Further arguments ``\code{...}'' can, for example, be used
+to modify the font size \code{cex} or to include a subtitle
+\code{sub}.
 
 \subsection[Random sampling]{Random sampling}\label{sec:RS}
-To be in line with other \proglang{R}-packages providing tools for different univariate and multivariate distributions we provide: (i) \code{dHAC} for computing the values of the copula density, (ii) \code{pHAC} for the cumulative distribution function and (iii) \code{rHAC} for simulations. Sampling methods are imported from the \pkg{copula} package and rely on the algorithm suggested in \citet{hofert_maechler_2011}, who summarize the procedure for the former \pkg{nacopula} package as follows:
+To be in line with other \proglang{R} packages providing tools for
+different univariate and multivariate distributions we provide: (i)
+\code{dHAC} for computing the values of the copula density, (ii)
+\code{pHAC} for the cumulative distribution function and (iii)
+\code{rHAC} for simulations. Sampling methods are imported from the
+\pkg{copula} package and rely on the algorithm suggested in
+\citet{hofert_maechler_2011}, who summarize the sampling procedure as
+follows:
 
 \begin{algorithm}\label{Algo1}
-Let $C(\cdot)$ be a nested Archimedean copula with root copula $C_{0}(\cdot)$ generated by $\phi_{0}$. Let $U$ be a vector of the same dimension as $C_0(\cdot)$.
-
-\begin{enumerate}
-\item sample from inverse Laplace transform $\mathcal{LS}^{-1}$ of $\phi_0$, i.e., $V_{0} \sim
-F_{0}(\cdot)\overset{\operatorname{def}}{=}\mathcal{LS}^{-1}\left(\phi_{0}\right)$ \item for all components $u$ of $C_{0}(\cdot)$ that are nested Archimedean copulae do:
+  Let $C(\cdot)$ be a nested Archimedean copula with root copula
+  $C_{0}(\cdot)$ generated by $\phi_{0}$. Let $U$ be a vector of the
+  same dimension as $C_0(\cdot)$.
+  \begin{enumerate}
+  \item Sample from inverse Laplace transform $\mathcal{LS}^{-1}$ of
+    $\phi_0(\cdot)$, i.e., $V_{0} \sim
+    F_{0}(\cdot)\overset{\operatorname{def}}{=}\mathcal{LS}^{-1}\left\{\phi_{0}(\cdot)\right\}$. 
+  \item For all components $u$ of $C_{0}(\cdot)$ that are nested
+    Archimedean copulae do:
     \begin{enumerate}
-        \item set $C_{1}(\cdot)$ with generator $\phi_{1}(\cdot)$ to the nested Archimedean copula $u$
-        \item sample $V_{01} \sim F_{01}(\cdot)\overset{\operatorname{def}}{=} \mathcal{LS}^{-1}\left\{\phi_{01}
-            \left(\cdot; V_{0} \right) \right\}$
-        \item set $ C_{0}(\cdot) \overset{\operatorname{def}}{=} C_1(\cdot),  \phi_{0}(\cdot) \overset{\operatorname{def}}{=}
-            \phi_{1}(\cdot)$, and $V_{0} \overset{\operatorname{def}}{=} V_{01}$ and continue with 2.
+    \item Set $C_{1}(\cdot)$ with generator $\phi_{1}(\cdot)$ to the
+      nested Archimedean copula $u$.
+    \item Sample $V_{01} \sim
+      F_{01}(\cdot)\overset{\operatorname{def}}{=}
+      \mathcal{LS}^{-1}\left\{\phi_{01} \left(\cdot; V_{0} \right)
+      \right\}$.
+    \item Set $ C_{0}(\cdot) \overset{\operatorname{def}}{=}
+      C_1(\cdot), \phi_{0}(\cdot) \overset{\operatorname{def}}{=}
+      \phi_{1}(\cdot)$, and $V_{0} \overset{\operatorname{def}}{=}
+      V_{01}$ and continue with 2.
     \end{enumerate}
-\item for all other components $u$ of $C_{0}(\cdot)$ do
+  \item For all other components $u$ of $C_{0}(\cdot)$ do:
     \begin{enumerate}
-        \item sample $R \sim Exp(1)$
-        \item set the component of $U$ corresponding to $u$ to $\phi_{0}\left(R/V_{0}\right)$
+    \item Sample $R \sim Exp(1)$.
+    \item Set the component of $U$ corresponding to $u$ to
+      $\phi_{0}\left(R/V_{0}\right)$.
     \end{enumerate}
-\item return $U$ \end{enumerate} \end{algorithm}
+  \item Return $U$.
+\end{enumerate}
+\end{algorithm}
 
-The function \code{rHAC} requires only two arguments: (i) the sample size \code{n} and (ii) an object of the class \code{hac} specifying the characteristics of the underlying HAC, e.g.,
+The function \code{rHAC} requires only two arguments: (i) the sample
+size \code{n} and (ii) an object of the class `\code{hac}' specifying
+the characteristics of the underlying HAC, e.g.,
 
 <<label = Scatter2, fig=TRUE, pdf = TRUE, echo=FALSE, eval=TRUE, height = 6, width = 6, include=FALSE>>=
 set.seed(1)
@@ -527,30 +798,64 @@ sim.data = rHAC(500, G.cop)
 pairs(sim.data, pch = 20)
 @
 
-In particular, the contributions of \citet{mcneil_2008}, \citet{hofert_2008} and \citet{hofert_11} provide the theoretical foundations to sample computationally efficient random vectors from HAC. Algorithm~\ref{Algo1} exploits the recursively determined structure of HAC and samples from $F_{0}$ and $F_{01}$, which are comprehensively discussed in \citet{hofert_11} and \citet{hofert_maechler_2011}.
+In particular, the contributions of \citet{mcneil_2008},
+\citet{hofert_2008} and \citet{hofert_11} provide the theoretical
+foundations to sample computationally efficient random vectors from
+HAC. Algorithm~\ref{Algo1} exploits the recursively determined
+structure of HAC and samples from $F_{0}$ and $F_{01}$, which are
+comprehensively discussed in \citet{hofert_11} and
+\citet{hofert_maechler_2011}.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=4in]{HAC-Scatter2.pdf}
-    \vspace{-0.75cm}
-    \caption{Scatterplot of the sample \code{sim.data}, which is simulated from \code{G.cop} associated with a four dimensional HAC-based Gumbel copula.}
-    \label{fig:scatter2}
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=4in, trim=0 20 0 20, clip]{HAC-Scatter2.pdf}
+  \caption{Scatterplot of the sample \code{sim.data}, which is
+    simulated from \code{G.cop} associated with a four dimensional
+    HAC-based Gumbel copula.}
+  \label{fig:scatter2}
 \end{figure}
 
-\subsection[The cdf and density]{The cdf and density}\label{sec:cdf}
-The arguments for \code{pHAC} are a \code{hac} object and a sample \code{X}, whose column names should be identical to the variables' names of the \code{hac} object, e.g.,
+\subsection[The CDF and density]{The CDF and density}\label{sec:cdf}
+The arguments for \code{pHAC} are a `\code{hac}' object and a sample
+\code{X}, whose column names should be identical to the variables'
+names of the `\code{hac}' object, e.g.,
 
 <<>>=
 probs = pHAC(X = sim.data, hac = G.cop)
 @
-As the copula density is defined as $d$-th derivative of the copula $C(\cdot)$ with respect to the arguments $u_j$, $j=1,\ldots,d$, c.f. \citet{savu_trede_2010}, the explicit form of the density varies with the structure of the underlying HAC. Hence, including the explicit form of all possible $d$-dimensional copula densities is absolutely unrealistic. Our function \code{dHAC} derives an analytical expression of the density for a given \code{hac} object, which can be instantaneously evaluated if \code{eval = TRUE}. The analytical expression of the density is found by subsequently using the \code{D} function to differentiate the algebraic form of the copula ``symbolically'' with respect to the variables of the inserted \code{hac} object. Although the derivation and evaluation of the density is computationally and numerically demanding, \code{dHAC} provides a flexible way to work with HAC densities in practice, because they do not need to be manually derived or numerically approximated. Since the densities of the two-dimensional Archimedean copulae are frequently called during the pseudo multi-stage estimation procedure (\code{ML}), their closed form expressions are given explicitly.
+As the copula density is defined as $d$th derivative of the copula
+$C(\cdot)$ with respect to the arguments $u_j$, $j=1,\ldots,d$,
+c.f.~\citet{savu_trede_2010}, the explicit form of the density varies
+with the structure of the underlying HAC. Hence, including the
+explicit form of all possible $d$-dimensional copula densities is
+absolutely unrealistic. Our function \code{dHAC} derives an analytical
+expression of the density for a given `\code{hac}' object, which can be
+instantaneously evaluated if \code{eval = TRUE}. The analytical
+expression of the density is found by subsequently using the \code{D}
+function to differentiate the algebraic form of the copula
+``symbolically'' with respect to the variables of the inserted
+`\code{hac}' object. Although the derivation and evaluation of the
+density is computationally and numerically demanding, \code{dHAC}
+provides a flexible way to work with HAC densities in practice,
+because they do not need to be manually derived or numerically
+approximated. Since the densities of the two-dimensional Archimedean
+copulae are frequently called during the pseudo multi-stage estimation
+procedure (\code{1}), their closed form expressions are given
+explicitly.
 
 \subsection[Empirical copula]{Empirical copula}\label{sec:empirical}
-As long as our package does not cover goodness-of-fit tests, which are difficult to implement in general and involve computational intensive techniques via bootstrapping, see \citet{genest_remillard_beaudoin_2009}, it might be difficult to justify the choice of a parametric assumption. However, the values of \code{probs} can be compared to those of the empirical copula, i.e.,
+As long as our package does not cover goodness-of-fit tests, which are
+difficult to implement in general and involve computational intensive
+techniques via bootstrapping, see
+\citet{genest_remillard_beaudoin_2009}, it might be difficult to
+justify the choice of a parametric assumption. However, the values of
+\code{probs} can be compared to those of the empirical copula, i.e.,
 \begin{eqnarray}\label{nparcop}
-    \widehat{C} \left(u_{1}, \dots, u_{d} \right) &=& n^{-1} \sum_{i=1}^{n} \prod_{j=1}^{d} \mathbf{I}\left\{\widehat{F}_{j} \left( X_{ij} \right) \leq u_{j} \right\},
+  \widehat{C} \left(u_{1}, \dots, u_{d} \right) &=& n^{-1} \sum_{i=1}^{n} \prod_{j=1}^{d} \mathbf{I}\left\{\widehat{F}_{j} \left( X_{ij} \right) \leq u_{j} \right\},
 \end{eqnarray}
-where $\widehat{F}_{j}(\cdot)$ denotes the estimated marginal distribution function of variable $X_{j}$. Figure~\ref{fig:pp} suggests a proper fit of the empirical copula computed by
+where $\widehat{F}_{j}(\cdot)$ denotes the estimated marginal
+distribution function of variable $X_{j}$. Figure~\ref{fig:pp}
+suggests a proper fit of the empirical copula computed by
 
 <<label = pp, fig=TRUE, pdf = TRUE, echo=FALSE, eval=TRUE, include=FALSE>>=
 probs.emp = emp.copula.self(sim.data, proc = "M")
@@ -560,19 +865,20 @@ points(probs, probs.emp, pch = 20)
 lines(c(0,1), c(0,1), col = "red3", lwd = 2)
 @
 
-\begin{figure}
-    \centering
-    \includegraphics[width=4in]{HAC-pp.pdf}
-    \vspace{-5mm}
-    \caption{The values of \code{probs} on the x-axis against the values of \code{probs.emp}.}
-    \label{fig:pp}
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=0.6\textwidth, trim=0 15 0 45, clip]{HAC-pp.pdf}
+  \caption{The values of \code{probs} on the $x$-axis against the
+    values of \code{probs.emp}.}
+  \label{fig:pp}
 \end{figure}
 
 <<echo=TRUE, eval = FALSE>>=
 probs.emp = emp.copula.self(sim.data, proc = "M")
 @
 
-There are two functions which can be used for computing the empirical copula:
+There are two functions which can be used for computing the empirical
+copula:
 
 <<echo=TRUE, eval = FALSE>>=
 emp.copula(u, x, proc = "M", sort = "none", margins = NULL,
@@ -581,484 +887,186 @@ emp.copula.self(x, proc = "M", sort = "none", margins = NULL,
                 na.rm = FALSE, ...)
 @
 
-The difference between the arguments of these functions is that \code{emp.copula} requires a matrix \code{u}, at which the estimated function is evaluated. This can, in particular, be helpful, when the sample is decomposed to evaluate the out-of-sample performance as the empirical copula can be regarded as natural benchmark. In contrast, \code{emp.copula.self} evaluates $\widehat{C}(\cdot)$ at the sample \code{x} used for the estimation and thus, the returned values can be considered as in-sample fit. The argument \code{proc} enables the user to choose between two computational methods. We recommend to use the default method, \verb/proc = "M"/, which is based on \code{matrix} manipulations, because its computational time is just a small fraction of the taken time of method \verb/"A"/, which is based on \code{apply}, see Figure~\ref{fig:speed}. However, method \verb/"M"/ is sensitive with respect to the size of the working memory and therefore inapplicable for very large datasets. Note that standard applications, e.g., measuring the VaR of a portfolio, are based on $250$ or $500$ observations. Figure~\ref{fig:speed} illustrates rapidly increasing computational times of the \code{matrix} based method for more than $5000$ observations until the method collapses. In contrast, the runtimes of the alternative method \verb/proc = "A"/ are more robust against an increasing sample size. The computational times are less sensitive with respect to the dimension and we recommend using the default method up to $d=100$ for non-large sample sizes. Another possibility to deal with large datasets is specifying the matrix \code{u} manually in order to reduce the number of vectors which are to be evaluated.
-
-<<label = speed2, fig=TRUE, pdf = TRUE, width = 8, height = 6, echo=FALSE, eval=FALSE, include=FALSE>>=
-
-####
-#Figure6---------------------------------------------------------------------------------------------------------------------- #Note, that the result depends on the CPU you use
-
-d = 5
-s = seq(550, 6275, by=25)
-set.seed(1)
-data = matrix(runif(max(s)*d), ncol = d, nrow = max(s))
-t = matrix(, nrow = length(s)-1, ncol = 2)
-for(i in 2:length(s)){
-    t1 = Sys.time()
-    a1 = emp.copula.self(as.matrix(data[1:s[i],]), proc = "M")
-    t2 = Sys.time();
-    a2 = emp.copula.self(as.matrix(data[1:s[i],]), proc = "A")
-    t3 = Sys.time()
-    t[i-1, 1] = difftime(t2, t1)
-    t[i-1, 2] = difftime(t3, t2)
-}
-
-times_plot2 = t
-    ## do not remove # in front of pdf() and dev.off()
-    pdf("HAC-speed2.pdf", width = 8, height = 6)
-plot(s[2:190], t[1:189,1], ylim = c(t[1,1], t[206,2]), xlim = c(s[2], s[206]), xlab = "observations", ylab = "seconds",
-type = "l", lwd = 2, log = "xy", asp = 1)
-points(s[2:230], t[,2], type = "l", lty = 2, lwd = 2)
-grid()
-    dev.off()
-@
+The difference between the arguments of these functions is that
+\code{emp.copula} requires a matrix \code{u}, at which the estimated
+function is evaluated. This can, in particular, be helpful, when the
+sample is decomposed to evaluate the out-of-sample performance as the
+empirical copula can be regarded as natural benchmark. In contrast,
+\code{emp.copula.self} evaluates $\widehat{C}(\cdot)$ at the sample
+\code{x} used for the estimation and thus, the returned values can be
+considered as in-sample fit. The argument \code{proc} enables the user
+to choose between two computational methods. We recommend to use the
+default method, \verb/proc = "M"/, which is based on matrix
+manipulations, because its computational time is just a small fraction
+of the time taken by method \verb/"A"/, which is based on
+\code{apply}, see Figure~\ref{fig:speed}. However, method \verb/"M"/
+is sensitive with respect to the size of the working memory and
+therefore inapplicable for very large datasets. Note that standard
+applications, e.g., measuring the VaR of a portfolio, are based on
+$250$ or $500$ observations. Figure~\ref{fig:speed} illustrates
+rapidly increasing computational times of the matrix-based
+method for more than $5000$ observations until the method
+collapses. In contrast, the runtimes of the alternative method
+\verb/proc = "A"/ are more robust against an increasing sample
+size. The computational times are less sensitive with respect to the
+dimension and we recommend using the default method up to $d=100$ for
+non-large sample sizes. Another possibility to deal with large
+datasets is specifying the matrix \code{u} manually in order to reduce
+the number of vectors which are to be evaluated.
 
 \begin{lrbox}{\verbboxone} \verb|proc = "M"| \end{lrbox}
-
 \begin{lrbox}{\verbboxtwo} \verb|proc = "A"| \end{lrbox}
 
-\begin{figure}
-    %\begin{minipage}[t]{0.5\textwidth}
-	   \centering 	
-    %   \includegraphics[width=3in]{HAC-speed1.pdf}
-    %\end{minipage}
-    %\begin{minipage}[t]{0.5\textwidth} 	
-    \includegraphics[width=4in]{HAC-speed2.pdf}
-    %\end{minipage}
-    \vspace{-5mm}
-    \caption{The figure shows the computational times for an increasing sample size but a fixed dimension $d=5$ on a log-log scale. The solid line is referred to \usebox{\verbboxone} and the dashed line to \usebox{\verbboxtwo}.}
+\begin{figure}[t!]
+  \centering 	
+  \includegraphics[width=0.7\textwidth, trim=0 15 0 50, clip]{HAC-speed2.pdf}
+  \caption{The plot shows the computational times for an increasing
+    sample size but a fixed dimension $d=5$ on a log-log scale. The
+    solid line refers to \usebox{\verbboxone} and the dashed line
+    to \usebox{\verbboxtwo}.}
    \label{fig:speed}
 \end{figure}
 
 \section[Simulation study]{Simulation study}\label{sec:sim}
-To ensure the accuracy of the proposed methods, we generate random data from six copula models of different dimension $C_{i}^{j}\overset{\operatorname{def}}{=}C^{j}\left(\cdot;s_{i},\btheta_i\right)$, for $i=1,2,3$ and $j=\text{C},\text{G}$, and show that the estimates almost coincide with the true model specification. Here, $j$ denotes the copula family (Clayton or Gumbel) and the structures are given by $s_1=((12)3)$, $s_2=((((12)3)4)5)$ and $s_3=((12)(34)5)$. The values of $\btheta_i$ are presented in Table~\ref{tab:simulation1} and Table~\ref{tab:simulation3}. They are chosen such that a similar strength of dependence is produced by the Clayton and Gumbel based models.
-
-<<echo = FALSE, eval=FALSE>>=
-
-#####Table 4---------------------------------------------------------------------------------------------
-
-library("HAC")
-
-####
-# Construct the 3-dimensional hac objects for Gumbel and Clayton
-    hac3_G = hac.full(type = HAC_GUMBEL, y = c("X1", "X2", "X3"), theta = c(tau2theta(c(1/3, 2/3))))
-    hac3_C = hac.full(type = HAC_CLAYTON, y = c("X1", "X2", "X3"), theta = c(tau2theta(c(1/3, 2/3), type = HAC_CLAYTON)))
-
-####
-# Define the number of estimates times = 1000, the sample size n = 250 and prepare matrix to save the results
-    times = 1000; n = 250
-    results3_G = matrix(, nrow = times, ncol = 3)
-    results3_C = matrix(, nrow = times, ncol = 3)
-    colnames(results3_G) = c("theta1", "theta2", "structure")
-    colnames(results3_C) = c("theta1", "theta2", "structure")
-
-####
-# Simulation and HAC-estimation is repeated 1000 times within the loop
-for(i in 1:times){
-    data_hac3_G = rHAC(n, hac3_G)
-    data_hac3_C = rHAC(n, hac3_C)
-
-    a = estimate.copula(data_hac3_G, type = HAC_GUMBEL, method = ML)
-    results3_G[i, 1:2] = get.params(a, sort = TRUE, decreasing = TRUE)
-
-    # Check whether the structure is correct
-    results3_G[i, 3] =
-    if(class(a$tree[[1]])=="character"){if(a$tree[[1]]=="X1"){TRUE}else{FALSE}}else{if(a$tree[[2]]=="X1"){TRUE}else{FALSE}}
-
-    a = estimate.copula(data_hac3_C, type = HAC_CLAYTON, method = ML)
-    results3_C[i, 1:2] = get.params(a, sort = TRUE, decreasing = TRUE)
-
-    # Check whether the structure is correct
-    results3_C[i, 3] =
-    if(class(a$tree[[1]])=="character"){if(a$tree[[1]]=="X1"){TRUE}else{FALSE}}else{if(a$tree[[2]]=="X1"){TRUE}else{FALSE}}
-}
-
-###
-# Print the results for the 3-dimensional models
-summary(results3_G)
-apply(results3_G, 2, sd)
-
-summary(results3_C)
-apply(results3_C, 2, sd)
-
-####
-# Construct the 5-dimensional hac objects for Gumbel and Clayton
-hac5_G = hac.full(type = HAC_GUMBEL, y = c("X1", "X2", "X3", "X4", "X5"), theta = c(tau2theta(c(1/9, 3/9, 5/9, 7/9))))
-hac5_C = hac.full(type = HAC_CLAYTON, y = c("X1", "X2", "X3", "X4", "X5"), theta = c(tau2theta(c(1/9, 3/9, 5/9, 7/9), type = HAC_CLAYTON)))
-
-####
-# Define all structures, which correspond to the same copula as hac5_G and hac5_C respectively and save them as string, i.e., struc1, struc2,...
-
-hac5_G1 = hac(tree = list("X1", list("X2", list(list("X4", "X5", 4), "X3", 3) ,2.2), 1))
-struc1 = tree2str(hac5_G1, theta=FALSE)
-hac5_G2 = hac(tree = list("X1", list("X2", list(list("X5", "X4", 4), "X3", 3) ,2.2), 1))
-struc2 = tree2str(hac5_G2, theta=FALSE)
-hac5_G3 = hac(tree = list("X1", list("X2", list("X3", list("X4", "X5", 4), 3) ,2.2), 1))
-struc3 = tree2str(hac5_G3, theta=FALSE)
-hac5_G4 = hac(tree = list("X1", list("X2", list("X3", list("X5", "X4", 4), 3) ,2.2), 1))
-struc4 = tree2str(hac5_G4, theta=FALSE)
-hac5_G5 = hac(tree = list("X1", list(list(list("X4", "X5", 4), "X3", 3), "X2",2.2), 1))
-struc5 = tree2str(hac5_G5, theta=FALSE)
-hac5_G6 = hac(tree = list("X1", list(list(list("X5", "X4", 4), "X3", 3), "X2",2.2), 1))
-struc6 = tree2str(hac5_G6, theta=FALSE)
-hac5_G7 = hac(tree = list("X1", list(list("X3", list("X4", "X5", 4), 3), "X2",2.2), 1))
-struc7 = tree2str(hac5_G7, theta=FALSE)
-hac5_G8 = hac(tree = list("X1", list(list("X3", list("X5", "X4", 4), 3), "X2",2.2), 1))
-struc8 = tree2str(hac5_G8, theta=FALSE)
-hac5_G9 = hac(tree = list(list("X2", list(list("X4", "X5", 4), "X3", 3) ,2.2), "X1", 1))
-struc9 = tree2str(hac5_G9, theta=FALSE)
-hac5_G10 = hac(tree = list(list("X2", list(list("X5", "X4", 4), "X3", 3) ,2.2), "X1", 1))
-struc10 = tree2str(hac5_G10, theta=FALSE)
-hac5_G11 = hac(tree = list(list("X2", list("X3", list("X4", "X5", 4), 3) ,2.2), "X1", 1))
-struc11 = tree2str(hac5_G11, theta=FALSE)
-hac5_G12 = hac(tree = list(list("X2", list("X3",list("X5", "X4", 4), 3) ,2.2), "X1", 1))
-struc12 = tree2str(hac5_G12, theta=FALSE)
-hac5_G13 = hac(tree = list(list(list(list("X4", "X5", 4), "X3", 3), "X2",2.2), "X1", 1))
-struc13 = tree2str(hac5_G13, theta=FALSE)
-hac5_G14 = hac(tree = list(list(list(list("X5", "X4", 4), "X3", 3), "X2",2.2), "X1", 1))
-struc14 = tree2str(hac5_G14, theta=FALSE)
-hac5_G15 = hac(tree = list(list(list("X3", list("X4", "X5", 4), 3), "X2",2.2), "X1", 1))
-struc15 = tree2str(hac5_G15, theta=FALSE)
-hac5_G16 = hac(tree = list(list(list("X3", list("X5", "X4", 4), 3), "X2",2.2), "X1", 1))
-struc16 = tree2str(hac5_G16, theta=FALSE)
-
-####
-# Define the initial matrices for the results
-results5_G = matrix(0, nrow = 1, ncol = 5)
-results5_C = matrix(0, nrow = 1, ncol = 5)
-colnames(results5_G) = c("theta1", "theta2", "theta3", "theta4", "structure")
-colnames(results5_C) = c("theta1", "theta2", "theta3", "theta4", "structure")
-
-####
-# Loop for Gumbel
-# The loop terminates, if 1000 structures are correctly identified
-
-while(sum(results5_G[,"structure"]) < 1000){
-    data_hac5_G = rHAC(n, hac5_G)
-
-    copula = estimate.copula(data_hac5_G, type = HAC_GUMBEL, method = ML)
-
-    # Converts the structure to a string without dependency parameters
-    struc = tree2str(copula, theta=FALSE)
-
-    # Check whether the structure is correct
-    correct = if((struc==struc1) | (struc==struc2) | (struc==struc3) |
-    (struc==struc4) | (struc==struc5) | (struc==struc6) | (struc==struc7) | (struc==struc8) |
-    (struc==struc9) | (struc==struc10) | (struc==struc11) | (struc==struc12) | (struc==struc13) |
-    (struc==struc14) | (struc==struc15) | (struc==struc16)){TRUE}else{FALSE}
-
-    if(correct==TRUE){
-        results5_G = rbind(results5_G, c(get.params(copula, sort = TRUE, decreasing = TRUE), 1))
-    }else{
-        results5_G = rbind(results5_G, c(rep(NA,4), 0))
-    }
-}
-
-####
-# Loop for Clayton
-# The loop terminates, if 1000 structures are correctly identified
-
-while(sum(results5_C[,"structure"]) < 1000){
-    data_hac5_C = rHAC(n, hac5_C)
-
-    copula = estimate.copula(data_hac5_C, type = HAC_CLAYTON, method = ML)
-
-    # Converts the structure to a string without dependency parameters
-    struc = tree2str(copula, theta=FALSE)
-
-    # Check whether the structure is correct
-    correct = if((struc==struc1) | (struc==struc2) | (struc==struc3) |
-    (struc==struc4) | (struc==struc5) | (struc==struc6) | (struc==struc7) | (struc==struc8) |
-    (struc==struc9) | (struc==struc10) | (struc==struc11) | (struc==struc12) | (struc==struc13) |
-    (struc==struc14) | (struc==struc15) | (struc==struc16)){TRUE}else{FALSE}
-
-    if(correct==TRUE){
-        results5_C = rbind(results5_C, c(get.params(copula, sort = TRUE, decreasing = TRUE), 1))
-    }else{
-        results5_C = rbind(results5_C, c(rep(NA,4), 0))
-    }
-}
-
-####
-# Remove the initial row and read the results for the 5-dimensional fully nested models
-results5_G = results5_G[-1,]
-summary(results5_G)
-apply(results5_G, 2, sd)
-
-results5_C = results5_C[-1,]
-summary(results5_C)
-apply(results5_C, 2, sd)
-
-#####Table 5---------------------------------------------------------------------------------------------
-
-library("HAC")
-
-####
-# Construct the 5-dimensional hac objects for Gumbel and Clayton
-
-hac5_G = hac(type = HAC_GUMBEL, tree = list(list("X1", "X2", tau2theta(2/3)), list("X3", "X4", tau2theta(1/3)), "X5", tau2theta(1/9)))
-hac5_C = hac(type = HAC_CLAYTON, tree = list(list("X1", "X2", tau2theta(2/3, type = HAC_CLAYTON)), list("X3", "X4", tau2theta(1/3, type = HAC_CLAYTON)), "X5", tau2theta(1/9, type = HAC_CLAYTON)))
-
-####
-# Define all structures, which correspond to the same copula as hac5_G and hac5_C respectively and save them as string, i.e., struc1, struc2, ...
-
-hac5_G1 = hac(tree = list(list("X1", "X2", 4), list("X3", "X4", 2.5),"X5",1.1))
-struc1 = tree2str(hac5_G1, theta = FALSE)
-hac5_G2 = hac(tree = list(list("X2", "X1", 4), list("X3", "X4", 2.5),"X5",1.1))
-struc2 = tree2str(hac5_G2, theta = FALSE)
-hac5_G3 = hac(tree = list(list("X1", "X2", 4), list("X4", "X3", 2.5),"X5",1.1))
-struc3 = tree2str(hac5_G3, theta = FALSE)
-hac5_G4 = hac(tree = list(list("X2", "X1", 4), list("X4", "X3", 2.5),"X5",1.1))
-struc4 = tree2str(hac5_G4, theta = FALSE)
-hac5_G5 = hac(tree = list(list("X1", "X2", 4), "X5", list("X3", "X4", 2.5),1.1))
-struc5 = tree2str(hac5_G5, theta = FALSE)
-hac5_G6 = hac(tree = list(list("X2", "X1", 4), "X5", list("X3", "X4", 2.5),1.1))
-struc6 = tree2str(hac5_G6, theta = FALSE)
-hac5_G7 = hac(tree = list(list("X1", "X2", 4), "X5", list("X4", "X3", 2.5),1.1))
-struc7 = tree2str(hac5_G7, theta = FALSE)
-hac5_G8 = hac(tree = list(list("X2", "X1", 4), "X5", list("X4", "X3", 2.5),1.1))
-struc8 = tree2str(hac5_G8, theta = FALSE)
-hac5_G9 = hac(tree = list("X5", list("X1", "X2", 4), list("X3", "X4", 2.5),1.1))
-struc9 = tree2str(hac5_G9, theta = FALSE)
-hac5_G10 = hac(tree = list("X5", list("X2", "X1", 4), list("X3", "X4", 2.5),1.1))
-struc10 = tree2str(hac5_G10, theta = FALSE)
-hac5_G11 = hac(tree = list("X5", list("X1", "X2", 4), list("X4", "X3", 2.5),1.1))
-struc11 = tree2str(hac5_G11, theta = FALSE)
-hac5_G12 = hac(tree = list("X5", list("X2", "X1", 4), list("X4", "X3", 2.5),1.1))
-struc12 = tree2str(hac5_G12, theta = FALSE)
-hac5_G13 = hac(tree = list(list("X3", "X4", 2.5), list("X1", "X2", 4), "X5",1.1))
-struc13 = tree2str(hac5_G13, theta = FALSE)
-hac5_G14 = hac(tree = list(list("X3", "X4", 2.5), list("X2", "X1", 4), "X5",1.1))
-struc14 = tree2str(hac5_G14, theta = FALSE)
-hac5_G15 = hac(tree = list(list("X3", "X4", 2.5), list("X1", "X2", 4), "X5",1.1))
-struc15 = tree2str(hac5_G15, theta = FALSE)
-hac5_G16 = hac(tree = list(list("X3", "X4", 2.5), list("X2", "X1", 4), "X5",1.1))
-struc16 = tree2str(hac5_G16, theta = FALSE)
-hac5_G17 = hac(tree = list("X5", list("X3", "X4", 2.5), list("X1", "X2", 4),1.1))
-struc17 = tree2str(hac5_G17, theta = FALSE)
-hac5_G18 = hac(tree = list("X5", list("X3", "X4", 2.5), list("X1", "X2", 4),1.1))
-struc18 = tree2str(hac5_G18, theta = FALSE)
-hac5_G19 = hac(tree = list("X5", list("X4", "X3", 2.5), list("X1", "X2", 4),1.1))
-struc19 = tree2str(hac5_G19, theta = FALSE)
-hac5_G20 = hac(tree = list("X5", list("X4", "X3", 2.5), list("X1", "X2", 4),1.1))
-struc20 = tree2str(hac5_G20, theta = FALSE)
-hac5_G21 = hac(tree = list(list("X3", "X4", 2.5), "X5", list("X1", "X2", 4),1.1))
-struc21 = tree2str(hac5_G21, theta = FALSE)
-hac5_G22 = hac(tree = list(list("X3", "X4", 2.5), "X5", list("X1", "X2", 4),1.1))
-struc22 = tree2str(hac5_G22, theta = FALSE)
-hac5_G23 = hac(tree = list(list("X4", "X3", 2.5), "X5", list("X1", "X2", 4),1.1))
-struc23 = tree2str(hac5_G23, theta = FALSE)
-hac5_G24 = hac(tree = list(list("X4", "X3", 2.5), "X5", list("X1", "X2", 4),1.1))
-struc24 = tree2str(hac5_G24, theta = FALSE)
-
-####
-# Define the initial matrices for the results
-results5_G = matrix(0, nrow = 1, ncol = 4)
-struc5_G = matrix(0, nrow = 1, ncol = 1)
-results5_G_FML = matrix(0, nrow = 1, ncol = 3)
-
-results5_C = matrix(0, nrow = 1, ncol = 4)
-struc5_C = matrix(0, nrow = 1, ncol = 1)
-results5_C_FML = matrix(0, nrow = 1, ncol = 3)
-
-colnames(results5_G) = c("theta1", "theta2", "theta3", "structure")
-colnames(struc5_G) = c("realizedStruc")
-colnames(results5_G_FML) = c("theta1", "theta2", "theta3")
-
-colnames(results5_C) = c("theta1", "theta2", "theta3", "structure")
-colnames(struc5_C) = c("realizedStruc")
-colnames(results5_C_FML) = c("theta1", "theta2", "theta3")
-
-####
-# Loop for Gumbel
-# The loop terminates, if 1000 structures are correctly identified
-
-while(sum(results5_G[,"structure"]) < 1000){
-    data_hac5_G = rHAC(n, hac5_G)
-
-    copula = estimate.copula(data_hac5_G, type = HAC_GUMBEL, method = RML, epsilon = 0.15)
-
-    # Converts the structure to a string without dependency parameters
-    struc = tree2str(copula, theta=FALSE)
-
-    # Check whether the structure is correct
-    correct = if((struc==struc1) | (struc==struc2) | (struc==struc3) |
-    (struc==struc4) | (struc==struc5) | (struc==struc6) | (struc==struc7) | (struc==struc8) |
-    (struc==struc9) | (struc==struc10) | (struc==struc11) | (struc==struc12) | (struc==struc13) |
-    (struc==struc14) | (struc==struc15) | (struc==struc16) | (struc==struc17) | (struc==struc18) |
-    (struc==struc19) | (struc==struc20) | (struc==struc21) | (struc==struc22) | (struc==struc23) |
-    (struc==struc24)){TRUE}else{FALSE}
-
-    if(correct == TRUE){
-        results5_G = rbind(results5_G, matrix(c(get.params(copula, sort = TRUE, decreasing = TRUE), 1), nrow = 1, ncol =
-        4))
-
-        # Reestimated the model with full ML
-        copula_FML = estimate.copula(data_hac5_G, type = HAC_GUMBEL, method = FML, hac = copula)
-        results5_G_FML = rbind(results5_G_FML, get.params(copula_FML, sort = TRUE, decreasing = TRUE))
-    }else{
-        results5_G = rbind(results5_G, matrix(c(rep(NA,3), 0), nrow = 1, ncol = 4))
-    }
-    struc5_G=rbind(struc5_G, struc)
-}
-
-####
-# Loop for Clayton
-# The loop terminates, if 1000 structures are correctly identified
-
-while(sum(results5_C[,"structure"]) < 1000){
-    data_hac5_C = rHAC(n, hac5_C)
-
-    copula = estimate.copula(data_hac5_C, type = HAC_CLAYTON, method = RML, epsilon = 0.2)
-
-    # Converts the structure to a string without dependency parameters
-    struc = tree2str(copula, theta=FALSE)
-
-    # Check whether the structure is correct
-    correct = if((struc==struc1) | (struc==struc2) | (struc==struc3) |
-    (struc==struc4) | (struc==struc5) | (struc==struc6) | (struc==struc7) | (struc==struc8) |
-    (struc==struc9) | (struc==struc10) | (struc==struc11) | (struc==struc12) | (struc==struc13) |
-    (struc==struc14) | (struc==struc15) | (struc==struc16) | (struc==struc17) | (struc==struc18) |
-    (struc==struc19) | (struc==struc20) | (struc==struc21) | (struc==struc22) | (struc==struc23) |
-    (struc==struc24)){TRUE}else{FALSE}
-
-    if(correct == TRUE){
-        results5_C = rbind(results5_C, c(get.params(copula, sort = TRUE, decreasing = TRUE), 1))
-
-        # Reestimated the model with full ML
-        copula_FML = estimate.copula(data_hac5_C, type = HAC_CLAYTON, method = FML, hac = copula)
-        results5_C_FML = rbind(results5_C_FML, get.params(copula_FML, sort = TRUE, decreasing = TRUE))
-    }else{
-        results5_C = rbind(results5_C, matrix(c(rep(NA,3), 0), nrow = 1, ncol = 4))
-        }
-    struc5_C=rbind(struc5_C, struc)
-}
-
-####
-# Remove the initial row and print the results for the 5-dimensional fully nested models
-results5_G = results5_G[-1,]
-struc5_G = struc5_G[-1,]
-results5_G_FML = results5_G_FML[-1,]
-results5_C = results5_C[-1,]
-struc5_C = struc5_C[-1,]
-results5_C_FML = results5_C_FML[-1,]
-
-summary(na.omit(results5_G))
-apply(na.omit(results5_G), 2, sd)
-
-summary(results5_G_FML)
-apply(results5_G_FML, 2, sd)
-
-summary(results5_C)
-apply(na.omit(results5_C), 2, sd)
-
-summary(results5_C_FML)
-apply(results5_C_FML, 2, sd)
-
-####
-# Compute the percentages of different classified structures
-# Our three cases for HAC_GUMBEL:
-# 1. True structures
-mean(struc5_G=="((X3.X4).(X1.X2).X5)") + mean(struc5_G=="((X1.X2).(X3.X4).X5)")
-
-# Wrong aggregated models
-
-round(mean(struc5_G=="((X1.X2).(X5.X3.X4))"),4)
-round(mean(struc5_G=="((X1.X2).((X3.X4).X5))"),4)
-round(mean(struc5_G=="((X1.X2).X5.X3.X4)"),4)
-
-####
-# Compute the percentages of different classified structures
-# Our three cases for HAC_CLAYTON:
-# 1. True structures
-
-mean(struc5_C=="((X3.X4).(X1.X2).X5)") + mean(struc5_C=="((X1.X2).(X3.X4).X5)")
-
-# Wrong aggregated models
-
-mean(struc5_C=="(((X3.X4).(X1.X2)).X5)")
-mean(struc5_C== "((X1.X2).((X3.X4).X5))")
-
-save(results5_G, struc5_G, results5_G_FML, file = "Sim_5_Gumbel_partially.Rdata")
-save(results5_C, struc5_C, results5_C_FML, file ="Sim_5_Clayton_partially.Rdata")
-@
-The summary statistics of Table~\ref{tab:simulation1} and Table~\ref{tab:simulation3} rely on $n=1000$ estimates, whereby only estimates with the same structure can be compared. For this reason the procedure was $m$ times replicated till $n=1000$ estimates were available. As \code{estimate.copula} approximates the true structure, we set \code{epsilon = 0.15} for $C_3^{\text{G}}$ and \code{epsilon = 0.20} for $C_3^{\text{C}}$, which are not based on a binary structure and employ the \code{RML} procedure. Note that the \code{RML} procedure attempts at aggregating the copula tree after each estimation step. The simulated samples for the copula estimation consist of $250$ observations for the copula types in order to illustrate the finite sample properties of the procedures. Table~\ref{tab:simulation1} and Table~\ref{tab:simulation3} indicate, that the estimation procedure works properly for the suggested models, as the estimates are on average consistent with the true parameters. Nevertheless, a few points deserve being mentioned: (i) The multi-stage procedure detects the true structure for the binary HAC in $n/m=100\%$ and the recursive ML procedure for the non-binary HAC in at least $n/m=99\%$ of the cases as long as the parameters exhibit the imposed distance and the permutation symmetry of the variables at the same node is taken into consideration. (ii) The estimates at lower hierarchical levels show a higher volatility than the estimates close to the initial node and the estimates for the Clayton models are more volatile than the estimates of the Gumbel based HAC. (iii) All estimated models indicate more imprecise estimates for higher nesting levels, but the gains from full ML estimation regarding the precision are only observable for the estimates at the root node of $C_3^{\text{G}}$, see Table~\ref{tab:simulation3}. However, this minor improvement is costly since the results are based on a preestimated structure. (iv) These observations justify choosing different values of \code{epsilon} for $C_3^{\text{G}}$ and $C_3^{\text{C}}$, as the tuning parameter should reflect the variability of the parameters. Theoretically, \code{epsilon} can be different for each aggregation of the structure so that the parameter variability is correctly represented. This, however, becomes infeasible in practice, because the number of nodes contained in the true structure is generally unknown. If the parameters are closer and/or the value of \code{epsilon} is chosen smaller, the amount of correctly classified structures declines. On the other hand, larger sample sizes permit smaller values of \code{epsilon} as the parameters are more precisely estimated.
-
-\begin{table}
-    \begin{center}
-        \begin{tabular}{cc|ccccc}
-            \hline\hline
-            & & \multicolumn{5}{c}{\textbf{Statistics}}\\
-            Model & $\btheta$ & $\operatorname{min}$ & $\operatorname{median}$ & $\operatorname{mean}$ &
-            $\operatorname{max}$ &
-            $\operatorname{sd}$\\
-            \hline
-            \multirow{2}{*}{$C_1^{\text{G}}$} & $\theta_2=1.500$ & 1.31 & 1.49 & 1.50 & 1.77 & 0.07\\
-            & $\theta_1=3.000$ & 2.56 & 3.00 & 3.00 & 3.51 & 0.15\\
-            \hline
-            \multirow{2}{*}{$C_1^{\text{C}}$} & $\theta_2=1.000$ & 0.61 & 0.99 & 1.00 & 1.47 & 0.13\\
-            & $\theta_1=4.000$ & 3.13 & 4.02 & 4.03 & 5.09 & 0.28\\
-            \hline
-            \multirow{4}{*}{$C_2^{\text{G}}$} & $\theta_4=1.125$ & 1.00 & 1.10 & 1.11 & 1.24 & 0.04\\
-            & $\theta_3=1.500$ & 1.28 & 1.45 & 1.45 & 1.71 & 0.07\\
-            & $\theta_2=2.250$ & 1.92 & 2.24 & 2.24 & 2.81 & 0.12\\
-            & $\theta_1=4.500$ & 3.86 & 4.49 & 4.50 & 5.20 & 0.23\\
-            \hline
-            \multirow{4}{*}{$C_2^{\text{C}}$} & $\theta_4=0.250$ & 0.00 & 0.17 & 0.17 & 0.39 & 0.07\\
-            & $\theta_3=1.000$ & 0.54 & 0.92 & 0.92 & 1.28 & 0.12\\
-            & $\theta_2=2.500$ & 1.88 & 2.48 & 2.50 & 3.21 & 0.20\\
-            & $\theta_1=7.000$ & 5.77 & 7.02 & 7.04 & 8.91 & 0.45\\
-            \hline\hline
-        \end{tabular}
-    \caption{The models for the Gumbel family $C_1^{\text{G}}$, $C_2^{\text{G}}$ and for the Clayton family $C_1^{\text{C}}$, $C_2^{\text{C}}$, where $\btheta$ denotes the true copula parameters.}
-    \label{tab:simulation1}
-    \end{center}
+To ensure the accuracy of the proposed methods, we generate random
+data from six copula models of different dimension
+$C_{i}^{j}\overset{\operatorname{def}}{=}C^{j}\left(\cdot;s_{i},\pmb{\theta}_i\right)$,
+for $i=1,2,3$ and $j=\text{C},\text{G}$, and show that the estimates
+almost coincide with the true model specification. Here, $j$ denotes
+the copula family (Clayton or Gumbel) and the structures are given by
+$s_1=((12)3)$, $s_2=((((12)3)4)5)$ and $s_3=((12)(34)5)$. The values
+of $\pmb{\theta}_i$ are presented in Tables~\ref{tab:simulation1} and
+\ref{tab:simulation3}. They are chosen to obtain a similar strength of
+dependence by the Clayton and Gumbel based models.
+
+The summary statistics of Tables~\ref{tab:simulation1} and
+\ref{tab:simulation3} rely on $n=1000$ estimates, whereby only
+estimates with the same structure can be compared. For this reason the
+procedure was $m$ times replicated till $n=1000$ estimates were
+available. As \code{estimate.copula} approximates the true structure,
+we set \code{epsilon = 0.15} for $C_3^{\text{G}}$ and \code{epsilon =
+  0.20} for $C_3^{\text{C}}$, which are not based on a binary
+structure and employ the RML procedure. Note that the
+RML procedure attempts at aggregating the copula tree after
+each estimation step. The simulated samples for the copula estimation
+consist of $250$ observations for the copula types in order to
+illustrate the finite sample properties of the
+procedures. Tables~\ref{tab:simulation1} and \ref{tab:simulation3}
+indicate, that the estimation procedure works properly for the
+suggested models, as the estimates are on average consistent with the
+true parameters. Nevertheless, a few points deserve being mentioned:
+(i) The multi-stage procedure detects the true structure for the
+binary HAC in $n/m=100\%$ and the recursive ML procedure for the
+non-binary HAC in at least $n/m=99\%$ of the cases as long as the
+parameters exhibit the imposed distance and the permutation symmetry
+of the variables at the same node is taken into consideration. (ii)
+The estimates at lower hierarchical levels show a higher volatility
+than the estimates close to the initial node and the estimates for the
+Clayton models are more volatile than the estimates of the Gumbel
+based HAC. (iii) All estimated models indicate more imprecise
+estimates for higher nesting levels, but the gains from full ML
+estimation regarding the precision are only observable for the
+estimates at the root node of $C_3^{\text{G}}$, see
+Table~\ref{tab:simulation3}. However, this minor improvement is costly
+since the results are based on a preestimated structure. (iv) These
+observations justify choosing different values of \code{epsilon} for
+$C_3^{\text{G}}$ and $C_3^{\text{C}}$, as the tuning parameter should
+reflect the variability of the parameters. Theoretically,
+\code{epsilon} can be different for each aggregation of the structure
+so that the parameter variability is correctly represented. This,
+however, becomes infeasible in practice, because the number of nodes
+contained in the true structure is generally unknown. If the
+parameters are closer and/or the value of \code{epsilon} is chosen
+smaller, the amount of correctly classified structures declines. On
+the other hand, larger sample sizes permit smaller values of
+\code{epsilon} as the parameters are more precisely estimated.
+
+\begin{table}[t!]
+  \centering
+  \begin{tabular}{cc|ccccc}
+    \hline
+    & & \multicolumn{5}{c}{Statistics}\\
+    Model & $\pmb{\theta}$ & $\operatorname{min}$ & $\operatorname{median}$ & $\operatorname{mean}$ &
+    $\operatorname{max}$ &
+    $\operatorname{sd}$\\
+    \hline
+    \multirow{2}{*}{$C_1^{\text{G}}$} & $\theta_2=1.500$ & 1.30 & 1.50 & 1.50 & 1.75 & 0.07\\
+    & $\theta_1=3.000$ & 2.55 & 3.00 & 3.00 & 3.60 & 0.16\\
+    \hline
+    \multirow{2}{*}{$C_1^{\text{C}}$} & $\theta_2=1.000$ & 0.62 & 0.99 & 0.99 & 1.40 & 0.12\\
+    & $\theta_1=4.000$ & 3.26 & 4.01 & 4.01 & 5.00 & 0.27\\
+    \hline
+    \multirow{4}{*}{$C_2^{\text{G}}$} & $\theta_4=1.125$ & 1.00 & 1.10 & 1.11 & 1.27 & 0.04\\
+    & $\theta_3=1.500$ & 1.27 & 1.45 & 1.45 & 1.68 & 0.07\\
+    & $\theta_2=2.250$ & 1.95 & 2.24 & 2.24 & 2.62 & 0.12\\
+    & $\theta_1=4.500$ & 3.79 & 4.51 & 4.52 & 5.51 & 0.24\\
+    \hline
+    \multirow{4}{*}{$C_2^{\text{C}}$} & $\theta_4=0.250$ & 0.00 & 0.17 & 0.17 & 0.41 & 0.07\\
+    & $\theta_3=1.000$ & 0.63 & 0.91 & 0.92 & 1.43 & 0.11\\
+    & $\theta_2=2.500$ & 1.90 & 2.51 & 2.51 & 3.18 & 0.20\\
+    & $\theta_1=7.000$ & 5.95 & 7.00 & 7.02 & 8.40 & 0.43\\
+    \hline
+  \end{tabular}
+  \caption{The models for the Gumbel family $C_1^{\text{G}}$, $C_2^{\text{G}}$ and for the Clayton family $C_1^{\text{C}}$, $C_2^{\text{C}}$, where $\pmb{\theta}$ denotes the true copula parameters.}
+  \label{tab:simulation1}
 \end{table}
 
-\begin{table}
-    \begin{center}
-        \begin{tabular}{cc|rccccc}
-            \hline\hline
-            & & \multicolumn{6}{c}{\textbf{Statistics for recursive ML}}\\
-            Model & $\btheta$ & $\bar{s}\qquad\qquad$ & $\operatorname{min}$ & $\operatorname{median}$ &
-            $\operatorname{mean}$ &
-            $\operatorname{max}$ & $\operatorname{sd}$\\
-            \hline
-            \multirow{3}{*}{$C_3^{\text{G}}$} & $\theta_3=1.125$ & $((12)(534))=00.20\%$ & 1.00 & 1.10 & 1.11 & 1.24 & 0.03\\
-            & $\theta_2=1.500$ & $((12)((34)5))=00.40\%$ & 1.31 & 1.50 & 1.50 & 1.77 & 0.07\\
-            & $\theta_1=3.000$ & $((12)534)=00.10\%$ & 2.59 & 3.01 & 3.01 & 3.59 & 0.15\\
-            \hline
-            \multirow{3}{*}{$C_3^{\text{C}}$} & $\theta_3=0.250$ & \multirow{2}{*}{$((12)((34)5))=00.30\%$} & 0.05 & 0.25 & 0.25 &
-            0.47 & 0.06\\
-            & $\theta_2=1.000$ & \multirow{2}{*}{$(((34)(12))5)=00.39\%$} & 0.63 & 1.00 & 1.01 & 1.53 & 0.12\\
-            & $\theta_1=4.000$ &  & 3.19 & 4.00 & 4.02 & 4.94 & 0.29\\
-            \hline
-            & & \multicolumn{6}{c}{\textbf{Statistics for full ML}}\\
-            \hline
-            \multirow{3}{*}{$C_3^{\text{G}}$} & $\theta_3=1.125$ & \multirow{3}{*}{$-\qquad\qquad$} & 1.03 & 1.13 & 1.13 & 1.23 &
-            0.03\\
-            & $\theta_2=1.500$ & & 1.31 & 1.50 & 1.50 & 1.77 & 0.07\\
-            & $\theta_1=3.000$ & & 2.59 & 3.01 & 3.01 & 3.60 & 0.15\\
-            \hline
-            \multirow{3}{*}{$C_3^{\text{C}}$} & $\theta_3=0.250$ & \multirow{3}{*}{$-\qquad\qquad$} & 0.09 & 0.25 & 0.25 & 0.47 &
-            0.05\\
-            & $\theta_2=1.000$ & & 0.64 & 1.00 & 1.01 & 1.53 & 0.12\\
-            & $\theta_1=4.000$ & & 3.20 & 3.99 & 4.02 & 4.94 & 0.29\\
-            \hline\hline
-        \end{tabular}
-    \caption{The model for the Gumbel family $C_3^{\text{G}}$ and for the Clayton family $C_3^{\text{C}}$, where $\btheta$ denotes the true copula parameters and the column $\bar{s}$ refers to the percentage of incorrectly classified structures based on $n=1000$ replications.}
-    \label{tab:simulation3}
-    \end{center}
+\begin{table}[t!]
+  \centering
+  \begin{tabular}{cc|rccccc}
+    \hline
+    & & \multicolumn{6}{c}{Statistics for recursive ML}\\
+    Model & $\pmb{\theta}$ & $\bar{s}\qquad\qquad$ & $\operatorname{min}$ & $\operatorname{median}$ &
+    $\operatorname{mean}$ &
+    $\operatorname{max}$ & $\operatorname{sd}$\\
+    \hline
+    \multirow{3}{*}{$C_3^{\text{G}}$} & $\theta_3=1.125$ &  \multirow{2}{*}{$(((34)5)(12))=0.50\%$} & 1.01 & 1.10 & 1.11 & 1.22 & 0.03\\
+    & $\theta_2=1.500$ &  \multirow{2}{*}{$((534)(12))=0.10\%$} & 1.28 & 1.50 & 1.50 & 1.87 & 0.07\\
+    & $\theta_1=3.000$ &  & 2.58 & 2.99 & 3.00 & 3.64 & 0.16\\
+    \hline
+    \multirow{3}{*}{$C_3^{\text{C}}$} & $\theta_3=0.250$ & \multirow{2}{*}{$(((34)5)(12))=0.40\%$} & 0.09 & 0.25 & 0.25 &
+    0.46 & 0.06\\
+    & $\theta_2=1.000$ & \multirow{2}{*}{$(((12)(34))5)=0.30\%$} & 0.62 & 1.00 & 1.01 & 1.42 & 0.13\\
+    & $\theta_1=4.000$ &  & 3.08 & 4.00 & 4.01 & 5.05 & 0.29\\
+    \hline
+    & & \multicolumn{6}{c}{Statistics for full ML}\\
+    \hline
+    \multirow{3}{*}{$C_3^{\text{G}}$} & $\theta_3=1.125$ & \multirow{3}{*}{$-\qquad\qquad$} & 1.05 & 1.13 & 1.13 & 1.23 &
+    0.03\\
+    & $\theta_2=1.500$ & & 1.29 & 1.50 & 1.50 & 1.86 & 0.07\\
+    & $\theta_1=3.000$ & & 2.58 & 2.99 & 3.00 & 3.65 & 0.16\\
+    \hline
+    \multirow{3}{*}{$C_3^{\text{C}}$} & $\theta_3=0.250$ & \multirow{3}{*}{$-\qquad\qquad$} & 0.13 & 0.25 & 0.25 & 0.42 &
+    0.05\\
+    & $\theta_2=1.000$ & & 0.60 & 1.00 & 1.01 & 1.42 & 0.13\\
+    & $\theta_1=4.000$ & & 3.10 & 4.00 & 4.01 & 5.05 & 0.29\\
+    \hline
+  \end{tabular}
+  \caption{The model for the Gumbel family $C_3^{\text{G}}$ and for the Clayton family $C_3^{\text{C}}$, where $\pmb{\theta}$ denotes the true copula parameters and the column $\bar{s}$ refers to the percentage of incorrectly classified structures based on $n=1000$ replications.}
+  \label{tab:simulation3}
 \end{table}
 
 \section[Conclusion]{Conclusion}\label{sec:Con}
 
-The \pkg{HAC} package focuses on the computationally efficient estimation of hierarchical \linebreak Archimedean copula, which is based on grouping binary structures within a recursive multi-stage ML procedure. Its theoretical and practical advantages are (i) avoiding the demanding asymptotic theory, which arises due to constrained one-step ML estimation and (ii) the consecutive optimization of the log-likelihood instead of the singular optimization of the $d$-dimensional one with respect to several parameters. Since HAC permit modeling large-dimensional random vectors, the package provides a function for producing graphics of the related \code{hac} objects. According to the usual naming of distributions in \proglang{R}, we provide \code{dHAC}, \code{pHAC} and \code{rHAC} to compute the values of density- and distribution functions or to sample from arbitrary HAC. Finally, the accuracy of the methods has been shown in a small simulation study.
+The \pkg{HAC} package focuses on the computationally efficient
+estimation of hierarchical Ar\-chi\-me\-de\-an copulae, which is
+based on grouping binary structures within a recursive multi-stage ML
+procedure. Its theoretical and practical advantages are (i) avoiding
+the demanding asymptotic theory, which arises due to constrained
+one-step ML estimation and (ii) the consecutive optimization of the
+log-likelihood instead of the singular optimization of the
+$d$-dimensional one with respect to several parameters. Since HAC
+permit modeling large-dimensional random vectors, the package provides
+a function for producing plots of the related `\code{hac}'
+objects. According to the usual naming of distributions in
+\proglang{R}, we provide \code{dHAC}, \code{pHAC} and \code{rHAC} to
+compute the values of density- and distribution functions or to sample
+from arbitrary HAC. Finally, the accuracy of the methods has been
+shown in a small simulation study.
 
 \section*{Acknowledgments}
-The research was supported by the Deutsche Forschungsgemeinschaft through the CRC 649 ``Economic Risk'', Humboldt-Universit\"at zu Berlin and the International Research Training Group 1792.
+The authors are grateful to the editors of the Journal of Statistical Software and two anonymous referees for several helpful comments and suggestions. The research was supported by the Deutsche Forschungsgemeinschaft through the CRC 649 ``Economic Risk'', Humboldt-Universit\"at zu Berlin and the International Research Training Group 1792.
 
-\addcontentsline{toc}{section}{References}
-\bibliography{literature}
+\bibliography{ref}
 
 \end{document}

@@ -1,18 +1,19 @@
-citHeader("To cite 'HAC' in publications use:")
+citHeader("To cite HAC in publications use:")
 
-citEntry(entry = "TechReport",
-  title        = "Hierarchical {A}rchimedean Copulae: The {HAC} Package",
+citEntry(entry = "Article",
+  title        = "Hierarchical Archimedean Copulae: The {HAC} Package",
   author       = personList(as.person("Ostap Okhrin"),
                    as.person("Alexander Ristig")),
-  institution  = "CRC 649, Economic Risk",
-  year         = "2012",
-  type 	       = "Discussion paper",
-  number       = "2012, 036",
-  url          = "http://sfb649.wiwi.hu-berlin.de/papers/pdf/SFB649DP2012-036.pdf",
+  journal      = "Journal of Statistical Software",
+  year         = "2014",
+  volume       = "58",
+  number       = "4",
+  pages        = "1--20",
+  url          = "http://www.jstatsoft.org/v58/i04/",
 
   textVersion  =
-  paste("Ostap Okhirn and Alexander Ristig (2012).",
+  paste("Ostap Okhrin, Alexander Ristig (2014).",
         "Hierarchical Archimedean Copulae: The HAC Package.",
-        "Discussion Paper 2012-36, CRC 649, Economic Risk.",
-        "URL http://sfb649.wiwi.hu-berlin.de/papers/pdf/SFB649DP2012-036.pdf.")
+        "Journal of Statistical Software, 58(4), 1-20.",
+        "URL http://www.jstatsoft.org/v58/i04/.")
 )

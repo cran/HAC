@@ -11,13 +11,13 @@ copMult(X, theta, type)
 }
 \arguments{
   \item{X}{
-a \eqn{n \times d} matrix, where \eqn{d} refers to the amount of variables.
+a \eqn{n \times d} matrix, where \eqn{d} refers to the dimension of the copula.
 }
   \item{theta}{
-the dependency parameter of the copula.
+the parameter of the copula.
 }
   \item{type}{
-all copula-types produced by Archimedean generators, e.g. \code{\link{HAC_GUMBEL}}.
+all copula-types produced by Archimedean generators, see \code{\link{phi}} for an overview of implemented families.
 }
 }
 \details{
@@ -33,5 +33,5 @@ A vector containing the values of the copula.
 X = matrix(runif(300), ncol = 3)
 
 # the values are computed
-cop = copMult(X, theta = 1.5, type = HAC_GUMBEL)
+cop = copMult(X, theta = 1.5, type = 1)
 }

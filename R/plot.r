@@ -15,6 +15,7 @@
 ##########################################################################################################################
 
 .get.leaves = function(tree){
+	if(length(tree)==1){tree = tree[[1]]}
 	rapply(tree, classes = "character", f = function(r)r, how = "unlist")
 }
 

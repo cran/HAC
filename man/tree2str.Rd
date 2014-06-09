@@ -27,11 +27,11 @@ a string of the class \code{\link{character}}.
 \code{\link{plot.hac}}
 }
 \examples{
-# a hac object is constructed
+# construct a hac object
 tree = list(list("X1", "X5", "X2", 3), list("X3", "X4", "X6", 4), 2)
-model = hac(tree = tree)
+model = hac(type = 1, tree = tree)
 
-# the dependency parameters are returned within the curly brackets
+# the parameters are returned within the curly brackets
 # variables nested at the same node are separated by a dot
 
 tree2str(model) # [1] "((X1.X5.X2)_{3}.(X3.X4.X6)_{4})_{2}"
@@ -46,7 +46,7 @@ tree2str(model, theta = FALSE) # [1] "((X1.X5.X2).(X3.X4.X6))"
 # alternatively consider the following nested AC
 
 tree = list("X1", list("X5", "X2", 3), list("X3", "X4", "X6", 4), 1.01)
-model = hac(tree = tree)
+model = hac(type = 1, tree = tree)
 
 tree2str(model) # [1] "(X1.(X5.X2)_{3}.(X3.X4.X6)_{4})_{1.01}"
 

@@ -3,7 +3,8 @@
 #  estimate.copula			Estimates the structure and the parameter of a HAC for a given sample. 
 #  .ML.TAU                  Estimation procedures based on binary trees, i.e., for method = ML and method = TAU. (Internal function)
 #  .FML                     Full Maximum Likelihood (FML) estimation procedure. It needs an 'hac' object as argument to construct the log-likelihood which depends on the structure of the HAC. (Internal function)
-#  .RML                     Recursive Maximum Likelihood (RML) estimation procedure as discussed in Okhrin, Okhrin and Schmid (2013). (Internal function)
+#  .RML                     Recursive Maximum Likelihood (RML) estimation procedure. (Internal function)
+#  .penalized.theta			Returns an estimate for the penalized ML estimator. (Internal function)
 #  .ub         			 	Enures the dependency parameter of the initial node being smaller than parameter of consecutive nodes. (Internal function) 
 #  .margins				    Estimates the marginal distributions and returns the fitted values for a d-dimensional sample. (Internal function)   
 #  .one.mar				    Estimates one marginal distributions for a given univariate sample. (Internal function)   
@@ -12,7 +13,7 @@
 #  .rebuild                 Matches the tree of a 'hac' object according to an ordered parameter vector. (Internal function) 
 ########################################################################################################################## 
 
-estimate.copula = function(X, type = HAC_GUMBEL, method = RML, hac = NULL, epsilon = 0, agg.method = "mean", margins = NULL, na.rm = FALSE, max.min = TRUE, ...){
+estimate.copula = function(X, type = 1, method = 3, hac = NULL, epsilon = 0, agg.method = "mean", margins = NULL, na.rm = FALSE, max.min = TRUE, ...){
 	
 	if(is.null(colnames(X))){g.names = names = paste("X", 1 : NCOL(X), sep = "")}else names = colnames(X)
 	
@@ -24,34 +25,34 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = RML, hac = NULL, epsil
 	if(max.min){X = .max.min(X)}
 	
 	d = NCOL(X)	
-    if(((type == HAC_GUMBEL) | (type == HAC_CLAYTON) | (type == HAC_FRANK) | (type == HAC_JOE) | (type == HAC_AMH)) & (d > 2)){
-    
-        if(method == ML){
+    if(((type == 1) | (type == 3) | (type == 5) | (type == 7) | (type == 9)) & (d > 2)){
+    	if(method == 1){
             res = .ML(X = X, type = type, epsilon = epsilon, agg.method = agg.method, names = names, ...)    
-        }else{
-        if(method == FML){
+        }else
+        if(method == 2){
             if(is.null(hac)){
                 stop("A hac object is required.")
             }else{
                 res = .FML(X = X, type = type, hac = hac)
         	}
-        }else{
-            res = .RML(X = X, type = type, epsilon = epsilon, agg.method = agg.method, names = names, ...)
-        }}
+        }else
+        if(method == 3){
+            res = .RML(X = X, type = type, method = method, epsilon = epsilon, agg.method = agg.method, names = names, ...)
+        }
     }else{
-    	if((type == AC_GUMBEL) | (type == HAC_GUMBEL)){
+    	if((type == 2) | (type == 1)){
             res = c(as.list(names), fitCopula(gumbelCopula(param = 1.5, dim = d), X, method = "ml")@estimate)
     	}else 
-    	if((type == AC_CLAYTON) | (type == HAC_CLAYTON)){
+    	if((type == 4) | (type == 3)){
             res = c(as.list(names), fitCopula(claytonCopula(param = 1.5, dim = d), X, method = "ml")@estimate)
         }else 
-    	if((type == AC_FRANK) | (type == HAC_FRANK)){
+    	if((type == 6) | (type == 5)){
             res = c(as.list(names), fitCopula(frankCopula(param = 1.5, dim = d), X, method = "ml")@estimate)
         }else 
-    	if((type == AC_JOE) | (type == HAC_JOE)){
+    	if((type == 8) | (type == 7)){
             res = c(as.list(names), fitCopula(joeCopula(param = 1.5, dim = d), X, method = "ml")@estimate)
         }else 
-    	if((type == AC_AMH) | (type == HAC_AMH)){
+    	if((type == 10) | (type == 9)){
             res = c(as.list(names), fitCopula(amhCopula(param = 0.25, dim = d), X, method = "ml")@estimate)
         }
     }
@@ -61,7 +62,7 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = RML, hac = NULL, epsil
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 .ML = function(X, type, epsilon, agg.method = "mean", names, ...){
-        main.dim = NCOL(X); tree = as.list(names); upper.b = if((type == AC_AMH) | (type == HAC_AMH)){1/3-1e-8}else{1-1e-8}
+        main.dim = NCOL(X); tree = as.list(names); upper.b = if((type == 10) | (type == 9)){1/3-1e-8}else{1-1e-8}
         for(main.i in 1:(main.dim-2)){
     
            matr = matrix(0, (main.dim-main.i+1), (main.dim-main.i+1))
@@ -95,7 +96,7 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = RML, hac = NULL, epsil
 .FML = function(X, type, hac){
     values = get.params(hac, sort.v = TRUE, decreasing=FALSE)
     tree.full = hac$tree
-	initial=if((type == HAC_GUMBEL) | (type == HAC_JOE)){1+1e-8}else{1e-8}
+	initial=if((type == 1) | (type == 7)){1+1e-8}else{1e-8}
     ui = .constraints.ui(tree.full, m = matrix(c(1, rep(0, length(values)-1)), nrow=1), values = values)
     LL = to.logLik(X, hac)
     optim = constrOptim(values, f=LL, grad=NULL, ui=as.matrix(ui), ci=as.vector(c(initial, rep(1e-8, NROW(ui)-1))), control=list(fnscale=-1), hessian=FALSE)
@@ -104,9 +105,9 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = RML, hac = NULL, epsil
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-.RML = function(X, type, epsilon, agg.method, names, ...){
+.RML = function(X, type, method, epsilon, agg.method, names, ...){
     main.dim = NCOL(X); tree = as.list(names)
-    select = if((type == AC_AMH) | (type == HAC_AMH)){c(0, 0, 1-1e-8)}else{c(0, 0, 100)}
+    select = if((type == 10) | (type == 9)){c(0, 0, 1-1e-8)}else{c(0, 0, 100)}
         
         while(main.dim > 1){       
            matr.p = matrix(0, main.dim, main.dim)
@@ -151,15 +152,15 @@ estimate.copula = function(X, type = HAC_GUMBEL, method = RML, hac = NULL, epsil
             
             select = c(min(row(matr.p)[which(matr.p==max(matr.p))]), max(col(matr.p)[which(matr.p==max(matr.p))]), tau2theta(max(matr.p), type))
             s = select[1:2]
-            tree.n = list(c(tree[s], select[3]))
+            tree.n = c(tree[s], select[3])
             
-            if(class(tree.n[[1]][[length(tree.n[[1]])]])=="numeric"){tree.n = list(.union(tree.n[[1]], epsilon = epsilon, method = agg.method, ...))}
+            if(class(tree.n[[length(tree.n)]])=="numeric"){tree.n = .union(tree.n, epsilon = epsilon, method = agg.method, ...); select[3] = tree.n[[length(tree.n)]]}
             
-            tree = c(tree[-s], tree.n); names = c(names[-s], "tree")
+            tree = c(tree[-s], list(tree.n)); names = c(names[-s], "tree")
             if(any(names!="tree")){without = which(names!="tree")}else{without = NULL}
             main.dim = main.dim - 1
         }
-        .union(tree.n[[1]], epsilon = epsilon, method = agg.method, ...)
+        tree.n
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

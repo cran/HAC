@@ -36,12 +36,12 @@ emp.copula.self = function(x, proc = "M", sort = "none", margins = NULL, na.rm =
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 .emp = function(u, x, proc, n, nn, d){
-	if(proc=="M"){
+	if(proc == "M"){
 		Compare = matrix(t(matrix(rep(u, n), ncol = n * d)), ncol = d, byrow = TRUE)
 		Values = matrix(rep(t(x), nn), ncol = d, byrow = TRUE)		
 		1/n*colSums(matrix((rowSums(Values <= Compare) == d), ncol = nn)) 
 	}else{	
-        looping = function(w){apply(x, 1, FUN = function(r){prod(r <= u[w,])})}
-        1/n*colSums(sapply(1:nn, FUN = looping))
+        loops = function(w){apply(x, 1, FUN = function(r){prod(r <= u[w,])})}
+        1/n*colSums(sapply(1:nn, FUN = loops))
 	}
 }

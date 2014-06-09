@@ -14,20 +14,20 @@
 #  .tree.without.params     Tranforms a tree of a 'hac' object with numeric values as parameters into a tree with symbolic parameters. (Internal function)
 ##########################################################################################################################
 
-.dAC = function(x, y, theta = 1.0, type = AC_GUMBEL){	
-	if((type == HAC_GUMBEL) | (type == AC_GUMBEL)){
+.dAC = function(x, y, theta, type){	
+	if((type == 1) | (type == 2)){
 		.gumb.12.density(x, y, theta)
 	}else 
-	if((type == HAC_CLAYTON) | (type == AC_CLAYTON)){
+	if((type == 3) | (type == 4)){
 		.clay.12.density(x, y, theta)       
 	}else 
-	if((type == HAC_FRANK) | (type == AC_FRANK)){
+	if((type == 5) | (type == 6)){
 		.frank.12.density(x, y, theta)
 	}else 
-	if((type == HAC_JOE) | (type == AC_JOE)){
+	if((type == 7) | (type == 8)){
 		.joe.12.density(x, y, theta)
 	}else 
-	if((type == HAC_AMH) | (type == AC_AMH)){
+	if((type == 9) | (type == 10)){
 		.amh.12.density(x, y, theta)
 	}
 }
@@ -80,23 +80,23 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
 	if(na.rm){X = na.omit(X, ...)}
     
     type = hac$type; d = NCOL(X);
-        if((d >= 3) & ((type == HAC_GUMBEL) | (type == HAC_CLAYTON) | (type == HAC_FRANK) | (type == HAC_JOE) | (type == HAC_AMH))){
+        if((d >= 3) & ((type == 1) | (type == 3) | (type == 5) | (type == 7) | (type == 9))){
            return(.cop.pdf(tree = hac$tree, sample = X, type = type, d = d, names = names, eval = eval))
         }else{
             colnames(X) = c();
-            if((type == AC_GUMBEL) | (type == HAC_GUMBEL)){
+            if((type == 2) | (type == 1)){
                 copGumbel@dacopula(X, hac$tree[[d+1]])[-1]
             }else
-            if((type == AC_CLAYTON) | (type == HAC_CLAYTON)){
+            if((type == 4) | (type == 3)){
             	copClayton@dacopula(X, hac$tree[[d+1]])[-1]
         	}else
-            if((type == AC_FRANK) | (type == HAC_FRANK)){
+            if((type == 6) | (type == 5)){
             	copFrank@dacopula(X, hac$tree[[d+1]])[-1]
         	}else
-            if((type == AC_JOE) | (type == HAC_JOE)){
+            if((type == 8) | (type == 7)){
             	copJoe@dacopula(X, hac$tree[[d+1]])[-1]
         	}else
-            if((type == AC_AMH) | (type == HAC_AMH)){
+            if((type == 10) | (type == 9)){
             	copAMH@dacopula(X, hac$tree[[d+1]])[-1]
         	}
         }
@@ -135,59 +135,59 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
  
      if(any(s)){
          if(any(!s)){
-           if(type==HAC_GUMBEL){
+           if(type==1){
                  paste("exp(-(", paste("(-log(", unlist(tree[which(s)]),"))^", tree[[n]], collapse="+", sep = ""),"+", paste("(-log(",sapply(tree[which(!s)], .constr.expr, type=type),"))^", tree[[n]], collapse="+", sep = ""),")^(1/", tree[[n]],"))", sep="")
              }else
-           if(type==HAC_CLAYTON){
+           if(type==3){
                  paste("(", paste("(", unlist(tree[which(s)]),"^(-", tree[[n]],")-1)", collapse="+", sep = ""),"+", paste("((", sapply(tree[which(!s)], .constr.expr, type=type),")^(-", tree[[n]],")-1)", collapse="+", sep = ""), "+1)^(-1/", tree[[n]], ")", sep="")
              }else
-           if(type==HAC_FRANK){
+           if(type==5){
                  paste("-log(1-(1-exp(-", tree[[n]],"))*exp(", paste("log((exp(-(",unlist(tree[which(s)]),")*", tree[[n]],")-1)/(exp(-", tree[[n]],")-1))", collapse="+", sep = ""), "+", paste("log((exp(-(", sapply(tree[which(!s)], .constr.expr, type=type),")*", tree[[n]],")-1)/(exp(-", tree[[n]],")-1))", collapse="+", sep = ""),"))/",tree[[n]], sep="")
              }else
-           if(type==HAC_JOE){
+           if(type==7){
                  paste("1-(1-exp(", paste("log(1-(1-", unlist(tree[which(s)]),")^(", tree[[n]],"))", collapse="+", sep = ""), "+", paste("log(1-(1-(", sapply(tree[which(!s)], .constr.expr, type=type),"))^(", tree[[n]],"))", collapse="+", sep = ""), "))^(1/", tree[[n]], ")", sep="")
              }else
-           if(type==HAC_AMH){
+           if(type==9){
                   paste("(1-", tree[[n]],")/(", paste("((1-", tree[[n]],")/(", unlist(tree[which(s)]),")+", tree[[n]],")", collapse="*", sep = ""),"*", paste("((1-", tree[[n]],")/(", sapply(tree[which(!s)], .constr.expr, type=type), ")+", tree[[n]],")", collapse="*", sep = ""), "-", tree[[n]],")", sep="")
              }
  }else{
-             if(type==HAC_GUMBEL){
+             if(type==1){
                  paste("exp(-(", paste("(-log(", unlist(tree[-n]),"))^", tree[[n]], collapse="+", sep = ""),")^(1/", tree[[n]],"))", sep="")
              }else
-             if(type==HAC_CLAYTON){
+             if(type==3){
                  paste("(", paste("(",unlist(tree[-n]),"^(-", tree[[n]],")-1)", collapse="+", sep = ""), "+1)^(-1/", tree[[n]], ")", sep="")
              }else
-             if(type==HAC_FRANK){
+             if(type==5){
                  paste("-log(1-(1-exp(-", tree[[n]],"))*exp(", paste("log((exp(-(",unlist(tree[-n]),")*", tree[[n]],")-1)/(exp(-", tree[[n]],")-1))", collapse="+", sep = ""), "))/",tree[[n]], sep="")
              }else
-             if(type==HAC_JOE){
+             if(type==7){
                  paste("1-(1-exp(", paste("log(1-(1-", unlist(tree[-n]),")^(", tree[[n]],"))", collapse="+", sep = ""), "))^(1/", tree[[n]], ")", sep="")
              }else
-             if(type==HAC_AMH){
+             if(type==9){
                  paste("(1-", tree[[n]],")/(", paste("((1-", tree[[n]],")/(", unlist(tree[-n]),")+", tree[[n]],")", collapse="*", sep = ""), "-", tree[[n]],")", sep="")
              }
  }}else{
-             if(type==HAC_GUMBEL){
+             if(type==1){
                  paste("exp(-(", paste("(-log(", sapply(tree[-n], .constr.expr, type=type),"))^", tree[[n]], collapse="+", sep = ""),")^(1/", tree[[n]],"))", sep="")           
              }else
-             if(type==HAC_CLAYTON){
+             if(type==3){
                  paste("(", paste("((", sapply(tree[-n], .constr.expr, type=type),")^(-", tree[[n]],")-1)", collapse="+", sep = ""), "+1)^(-1/", tree[[n]], ")", sep="")
              }else
-           if(type==HAC_FRANK){
+           if(type==5){
                  paste("-log(1-(1-exp(-", tree[[n]],"))*exp(", paste("log((exp(-(", sapply(tree[-n], .constr.expr, type=type),")*", tree[[n]],")-1)/(exp(-", tree[[n]],")-1))", collapse="+", sep = ""),"))/",tree[[n]], sep="")
              }else
-           if(type==HAC_JOE){
+           if(type==7){
                  paste("1-(1-exp(",paste("log(1-(1-(", sapply(tree[-n], .constr.expr, type=type),"))^(", tree[[n]],"))", collapse="+", sep = ""), "))^(1/", tree[[n]], ")", sep="")
              }else
-           if(type==HAC_AMH){
+           if(type==9){
                   paste("(1-", tree[[n]],")/(", paste("((1-", tree[[n]],")/(", sapply(tree[-n], .constr.expr, type=type),")+", tree[[n]],")", collapse="*", sep = ""), "-", tree[[n]],")", sep="")
 }}
 }
 
 #---------------------------------------------------------------------------------------------------
 
-to.logLik = function(X, hac, eval = FALSE, margins = NULL, na.rm = FALSE, ...){
-	  X = .margins(X, margins)
+to.logLik = function(X, hac, eval = FALSE, margins = NULL, sum.log = TRUE, na.rm = FALSE, ...){
+	X = .margins(X, margins)
 			
 	if(na.rm){X = na.omit(X, ...)}
     
@@ -200,7 +200,11 @@ to.logLik = function(X, hac, eval = FALSE, margins = NULL, na.rm = FALSE, ...){
     g = function(theta, density=f){
             n.par = length(theta)
             for(i in 1:n.par){formals(density)[[length(formals(density))-n.par+i]]=theta[i]}
-            sum(log(c(attr(density(), "gradient"))))    
+            if(sum.log){
+	            sum(log(c(attr(density(), "gradient"))))
+	        }else{
+	        	log(c(attr(density(), "gradient")))
+	        }
     }
         
     if(!eval){g}else{g(values[order(values)])}

@@ -37,8 +37,6 @@ tree2str = function(hac, theta = TRUE, digits = 2){
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
-# .allocate.all works recusively. 
-# It calls either .one.with.theta or .one.without.theta, which call .allocate.all again.
 
 .allocate.all = function(tree, theta, digits){
 n = length(tree); x = character(1)
@@ -81,7 +79,7 @@ n = length(tree); x = character(1)
 		}}
 	}else{
 		if(class(element)=="list"){
-			.allocate.all(element, theta = theta, digits = digits) # back to .allocate.all
+			.allocate.all(element, theta = theta, digits = digits)
 	}else{
 		if(class(element)=="numeric"){
 			round(element, digits = digits)
@@ -101,6 +99,6 @@ n = length(tree); x = character(1)
 		}}
 	}else{
 		if(class(element)=="list"){
-			return(.allocate.all(element, theta = theta)) # back to .allocate.all
+			return(.allocate.all(element, theta = theta))
 	}}
 }

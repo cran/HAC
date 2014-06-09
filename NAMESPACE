@@ -22,27 +22,7 @@
 	"hac2nacopula"
 )
 
-
 exportClass("hac")
-
-
-# definitions:
-
-export("HAC_GUMBEL",
-	"AC_GUMBEL",
-	"HAC_CLAYTON",
-	"AC_CLAYTON",
-	"HAC_FRANK",
-	"AC_FRANK",
-	"HAC_JOE",
-	"AC_JOE",
-	"HAC_AMH",
-	"AC_AMH",
-	"ML",
-	"FML",
-	"RML"
-)
-
 
 # generics:
 S3method(aggregate, hac)

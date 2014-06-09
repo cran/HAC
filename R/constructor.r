@@ -10,12 +10,12 @@
 ##########################################################################################################################
 
 .check.par = function(x){
-	if((x$type == AC_GUMBEL) || (x$type == HAC_GUMBEL) || (x$type == AC_JOE) || (x$type == HAC_JOE)){
+	if((x$type == 2) || (x$type == 1) || (x$type == 8) || (x$type == 7)){
 		ober.theta = 1}
 	else
-	if((x$type = AC_CLAYTON) || (x$type = HAC_CLAYTON) || (x$type = AC_FRANK) || (x$type = HAC_FRANK)){
+	if((x$type = 4) || (x$type = 3) || (x$type = 6) || (x$type = 5)){
 		ober.theta = 1e-10}
-	if((x$type = AC_AMH) || (x$type = HAC_AMH)){
+	if((x$type = 10) || (x$type = 9)){
 		ober.theta = 0}
 	
 	L = x$tree
@@ -37,7 +37,7 @@
 
 #------------------------------------------------------------------------------------------------------------------------
 
-hac.full = function(type = HAC_GUMBEL, y, theta){
+hac.full = function(type, y, theta){
 	n = length(y)
 	if(n != (length(theta) + 1)){return(warning("The input arguments does not fit to a fully nested HAC"))}
 	
@@ -50,10 +50,10 @@ hac.full = function(type = HAC_GUMBEL, y, theta){
 
 #--------------------------------------------------------------------------------------------
  
-hac = function(type = HAC_GUMBEL, tree = NULL){
+hac = function(type, tree){
  	object = list(type = type, tree = tree)
  	class(object) = "hac"
- 	if(((type == AC_AMH) || (type == HAC_AMH)) && (max(.read.params(tree)) >= 1)){return(warning("The largest parameter of the Ali-Mikhail-Haq family must be < 1"))}
+ 	if(((type == 10) || (type == 9)) && (max(.read.params(tree)) >= 1)){return(warning("The largest parameter of the Ali-Mikhail-Haq family must be < 1"))}
     .check.par(object);
  	object
 }
@@ -89,19 +89,19 @@ print.hac = function(x, digits = 2, ...){
 hac2nacopula = function(x){
 	.family = character(1)
 	.names = .get.leaves(x$tree)
-	if((x$type == HAC_GUMBEL) | (x$type == AC_GUMBEL)){
+	if((x$type == 1) | (x$type == 2)){
 		.family = "G"
 	}else
-	if((x$type == HAC_CLAYTON) | (x$type == AC_CLAYTON)){
+	if((x$type == 3) | (x$type == 4)){
 		.family = "C"
 	}else
-	if((x$type == HAC_FRANK) | (x$type == AC_FRANK)){
+	if((x$type == 5) | (x$type == 6)){
 		.family = "F"
 	}else
-	if((x$type == HAC_JOE) | (x$type == AC_JOE)){
+	if((x$type == 7) | (x$type == 8)){
 		.family = "J"
 	}else
-	if((x$type == HAC_AMH) | (x$type == AC_AMH)){
+	if((x$type == 9) | (x$type == 10)){
 		.family = "A"
 	}
 	onacopulaL(.family, .tree2nacList(x$tree, .names, 1:length(.names)))
