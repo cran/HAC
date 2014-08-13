@@ -1,13 +1,13 @@
 # pdf.r ##################################################################################################################
 # FUNCTION:               	DESCRIPTION:
-#  .dAC						Computes the values of the bivariate copula density. (Internal function)
-#  .gumb.12.density			Bivariate density of the Gumbel copula. (Internal function)
-#  .clay.12.density			Bivariate density of the Clayton copula. (Internal function)
-#  .frank.12.density		Bivariate density of the Frank copula. (Internal function)
-#  .joe.12.density			Bivariate density of the Joe copula. (Internal function)
-#  .amh.12.density			Bivariate density of the Ali-Mikhail-Haq copula. (Internal function)
-#  dHAC						Returns the values of the an arbitrary HAC density.
-#  .cop.pdf					Derives a function for the copula density or evalutes the derived function instantaneously. (Internal function)
+#  .dAC						          Computes the values of the bivariate copula density. (Internal function)
+#  .gumb.12.density			    Bivariate density of the Gumbel copula. (Internal function)
+#  .clay.12.density			    Bivariate density of the Clayton copula. (Internal function)
+#  .frank.12.density		    Bivariate density of the Frank copula. (Internal function)
+#  .joe.12.density			    Bivariate density of the Joe copula. (Internal function)
+#  .amh.12.density			    Bivariate density of the Ali-Mikhail-Haq copula. (Internal function)
+#  dHAC						          Returns the values of the an arbitrary HAC density.
+#  .cop.pdf					        Derives a function for the copula density or evalutes the derived function instantaneously. (Internal function)
 #  .d.dell                  Derives the copula expression given by .constr.expr with respect to the arguments of the copula, which are defined on [0,1]. (Internal function)
 #  .constr.expr             Returns an expression of the HAC for a given copula type. (Internal function)
 #  to.logLik                Returns the log-Likelihood function or evalutes the log-likelihood instantaneously.
@@ -85,19 +85,19 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
         }else{
             colnames(X) = c();
             if((type == 2) | (type == 1)){
-                copGumbel@dacopula(X, hac$tree[[d+1]])[-1]
+                copGumbel@dacopula(X, hac$tree[[length(hac$tree)]])[-1]
             }else
             if((type == 4) | (type == 3)){
-            	copClayton@dacopula(X, hac$tree[[d+1]])[-1]
+            	copClayton@dacopula(X, hac$tree[[length(hac$tree)]])[-1]
         	}else
             if((type == 6) | (type == 5)){
-            	copFrank@dacopula(X, hac$tree[[d+1]])[-1]
+            	copFrank@dacopula(X, hac$tree[[length(hac$tree)]])[-1]
         	}else
             if((type == 8) | (type == 7)){
-            	copJoe@dacopula(X, hac$tree[[d+1]])[-1]
+            	copJoe@dacopula(X, hac$tree[[length(hac$tree)]])[-1]
         	}else
             if((type == 10) | (type == 9)){
-            	copAMH@dacopula(X, hac$tree[[d+1]])[-1]
+            	copAMH@dacopula(X, hac$tree[[length(hac$tree)]])[-1]
         	}
         }
 }

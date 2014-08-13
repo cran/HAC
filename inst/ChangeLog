@@ -1,4 +1,13 @@
+2014-08-13 Alexander Ristig <ristigal@hu-berlin.de>
+
+	* The quasi Maximum Likelihood estimation procedure (method = 1) is modified, such that the pseudo variables are computed from the diagonal of Archimedean copulas. As a result, the estimates at higher hierachical levels are consistent and (asymptotically) unbiased.
+
+
+	* The function nacopula2hac() was added. It transforms 'nacopula' objects into 'hac' objects.
+
+
 2014-06-09 Alexander Ristig <ristigal@hu-berlin.de>
+
 	
 	* The updated version of the HAC package is referred to the JSS manuscript:
 		
@@ -10,6 +19,8 @@
 	* to.logLik has an additional argument, called sum.log = TRUE (by default). If sum.log = FALSE, the log of the log-likelihood contributions are returned.
 
 	* A bug in the estimate.copula() function has been fixed, which might slightly improve the estimation results for large dimensional HAC based on complicated structures.
+
+
 
 2014-02-13 Alexander Ristig <ristigal@hu-berlin.de>
 
@@ -24,6 +35,8 @@
 	* The package also covers the following generator families: Frank, Joe, Ali-Mikhail-Haq. 
 	
 	* From now, the simulation methods of all copula families are based on those of the copula-package.
+
+
 
 2013-05-03 Alexander Ristig <ristigal@hu-berlin.de>
 

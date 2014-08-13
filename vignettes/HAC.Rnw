@@ -367,13 +367,11 @@ HAC:
 \item Ordinary (full) ML estimation, also denoted by FML, which is
   based on the complete log-likelihood and hence on a predetermined
   structure.
-\item The ML setup is based on realized pseudo-variables, i.e., the
-  values of the pseudo-variables for the given sample are explicitly
-  computed, so that the bivariate density is maximized with respect to
-  the copula parameter at each step of the procedure. The benefits of
-  the ML method hold in particular for binary and non-complex
-  structures. If the structure of the HAC is, however, complex, the
-  estimates around the initial node seem to be slightly biased. Note
+\item The ML setup is based on realized pseudo-variables, e.g., the
+  pseudo-variable for the variables $u_k$ and $u_{\ell}$ are 
+  computed according to \citet{gorecki_hofert_holena_2014} as $Z_{k\ell}\overset{\operatorname{def}}{=}\phi\left[2\phi^{-1}\left\{\max(u_k, u_{\ell})\right\}\right]$, so that the bivariate density is maximized with respect to
+  the copula parameter at each step of the procedure. This diagonal transformation of the copula avoids the
+  bias around the initial node arising from the similar transformation $Z_{k\ell}\overset{\operatorname{def}}{=}\phi\left\{\phi^{-1}\left(u_k\right)+\phi^{-1}\left(u_{\ell}\right)\right\}$. Note
   that this procedure is not supported by asymptotic theory.
 \item More precise results can be obtained by the recursive ML (RML)
   procedure discussed in \citet{okhrin_okhrin_schmid_2013a}. The
@@ -990,20 +988,20 @@ the other hand, larger sample sizes permit smaller values of
     $\operatorname{max}$ &
     $\operatorname{sd}$\\
     \hline
-    \multirow{2}{*}{$C_1^{\text{G}}$} & $\theta_2=1.500$ & 1.30 & 1.50 & 1.50 & 1.75 & 0.07\\
+    \multirow{2}{*}{$C_1^{\text{G}}$} & $\theta_2=1.500$ & 1.29 & 1.50 & 1.50 & 1.79 & 0.07\\
     & $\theta_1=3.000$ & 2.55 & 3.00 & 3.00 & 3.60 & 0.16\\
     \hline
-    \multirow{2}{*}{$C_1^{\text{C}}$} & $\theta_2=1.000$ & 0.62 & 0.99 & 0.99 & 1.40 & 0.12\\
+    \multirow{2}{*}{$C_1^{\text{C}}$} & $\theta_2=1.000$ & 0.62 & 1.00 & 1.00 & 1.55 & 0.12\\
     & $\theta_1=4.000$ & 3.26 & 4.01 & 4.01 & 5.00 & 0.27\\
     \hline
-    \multirow{4}{*}{$C_2^{\text{G}}$} & $\theta_4=1.125$ & 1.00 & 1.10 & 1.11 & 1.27 & 0.04\\
-    & $\theta_3=1.500$ & 1.27 & 1.45 & 1.45 & 1.68 & 0.07\\
-    & $\theta_2=2.250$ & 1.95 & 2.24 & 2.24 & 2.62 & 0.12\\
+    \multirow{4}{*}{$C_2^{\text{G}}$} & $\theta_4=1.125$ & 1.00 & 1.13 & 1.13 & 1.29 & 0.05\\
+    & $\theta_3=1.500$ & 1.25 & 1.50 & 1.50 & 1.86 & 0.08\\
+    & $\theta_2=2.250$ & 1.95 & 2.25 & 2.25 & 2.62 & 0.12\\
     & $\theta_1=4.500$ & 3.79 & 4.51 & 4.52 & 5.51 & 0.24\\
     \hline
-    \multirow{4}{*}{$C_2^{\text{C}}$} & $\theta_4=0.250$ & 0.00 & 0.17 & 0.17 & 0.41 & 0.07\\
-    & $\theta_3=1.000$ & 0.63 & 0.91 & 0.92 & 1.43 & 0.11\\
-    & $\theta_2=2.500$ & 1.90 & 2.51 & 2.51 & 3.18 & 0.20\\
+    \multirow{4}{*}{$C_2^{\text{C}}$} & $\theta_4=0.250$ & 0.02 & 0.26 & 0.26 & 0.57 & 0.09\\
+    & $\theta_3=1.000$ & 0.62 & 1.00 & 1.00 & 1.50 & 0.12\\
+    & $\theta_2=2.500$ & 1.95 & 2.52 & 2.52 & 3.19 & 0.20\\
     & $\theta_1=7.000$ & 5.95 & 7.00 & 7.02 & 8.40 & 0.43\\
     \hline
   \end{tabular}

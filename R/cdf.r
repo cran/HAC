@@ -1,8 +1,10 @@
 # cdf.r ##################################################################################################################
-# FUNCTION: 			DESCRIPTION:
-#  pHAC					  Computes the values of the cdf for a given sample and a 'hac' object.
-#  .cop.cdf       Supplementary recursive function of pHAC. (Internal function)
-#  .one.ob        If X is not a matrix, but a d-dimensional vector, .one.ob modifies X, such that X is a real matrix.
+# FUNCTION: 			  DESCRIPTION:
+#  pHAC					    Computes the values of the cdf for a given sample and a 'hac' object.
+#  .cop.transform   Computes the transformation using the diagonal of a HAC. (Internal function)
+#  .cop.T           Computes the transformation using the diagonal of a AC. (Internal function)
+#  .cop.cdf         Supplementary recursive function of pHAC. (Internal function)
+#  .one.ob          If X is not a matrix, but a d-dimensional vector, .one.ob modifies X, such that X is a real matrix.
 ##########################################################################################################################
 
 pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
@@ -34,6 +36,32 @@ pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
 	}}else{
 		copMult(sapply(tree[-n], .cop.cdf, sample = sample, type = type), theta = tree[[n]], type = type)
 	}
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+
+.cop.transform = function(sample, tree, type){
+	if(length(tree)==1){tree = tree[[1]]}
+	n = length(tree); names = colnames(sample)
+	s = sapply(tree, is.character)
+
+	if(any(s[-n])){
+		if(any(!s[-n])){
+			select = unlist(tree[s])
+				for(i in 1:length(select)){select[i]=(which(names==select[i]))}; select = as.numeric(select)
+				exclude = c(1:(n-1))[which(!s[-n])]
+			  .cop.T(cbind(sample[, select], sapply(tree[exclude], .cop.transform, sample = sample[, -select], type = type)), theta = tree[[n]], type = type)
+		}else{
+			  .cop.T(cbind(sample[, unlist(tree[s])]), theta = tree[[n]], type = type)
+	}}else{
+		    .cop.T(sapply(tree[-n], .cop.transform, sample = sample, type = type), theta = tree[[n]], type = type)
+	}
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+
+.cop.T = function(sample, theta, type){
+    phi(NCOL(sample)*phi.inv(apply(sample, 1, max), theta = theta, type = type), theta = theta, type = type)
 }
 
 #------------------------------------------------------------------------------------------------------------------------

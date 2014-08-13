@@ -7,7 +7,7 @@
 The function estimates the parameters and determines the structure of Hierarchical Archimedean Copulae.
 }
 \usage{
-estimate.copula(X, type = 1, method = 3, hac = NULL, epsilon = 0, 
+estimate.copula(X, type = 1, method = 1, hac = NULL, epsilon = 0, 
 agg.method = "mean", margins = NULL, na.rm = FALSE, max.min = TRUE, \dots)
 }
 \arguments{
@@ -47,6 +47,8 @@ A \env{hac} object is returned.
 }
 \references{
 Genest, C., Ghoudi, K., and Rivest, L. P. 1995, A Semiparametric Estimation Procedure of Dependence Parameters in Multivariate Families of Distributions, \emph{Biometrika} 82, 543-552.
+
+G\'{o}recki, J., Hofert, M. and Holena, M. 2014, On the Consistency of an Estimator for Hierarchical Archimedean Copulas, \emph{preprint}.
 
 Joe, H. 2005, Asymptotic Efficiency of the Two-Stage Estimation Method for Copula-Based Models, \emph{Journal of Multivariate Analysis} 94(2), 401-419.
 

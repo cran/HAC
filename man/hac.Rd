@@ -3,16 +3,18 @@
 \alias{hac.full}
 \alias{print.hac}
 \alias{hac2nacopula}
+\alias{nacopula2hac}
 
 \title{Construction of \env{hac} objects
 }
 \description{
-\env{hac} objects are required as input argument for several functions, e.g. \code{\link{plot.hac}} and \code{\link{rHAC}}. They can be constructed by \code{hac} and \code{hac.full}. The latter function produces only fully nested Archimedean copulae, whereas \code{hac} can construct arbitrary dependence structures for a given family. Moreover, we provide a function which ensures the compatability with the \env{copula} package.}
+\env{hac} objects are required as input argument for several functions, e.g. \code{\link{plot.hac}} and \code{\link{rHAC}}. They can be constructed by \code{hac} and \code{hac.full}. The latter function produces only fully nested Archimedean copulae, whereas \code{hac} can construct arbitrary dependence structures for a given family. Moreover, the functions \code{hac2nacopula} and \code{nacopula2hac} ensure the compatability with the \env{copula} package.}
 \usage{
 hac(type, tree)
 hac.full(type, y, theta)
 \method{print}{hac}(x, digits = 2, \dots)
 hac2nacopula(x)
+nacopula2hac(outer_nacopula)
 }
 \arguments{
   \item{y}{
@@ -29,6 +31,9 @@ all copula-types are admissible, see \code{\link{phi}} for an overview of implem
 }
   \item{x}{
 a \env{hac} object.
+}
+ \item{outer_nacopula}{
+an \code{\link{nacopula}} object. The variables of the \code{outer_nacopula} object \code{1, 2, ...} are translated into the \code{\link{character}}s \code{"X1", "X2", ...}.
 }
   \item{digits}{
 specifies the digits, see \code{\link{tree2str}}.

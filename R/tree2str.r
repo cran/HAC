@@ -80,10 +80,9 @@ n = length(tree); x = character(1)
 	}else{
 		if(class(element)=="list"){
 			.allocate.all(element, theta = theta, digits = digits)
-	}else{
-		if(class(element)=="numeric"){
+	  }else{
 			round(element, digits = digits)
-		}}}
+	}}
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------
