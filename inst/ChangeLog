@@ -1,3 +1,11 @@
+2015-02-03 Alexander Ristig <ristigal@hu-berlin.de>
+
+	* Stage-wise (QML) estimation of HAC is supported for a pre-specified structure, i.e., 'method = 1' and 'hac != NULL'. The argument 'hac' was ignored so far.
+
+2014-08-14 Alexander Ristig <ristigal@hu-berlin.de>
+
+	* A small bug in estimate.copula() has been fixed. The parameter of the bivariate Gumbel copula could not be estimated, since the dsumSibuya() was not imported.
+
 2014-08-13 Alexander Ristig <ristigal@hu-berlin.de>
 
 	* The quasi Maximum Likelihood estimation procedure (method = 1) is modified, such that the pseudo variables are computed from the diagonal of Archimedean copulas. As a result, the estimates at higher hierachical levels are consistent and (asymptotically) unbiased.

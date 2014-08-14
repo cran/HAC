@@ -48,7 +48,7 @@ A \env{hac} object is returned.
 \references{
 Genest, C., Ghoudi, K., and Rivest, L. P. 1995, A Semiparametric Estimation Procedure of Dependence Parameters in Multivariate Families of Distributions, \emph{Biometrika} 82, 543-552.
 
-G\'{o}recki, J., Hofert, M. and Holena, M. 2014, On the Consistency of an Estimator for Hierarchical Archimedean Copulas, \emph{preprint}.
+Gorecki, J., Hofert, M. and Holena, M. 2014, On the Consistency of an Estimator for Hierarchical Archimedean Copulas, In Talaysova, J., Stoklasa, J., Talaysek, T. (Eds.) \emph{32nd International Conference on Mathematical Methods in Economics, Olomouc: Palacky University}, 239-244.
 
 Joe, H. 2005, Asymptotic Efficiency of the Two-Stage Estimation Method for Copula-Based Models, \emph{Journal of Multivariate Analysis} 94(2), 401-419.
 

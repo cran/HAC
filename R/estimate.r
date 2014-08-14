@@ -1,7 +1,8 @@
 # estimate.r ############################################################################################################# 
 # FUNCTION:               	DESCRIPTION: 
 #  estimate.copula			    Estimates the structure and the parameter of a HAC for a given sample. 
-#  .ML                      Estimation procedures based on binary trees, i.e., for method = ML. (Internal function)
+#  .QML                     Estimation procedures based on binary trees and QML, i.e., for method = ML. (Internal function)
+#  .QML.hac                 Estimation procedures based on method = 1 and a prespcefied hac-structure, i.e., hac != NULL. (Internal function)
 #  .FML                     Full Maximum Likelihood (FML) estimation procedure. It needs an 'hac' object as argument to construct the log-likelihood which depends on the structure of the HAC. (Internal function)
 #  .RML                     Recursive Maximum Likelihood (RML) estimation procedure. (Internal function)
 #  .ub         			 	      Enures the dependency parameter of the initial node being smaller than parameter of consecutive nodes. (Internal function) 
@@ -26,14 +27,18 @@ estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg
 	d = NCOL(X)	
     if(((type == 1) | (type == 3) | (type == 5) | (type == 7) | (type == 9)) & (d > 2)){
     	if(method == 1){
-            res = .ML(X = X, type = type, epsilon = epsilon, agg.method = agg.method, names = names, ...)    
+    	      if(is.null(hac)){
+                res = .QML(X = X, type = type, epsilon = epsilon, agg.method = agg.method, names = names, ...)
+            }else{
+                res = .QML.fixed.tree(tree = hac$tree, X = X, type = hac$type)
+        	  }    
         }else
         if(method == 2){
             if(is.null(hac)){
                 stop("A hac object is required.")
             }else{
                 res = .FML(X = X, type = type, hac = hac)
-        	}
+        	  }
         }else
         if(method == 3){
             res = .RML(X = X, type = type, method = method, epsilon = epsilon, agg.method = agg.method, names = names, ...)
@@ -60,8 +65,8 @@ estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-.ML = function(X, type, epsilon, agg.method = "mean", names, ...){
-        main.dim = NCOL(X); tree = as.list(names); upper.b = if((type == 10) | (type == 9)){1/3-1e-8}else{1-1e-8}
+.QML = function(X, type, epsilon, agg.method = "mean", names, ...){
+        main.dim = NCOL(X); tree = as.list(names);
         for(main.i in 1:(main.dim-2)){
            current.names = colnames(X) 
            matr = matrix(0, (main.dim-main.i+1), (main.dim-main.i+1))
@@ -92,6 +97,27 @@ estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg
             res = c(tree[1:2], tau2theta(optimise(f = function(y){sum(log(.dAC(X[,1], X[,2], tau2theta(y, type), type)))}, interval = c(1e-8, .ub(tree[[1]][[length(tree[[1]])]], tree[[2]][[length(tree[[2]])]], type)), maximum = TRUE)$maximum, type))
     
     .union(res, epsilon = epsilon, method = agg.method, ...)
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.QML.fixed.tree = function(tree, X, type){
+        if(length(tree)==1){tree = tree[[1]]}
+	      n = length(tree);
+	      s = sapply(tree, is.character)
+
+	      if(any(!s[-n])){
+			     for(j in which(!s[-n])){
+                .names.j = .get.leaves(tree[[j]])
+                tree[[j]] = .QML.fixed.tree(tree[[j]], X[,.names.j], type)
+                X = cbind(X, .cop.transform(X[,.names.j], tree[[j]], type))
+                X = X[,-which(colnames(X) %in% .names.j)]; colnames(X) = c(colnames(X)[-NCOL(X)], paste("tree", j, sep = ""))
+           }
+           tree[[n]] = estimate.copula(X, type = type + 1)$tree[[NCOL(X)+1]]
+		    }else{
+		       tree[[n]] = estimate.copula(X, type = type + 1)$tree[[NCOL(X)+1]]
+	      }
+	      tree
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
