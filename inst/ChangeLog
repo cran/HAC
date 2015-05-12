@@ -1,3 +1,13 @@
+2015-05-12 Alexander Ristig <ristigal@hu-berlin.de>
+	
+
+	* The estimation method 'penalized ML' is added.
+
+	
+	* The computational time for the stage-wise (QML) estimation procedure is enormously reduced.
+
+
+
 2015-02-03 Alexander Ristig <ristigal@hu-berlin.de>
 
 	* Stage-wise (QML) estimation of HAC is supported for a pre-specified structure, i.e., 'method = 1' and 'hac != NULL'. The argument 'hac' was ignored so far.

@@ -18,7 +18,7 @@ a \eqn{n \times d} matrix. If there are no \code{colnames} provided, the names \
   defines the copula family, see \code{\link{phi}} for an overview of implemented families.
 }
   \item{method}{
-the estimation method. Select between quasi Maximum Likelihood \code{1}, full Maximum Likelihood \code{2} and recursive Maximum Likelihood \code{3}.
+the estimation method. Select between quasi Maximum Likelihood \code{1}, full Maximum Likelihood \code{2}, recursive Maximum Likelihood \code{3} and penalized Maximum Likelihood \code{4}.
 }  
    \item{hac}{
 a \code{\link{hac}} object, which determines the structure and provides initial values. An object must be provided, if \code{method = 2} referring to the full Maximum Likelihood procedure.
@@ -36,7 +36,7 @@ if \eqn{\epsilon > 0}, the new dependency parameter can be determined by \code{"
 boolean. If \code{na.rm = TRUE}, missing values, \code{NA}, contained in \code{X} are removed.
 }
   \item{max.min}{
-boolean. If \code{max.min = TRUE} and an element of \code{X} is \eqn{\geq 1} or \eqn{\leq 0}, it is set to \eqn{1-10^{-6}} and \eqn{10^{-6}} respectively.
+boolean. If \code{max.min = TRUE} and an element of \code{X} is \eqn{\geq 1} or \eqn{\leq 0}, it is set to \eqn{1-10^{-8}} and \eqn{10^{-8}} respectively.
 }
   \item{\dots}{
 further arguments passed to or from other methods, e.g. \code{\link{na.omit}}.
@@ -78,3 +78,4 @@ est.obj.full = estimate.copula(x, type = 1, method = 2, hac = est.obj)
 # recursive ML estimation leads to almost identical results
 est.obj.r = estimate.copula(x, type = 1, method = 3)
 }
+

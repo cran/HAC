@@ -41,7 +41,7 @@ arguments to be passed to \code{\link{na.omit}}.
     \code{rHAC} retruns a \eqn{n \times d} matrix, where \eqn{d} refers to the dimension of the HAC. \code{dHAC} and \code{pHAC} return vectors. The computation of the density might be time consuming for high-dimensions, since the density is defined as \eqn{d}-th derivative of the HAC with respect to its arguments \eqn{u_1, \ldots, u_d}. 
 }
 \details{
-    Densities of simple Archimedean copula are based on the functions of the \env{copula} package.
+    Sampling schemes of hierarchical and densities of simple Archimedean copula are based on functions of the \env{copula} package.
 }
 \references{
 Hofert, M. 2011, Efficiently Sampling Nested Archimedean Copulas, \emph{Computational Statistics & Data Analysis} 55, 57-70.
@@ -95,3 +95,4 @@ sample = rHAC(1000, model)
 result1 = estimate.copula(sample)
 result2 = estimate.copula(sample, epsilon = 0.2)
 }
+

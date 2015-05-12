@@ -91,6 +91,7 @@ print.hac = function(x, digits = 2, ...){
 hac2nacopula = function(x){
 	.family = character(1)
 	.names = .get.leaves(x$tree)
+
 	if((x$type == 1) | (x$type == 2)){
 		.family = "G"
 	}else
@@ -106,12 +107,20 @@ hac2nacopula = function(x){
 	if((x$type == 9) | (x$type == 10)){
 		.family = "A"
 	}
-	onacopulaL(.family, .tree2nacList(x$tree, .names, 1:length(.names)))
+
+    true.numbers = as.numeric(.names)
+    if(any(is.na(true.numbers))){
+       d = length(.names)
+       for(j in 1:d){print(paste(.names[j], " <-> ", j, sep = ""))}
+	   onacopulaL(.family, .tree2nacList(x$tree, .names, 1:length(.names)))
+    }else{
+       onacopulaL(.family, .tree2nacList(x$tree, .names, true.numbers))
+    }
 }
 
 #------------------------------------------------------------------------------------------------------------------------
 
-.tree2nacList = function(tree, names, numbers){	
+.tree2nacList = function(tree, names = NULL, numbers){	
 	 if(length(tree)==1){tree=tree[[1]]}
      n = length(tree)
      s = sapply(tree[-n], is.character)
@@ -163,7 +172,7 @@ nacopula2hac = function(outer_nacopula){
      if(n.childs > 0){
          if(n.comps > 0){	
            res = vector("list", n.comps + n.childs + 1)
-           for(j in 1:n.comps){res[[j]] = paste("X", comps[j], sep = "")}
+           for(j in 1:n.comps){res[[j]] = paste(comps[j], sep = "")}
            for(j in (n.comps + 1):(n.comps + n.childs)){res[[j]] = .nacopula2tree(outer_nacopula@childCops[[j - n.comps]])}
            res[[n.comps + n.childs + 1]] = outer_nacopula@copula@theta
          }else{
@@ -172,7 +181,7 @@ nacopula2hac = function(outer_nacopula){
            res[[n.childs + 1]] = outer_nacopula@copula@theta
          }}else{
            res = vector("list", n.comps + 1)
-           for(j in 1:n.comps){res[[j]] = paste("X", comps[j], sep = "")}
+           for(j in 1:n.comps){res[[j]] = paste(comps[j], sep = "")}
            res[[n.comps + 1]] = outer_nacopula@copula@theta
          }
      res

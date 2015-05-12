@@ -1,6 +1,6 @@
 \documentclass[article, nojss]{jss}
 
-\author{Ostap Okhrin \\Humboldt-Universit\"at zu Berlin \And
+\author{Ostap Okhrin \\Dresden University of Technology \And
         Alexander Ristig \\Humboldt-Universit\"at zu Berlin}
 \title{Hierarchical Archimedean Copulae: The \pkg{HAC} Package}
 
@@ -27,12 +27,13 @@
 
 \Address{
   Ostap Okhrin\\
-  C.A.S.E - Center for Applied Statistics and Economics\\
-  Ladislaus von Bortkiewicz Chair of Statistics\\
-  Humboldt-Universit\"at zu Berlin\\
-  10099 Berlin, Germany\\
-  E-mail: \email{ostap.okhrin@wiwi.hu-berlin.de}\\
-  URL: \url{http://lehre.wiwi.hu-berlin.de/Professuren/quantitativ/statistik/members/personalpages/o2}\\
+  Chair of Econometrics and Statistics esp. Transportation\\
+  Institute of Economics and Transport\\
+  Faculty of Transportation\\ 
+  Dresden University of Technology\\
+  01069 Dresden, Germany\\
+  E-mail: \email{ostap.okhrin@tu-dresden.de}\\
+  URL: \url{https://www.wiwi.hu-berlin.de/professuren/quantitativ/statistik/members/personalpages/o2}\\
   \\
   Alexander Ristig\\
   C.A.S.E - Center for Applied Statistics and Economics\\
@@ -40,7 +41,7 @@
   Humboldt-Universit\"at zu Berlin\\
   10099 Berlin, Germany\\
   E-mail: \email{alexander.ristig@hu-berlin.de}\\
-  URL: \url{http://lehre.wiwi.hu-berlin.de/Professuren/quantitativ/statistik/members/personalpages/ar}\\
+  URL: \url{https://www.wiwi.hu-berlin.de/professuren/quantitativ/statistik/members/personalpages/ar}\\
 }
 
 \usepackage{enumerate}
@@ -388,6 +389,7 @@ HAC:
   point of view, the computational challenge is to build the
   log-likelihood for the full ML estimation, which is almost solved by
   constructing the $d$-dimensional density, see Section \ref{sec:cdf}.
+\item The penalized ML (PML) estimation procedure aims at determining a data driven sequence $\epsilon_n$ in order to fuse subsequent nodes, if $\hat\theta_1-\hat\theta_2<\epsilon_n$. This method merges advantages of the ML and RML procedure. The proposed method is, however, computationally intense, as the data driven thresholding parameter $\epsilon_n$ depends on tuning parameters arising from a non-concave penalization of the log-likelihood function, c.f., \citet{fan_li_2001}. %We refer the interested reader to \citet{okhrin_ristig_sheen_trueck_2015} for details.
 \end{enumerate}
 
 \section[Applications of HAC]{Applications of \pkg{HAC}}\label{sec:AHAC}

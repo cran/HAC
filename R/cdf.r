@@ -61,7 +61,8 @@ pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
 #------------------------------------------------------------------------------------------------------------------------
 
 .cop.T = function(sample, theta, type){
-    phi(NCOL(sample)*phi.inv(apply(sample, 1, max), theta = theta, type = type), theta = theta, type = type)
+	.max.phi = phi.inv(apply(sample, 1, max), theta = theta, type = type)
+    phi(NCOL(sample)*.max.phi, theta = theta, type = type)
 }
 
 #------------------------------------------------------------------------------------------------------------------------

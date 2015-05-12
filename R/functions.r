@@ -68,14 +68,14 @@ phi = function(x, theta, type){
 	}else
 	if((type == 6) || (type == 5)){
 		if(theta > 0){
-			-log(1 - (1 - exp(-theta)) * exp(-x)) / theta
+			-log(-expm1(-x) + exp(-theta-x))/theta
 		}else{
 			return(warning(paste("theta > 0 is required.")))
 		}			
 	}else
 	if((type == 8) || (type == 7)){
 		if(theta >= 1){
-			1 - (1 - exp(-x))^(1 / theta)
+			1 - (-expm1(-x))^(1 / theta)
 		}else{
 			return(warning(paste("theta >= 1 is required.")))
 		}			
@@ -111,14 +111,14 @@ phi.inv = function(x, theta, type){
 	}else
 	if((type == 6) || (type == 5)){
 		if(theta > 0){
-			-log((1 - exp(-x * theta))/(1 - exp(-theta)))
+			 -log1p(exp(-theta)*expm1(theta-x*theta)/expm1(-theta))
 		}else{
 			return(warning(paste("theta > 0 is required.")))
 		}
 	}else
 	if((type == 8) || (type == 7)){
 		if(theta >= 1){
-			-log(1 - (1 - x)^theta)
+			-log1p(- (1 - x)^theta)
 		}else{
 			return(warning(paste("theta >= 1 is required.")))
 		}

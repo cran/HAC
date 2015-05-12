@@ -1,17 +1,18 @@
 # estimate.r ############################################################################################################# 
 # FUNCTION:               	DESCRIPTION: 
-#  estimate.copula			    Estimates the structure and the parameter of a HAC for a given sample. 
+#  estimate.copula			Estimates the structure and the parameter of a HAC for a given sample. 
 #  .QML                     Estimation procedures based on binary trees and QML, i.e., for method = ML. (Internal function)
+#  .PML                     Estimation procedures based on penalized QML, i.e., for method = PML. (Internal function)
 #  .QML.hac                 Estimation procedures based on method = 1 and a prespcefied hac-structure, i.e., hac != NULL. (Internal function)
 #  .FML                     Full Maximum Likelihood (FML) estimation procedure. It needs an 'hac' object as argument to construct the log-likelihood which depends on the structure of the HAC. (Internal function)
 #  .RML                     Recursive Maximum Likelihood (RML) estimation procedure. (Internal function)
-#  .ub         			 	      Enures the dependency parameter of the initial node being smaller than parameter of consecutive nodes. (Internal function) 
-#  .margins				          Estimates the marginal distributions and returns the fitted values for a d-dimensional sample. (Internal function)   
-#  .one.mar				          Estimates one marginal distributions for a given univariate sample. (Internal function)   
-#  .max.min					        0's contained in the data matrix are set to 0.000001 and 1's to 1-0.00001. (Internal function) 
+#  .ub         			 	Enures the dependency parameter of the initial node being smaller than parameter of consecutive nodes. (Internal function) 
+#  .margins				    Estimates the marginal distributions and returns the fitted values for a d-dimensional sample. (Internal function)   
+#  .one.mar				    Estimates one marginal distributions for a given univariate sample. (Internal function)   
+#  .max.min					0's contained in the data matrix are set to 1e-16 and 1's to 1-1e-16. (Internal function) 
 #  .constraints.ui          Returns a matrix of constraints according to the matrix ui of constrOptim. This matrix ensures the parameters being increasing from the highest to the lowest hierarchical level for the full ML approach. (Internal function)
 #  .rebuild                 Matches the tree of a 'hac' object according to an ordered parameter vector. (Internal function) 
-########################################################################################################################## 
+##########################################################################################################################
 
 estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg.method = "mean", margins = NULL, na.rm = FALSE, max.min = TRUE, ...){
 	
@@ -42,6 +43,9 @@ estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg
         }else
         if(method == 3){
             res = .RML(X = X, type = type, method = method, epsilon = epsilon, agg.method = agg.method, names = names, ...)
+        }else
+        if(method == 4){
+            res = .PML(X = X, type = type, names = names)
         }
     }else{
     	if((type == 2) | (type == 1)){
@@ -67,55 +71,191 @@ estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg
 
 .QML = function(X, type, epsilon, agg.method = "mean", names, ...){
         main.dim = NCOL(X); tree = as.list(names);
-        for(main.i in 1:(main.dim-2)){
-           current.names = colnames(X) 
-           matr = matrix(0, (main.dim-main.i+1), (main.dim-main.i+1))
-                for(i in 1:((main.dim-main.i+1)-1)){
-                    for(j in (i+1):(main.dim-main.i+1)){
-                        if((current.names[i] != "tree") & (current.names[j] != "tree")){
-                           upper.tau = if((type == 10) | (type == 9)){1/3-1e-8}else{1-1e-8}
-                        }else
-                        if((current.names[i] == "tree") & (current.names[j] != "tree")){
-                           upper.tau = theta2tau(tree[[i]][[length(tree[[i]])]], type)
-                        }else
-                        if((current.names[i] != "tree") & (current.names[j] == "tree")){
-                           upper.tau = theta2tau(tree[[j]][[length(tree[[j]])]], type)
-                        }else
-                        if((current.names[i] == "tree") & (current.names[j] == "tree")){
-                           upper.tau = min(theta2tau(c(tree[[i]][[length(tree[[i]])]], tree[[j]][[length(tree[[j]])]]), type))
-                        }
-                        matr[i, j] = matr[j, i] = optimise(f = function(y, i, j){sum(log(.dAC(X[,i], X[,j], tau2theta(y, type), type)))}, i = i, j = j, interval = c(1e-8, upper.tau), maximum = TRUE)$maximum
-                    }
-                 }
-            
-            pair = c(min(row(matr)[which(matr==max(matr))]), max(col(matr)[which(matr==max(matr))])); current.theta = tau2theta(max(matr), type)
-            diag.T = .cop.T(sample = X[,pair], theta = current.theta, type = type)
-			      X = X[,-pair[2]]; X[,pair[1]] = diag.T; colnames(X)[pair[1]] = "tree"
-            tree[[pair[1]]] = c(tree[pair], current.theta); tree = tree[-pair[2]]
+        matr = matrix(0, main.dim, main.dim)
+        
+        upper.tau = if((type == 10) | (type == 9)){1/3 - 1e-10}else{1 - 1e-10}
+        for(i in 1:(main.dim-1)){
+            for(j in (i+1):main.dim){
+                matr[i, j] = matr[j, i] = optimise(f = function(y, i, j){sum(log(.dAC(X[, i], X[, j], tau2theta(y, type), type)))}, i = i, j = j, interval = c(1e-08, upper.tau), maximum = TRUE)$maximum
+            }
         }
-         			
-            res = c(tree[1:2], tau2theta(optimise(f = function(y){sum(log(.dAC(X[,1], X[,2], tau2theta(y, type), type)))}, interval = c(1e-8, .ub(tree[[1]][[length(tree[[1]])]], tree[[2]][[length(tree[[2]])]], type)), maximum = TRUE)$maximum, type))
-    
-    .union(res, epsilon = epsilon, method = agg.method, ...)
+        
+        pair = c(min(row(matr)[which(matr == max(matr))]), max(col(matr)[which(matr == max(matr))]))
+        current.theta = tau2theta(max(matr), type)
+
+	    X[, pair[1]] = .cop.T(sample = X[, pair], theta = current.theta, type = type)
+    		X = X[, -pair[2]]
+
+	    colnames(X)[pair[1]] = "tree"
+    		tree[[pair[1]]] = c(tree[pair], current.theta)
+        tree = tree[-pair[2]]
+		
+		matr = matr[-pair[2],-pair[2]]
+		Index.j = 1:(main.dim <- main.dim - 1); 
+		
+        while(main.dim >= 2){
+        	pair = pair[1]
+        	current.names = colnames(X)
+            for(j in Index.j[-pair]){
+                if ((current.names[pair] == "tree") & (current.names[j] != "tree")) {
+                  upper.tau = theta2tau(tree[[pair]][[length(tree[[pair]])]], type)
+                }
+                else if ((current.names[pair] != "tree") & (current.names[j] == "tree")) {
+                  upper.tau = theta2tau(tree[[j]][[length(tree[[j]])]], type)
+                }
+                else if ((current.names[pair] == "tree") & (current.names[j] == "tree")) {
+                  upper.tau = min(theta2tau(c(tree[[pair]][[length(tree[[pair]])]], tree[[j]][[length(tree[[j]])]]), type))
+                }
+                matr[pair, j] = matr[j, pair] = optimise(f = function(y, j){sum(log(.dAC(X[, pair], X[, j], tau2theta(y, type), type)))}, j = j, interval = c(1e-08, upper.tau), maximum = TRUE)$maximum
+            }
+            
+        		pair = c(min(row(matr)[which(matr == max(matr))]), max(col(matr)[which(matr == max(matr))]))
+        		current.theta = tau2theta(max(matr), type)
+        		
+        		tree[[pair[1]]] = c(tree[pair], current.theta)
+	        tree = tree[-pair[2]]
+
+    	    		if((main.dim <- main.dim - 1) == 1){
+    	    			return(.union(tree[[1]], epsilon = epsilon, method = agg.method, ...))
+    	    		}
+        		
+		    X[, pair[1]] = .cop.T(sample = X[, pair], theta = current.theta, type = type)
+    			X = X[, -pair[2]]
+        	
+		    colnames(X)[pair[1]] = "tree"
+
+			matr = matr[-pair[2],-pair[2]]
+			Index.j = 1:main.dim; 
+		}
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.PML = function(X, type, names, opt.method = "SANN", control = list(maxit = 2.5e4, reltol = 1e-16)){
+        main.dim = NCOL(X); tree = as.list(names); n = NROW(X)
+        matr = matrix(0, main.dim, main.dim)
+        
+        copy.X = X
+        
+        upper.tau = if((type == 10) | (type == 9)){1/3 - 1e-08}else{1 - 1e-08}
+        for(i in 1:(main.dim-1)){
+            for(j in (i+1):main.dim){
+                matr[i, j] = matr[j, i] = optimise(f = function(y, i, j){sum(log(.dAC(X[, i], X[, j], tau2theta(y, type), type)))}, i = i, j = j, interval = c(1e-08, upper.tau), maximum = TRUE)$maximum
+            }
+        }
+        
+        pair = c(min(row(matr)[which(matr == max(matr))]), max(col(matr)[which(matr == max(matr))]))
+        current.theta = tau2theta(max(matr), type)
+
+	    X[, pair[1]] = .cop.T(sample = X[, pair], theta = current.theta, type = type)
+    		X = X[, -pair[2]]
+
+	    colnames(X)[pair[1]] = "tree"
+    		tree[[pair[1]]] = c(tree[pair], current.theta)
+        tree = tree[-pair[2]]
+		
+		matr = matr[-pair[2],-pair[2]]
+		Index.j = 1:(main.dim <- main.dim - 1) 
+		
+        while(main.dim >= 2){
+        	pair = pair[1]
+        	current.names = colnames(X)
+            for(j in Index.j[-pair]){
+                if ((current.names[pair] == "tree") & (current.names[j] != "tree")) {
+                  upper.tau = theta2tau(tree[[pair]][[length(tree[[pair]])]], type)
+                }
+                else if ((current.names[pair] != "tree") & (current.names[j] == "tree")) {
+                  upper.tau = theta2tau(tree[[j]][[length(tree[[j]])]], type)
+                }
+                else if ((current.names[pair] == "tree") & (current.names[j] == "tree")) {
+                  upper.tau = min(theta2tau(c(tree[[pair]][[length(tree[[pair]])]], tree[[j]][[length(tree[[j]])]]), type))
+                }
+                matr[pair, j] = matr[j, pair] = optimise(f = function(y, j){sum(log(.dAC(X[, pair], X[, j], tau2theta(y, type), type)))}, j = j, interval = c(1e-08, upper.tau), maximum = TRUE)$maximum
+            }
+          
+        		pair = c(min(row(matr)[which(matr == max(matr))]), max(col(matr)[which(matr == max(matr))]))
+        		current.theta = tau2theta(max(matr), type)
+			
+			sub.tree = c(tree[pair], current.theta)
+			temp.X = X[, pair]
+			
+			repeat{
+			n.pars = length(.read.params(sub.tree))
+				if(n.pars > 1){
+					.trees = which(sapply(sub.tree, is.list))
+					.thetas = unlist(sapply(sub.tree[.trees], function(r){r[length(r)]})) 
+					upper.theta = min(.thetas)
+				
+					sq.score = 1/mean(.curviture(temp.X, current.theta, type))
+					
+					lambda.a = optim(par = c(0.75, 3.7), fn = function(lambda.a){
+							if((lambda.a[1] <= 0) | (lambda.a[2] <= 2)){
+								1e20
+							}else{
+								penalized.theta = current.theta + sq.score*(lambda.a[1]*(upper.theta - current.theta <= lambda.a[1]) + max(c(prod(lambda.a) - upper.theta + current.theta, 0))/(lambda.a[2] - 1)*(upper.theta - current.theta > lambda.a[1]))
+								logL = 2*sum(.d.multi.AC(X = temp.X, theta = penalized.theta, type = type + 1))
+							if(upper.theta > penalized.theta){					   			
+					   			n.pars*log(n)- logL
+							}else{
+								(n.pars-1)*log(n) - logL
+							}}}, method = opt.method, control = control)$par
+	   
+				penalized.theta = current.theta + sq.score*(lambda.a[1]*(upper.theta - current.theta <= lambda.a[1]) + max(c(lambda.a[2]*lambda.a[1] - upper.theta + current.theta, 0))/(lambda.a[2] - 1)*(upper.theta - current.theta > lambda.a[1]))
+				
+					if(penalized.theta >= upper.theta){
+						.tree = .trees[which(.thetas == upper.theta)]
+						sub.sub.tree = sub.tree[[.tree]]
+						sub.tree = c(sub.sub.tree[-length(sub.sub.tree)], sub.tree[-.tree])
+					
+						sub.d = length(sub.tree)
+	      				s = sapply(sub.tree, is.character)
+						temp.X = copy.X[,.get.leaves(sub.tree)]
+					
+	      					if(any(!s[-sub.d])){
+			     				for(j in which(!s[-sub.d])){
+			            				.names.j = .get.leaves(sub.tree[[j]])
+	                					temp.X = cbind(temp.X[,which(!(colnames(temp.X) %in% .names.j))], .cop.transform(temp.X[,.names.j], sub.tree[[j]], type))
+        		        					colnames(temp.X) = c(colnames(temp.X)[-NCOL(temp.X)], paste("tree", j, sep = ""))
+           						}
+	      					}
+	      				current.theta = sub.tree[[sub.d]] = tau2theta(optimise(f = function(y){sum(.d.multi.AC(temp.X, tau2theta(y, type), type + 1))}, interval = c(1e-08, 1-1e-08), maximum = TRUE)$maximum, type) #estimate.copula(temp.X, type = type + 1)$tree[[NCOL(temp.X) + 1]]
+	      			}else{break}
+				}else{break}
+			}
+			
+			tree[[pair[1]]] = sub.tree
+			tree = tree[-pair[2]]
+			
+    	    		if((main.dim <- main.dim - 1) == 1){return(tree[[1]])}
+        		
+	    		X[, pair[1]] = .cop.transform(copy.X[,.get.leaves(sub.tree)], sub.tree, type)
+    			X = X[, -pair[2]]
+		    colnames(X)[pair[1]] = "tree"
+			
+			matr = matr[-pair[2],-pair[2]]
+			Index.j = 1:main.dim
+		}
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 .QML.fixed.tree = function(tree, X, type){
-        if(length(tree)==1){tree = tree[[1]]}
+          if(length(tree)==1){tree = tree[[1]]}
 	      n = length(tree);
 	      s = sapply(tree, is.character)
 
 	      if(any(!s[-n])){
-			     for(j in which(!s[-n])){
-                .names.j = .get.leaves(tree[[j]])
-                tree[[j]] = .QML.fixed.tree(tree[[j]], X[,.names.j], type)
-                X = cbind(X, .cop.transform(X[,.names.j], tree[[j]], type))
-                X = X[,-which(colnames(X) %in% .names.j)]; colnames(X) = c(colnames(X)[-NCOL(X)], paste("tree", j, sep = ""))
-           }
-           tree[[n]] = estimate.copula(X, type = type + 1)$tree[[NCOL(X)+1]]
+                Tau = NULL
+			    for(j in which(!s[-n])){
+                    .names.j = .get.leaves(tree[[j]])
+                    tree[[j]] = .QML.fixed.tree(tree[[j]], X[,.names.j], type)
+                    X = cbind(X, .cop.transform(X[,.names.j], tree[[j]], type))
+                    X = X[,-which(colnames(X) %in% .names.j)]; colnames(X) = c(colnames(X)[-NCOL(X)], paste("tree", j, sep = ""))
+                    Tau = c(Tau, theta2tau(tree[[j]][[length(tree[[j]])]], type = type))
+                }
+                tree[[n]] = tau2theta(optimise(f = function(y){sum(.d.multi.AC(X, tau2theta(y, type), type + 1))}, interval = c(1e-08, min(Tau)), maximum = TRUE)$maximum, type)
 		    }else{
-		       tree[[n]] = estimate.copula(X, type = type + 1)$tree[[NCOL(X)+1]]
+		        tree[[n]] = estimate.copula(X, type = type + 1)$tree[[NCOL(X)+1]]
 	      }
 	      tree
 }
@@ -249,9 +389,9 @@ estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 .max.min = function(X){
-	if((any(X<=0)) |  (any(X>=1))){
-		X[which(X >= 1)] = 1-1e-06
-		X[which(X <= 0)] = 1e-06
+	if((any(X <= 0)) |  (any(X >= 1))){
+		X[which(X >= 1)] = 1-1e-16
+		X[which(X <= 0)] = 1e-16
 		X}
 	else{
 		X}

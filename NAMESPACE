@@ -39,5 +39,5 @@ importClassesFrom("copula", acopula)
 
 importFrom("copula", copAMH, copClayton, copFrank, copGumbel, copJoe, onacopulaL, rnacopula, fitCopula, gumbelCopula, claytonCopula, frankCopula, joeCopula, amhCopula, dsumSibuya)
 
-importFrom("graphics", plot)
+importFrom("graphics", plot)importFrom("numDeriv", jacobian)
 importFrom("stats", aggregate, ecdf, dbeta, pbeta, dcauchy, pcauchy, dchisq, pchisq, df, pf, dgamma, pgamma, dlnorm, plnorm, dnorm, pnorm, qnorm, dt, pt, dexp, pexp, dweibull, pweibull, na.omit, D, deriv, constrOptim, optim)
