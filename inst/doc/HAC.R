@@ -24,7 +24,7 @@ plot(Obj2, index = TRUE, l = 1.6)
 
 
 ###################################################
-### code chunk number 4: HAC.Rnw:407-411
+### code chunk number 4: HAC.Rnw:402-406
 ###################################################
 library("HAC")
 data("finData")
@@ -36,11 +36,11 @@ result
 ### code chunk number 5: Scatter1
 ###################################################
 par(mai = c(0, 0, 0, 0))
-pairs(finData, pch = 20)
+pairs(finData, pch = 20, cex.axis = 1.5)
 
 
 ###################################################
-### code chunk number 6: HAC.Rnw:520-521
+### code chunk number 6: HAC.Rnw:515-516
 ###################################################
 names(formals(estimate.copula))
 
@@ -61,7 +61,7 @@ names(formals(estimate.copula))
 
 
 ###################################################
-### code chunk number 9: HAC.Rnw:607-610 (eval = FALSE)
+### code chunk number 9: HAC.Rnw:602-605 (eval = FALSE)
 ###################################################
 ## result.agg = estimate.copula(sample, margins = "edf", epsilon = 0.3)
 ## plot(result, circles = 0.3, index = TRUE, l = 1.7)
@@ -69,7 +69,7 @@ names(formals(estimate.copula))
 
 
 ###################################################
-### code chunk number 10: HAC.Rnw:632-636
+### code chunk number 10: HAC.Rnw:627-631
 ###################################################
 G.cop = hac.full(type  = 1,
                  y     = c("X4", "X3", "X2", "X1"),
@@ -78,19 +78,19 @@ G.cop
 
 
 ###################################################
-### code chunk number 11: HAC.Rnw:659-660
+### code chunk number 11: HAC.Rnw:654-655
 ###################################################
 hac(type = 1, tree = list("X1", "X2", "X3", "X4", 2))
 
 
 ###################################################
-### code chunk number 12: HAC.Rnw:670-671
+### code chunk number 12: HAC.Rnw:665-666
 ###################################################
 hac(type = 1, tree = list(list("X1", "X2", 2.5), "X3", "X4", 1.5))
 
 
 ###################################################
-### code chunk number 13: HAC.Rnw:681-685
+### code chunk number 13: HAC.Rnw:676-680
 ###################################################
 HAC = hac(type = 1, tree = list(list("Y1", list("Z3", "Z4", 3), "Y2", 2.5),
                       list("Z1", "Z2", 2), list("X1", "X2", 2.4),
@@ -106,13 +106,13 @@ plot(HAC, cex = 0.8, circles = 0.35)
 
 
 ###################################################
-### code chunk number 15: HAC.Rnw:706-707
+### code chunk number 15: HAC.Rnw:701-702
 ###################################################
 plot(HAC, cex = 0.8, circles = 0.35)
 
 
 ###################################################
-### code chunk number 16: HAC.Rnw:721-722
+### code chunk number 16: HAC.Rnw:716-717
 ###################################################
 names(formals(plot.hac))
 
@@ -123,18 +123,18 @@ names(formals(plot.hac))
 set.seed(1)
 sim.data = rHAC(500, G.cop)
 par(mai = c(0, 0, 0, 0))
-pairs(sim.data, pch = 20)
+pairs(sim.data, pch = 20, cex.axis = 1.75)
 
 
 ###################################################
-### code chunk number 18: HAC.Rnw:796-798 (eval = FALSE)
+### code chunk number 18: HAC.Rnw:791-793 (eval = FALSE)
 ###################################################
 ## sim.data = rHAC(500, G.cop)
 ## pairs(sim.data, pch = 20)
 
 
 ###################################################
-### code chunk number 19: HAC.Rnw:823-824
+### code chunk number 19: HAC.Rnw:818-819
 ###################################################
 probs = pHAC(X = sim.data, hac = G.cop)
 
@@ -143,20 +143,21 @@ probs = pHAC(X = sim.data, hac = G.cop)
 ### code chunk number 20: pp
 ###################################################
 probs.emp = emp.copula.self(sim.data, proc = "M")
-plot(probs, probs.emp, pch = 20, xlab = "True Probabilities", ylab = "Empirical Probabilites", asp = 1)
-grid(lwd = 2)
+plot(probs, probs.emp, pch = 20, xlab = "True Probabilities", ylab = "Empirical Probabilites", asp = 1, cex.lab = 1.125, cex.axis = 1.125)
+grid(lwd = 1.5)
+box(lwd = 1)
 points(probs, probs.emp, pch = 20)
-lines(c(0,1), c(0,1), col = "red3", lwd = 2)
+lines(c(0,1), c(0,1), col = "darkred", lwd = 2)
 
 
 ###################################################
-### code chunk number 21: HAC.Rnw:876-877 (eval = FALSE)
+### code chunk number 21: HAC.Rnw:872-873 (eval = FALSE)
 ###################################################
 ## probs.emp = emp.copula.self(sim.data, proc = "M")
 
 
 ###################################################
-### code chunk number 22: HAC.Rnw:883-887 (eval = FALSE)
+### code chunk number 22: HAC.Rnw:879-883 (eval = FALSE)
 ###################################################
 ## emp.copula(u, x, proc = "M", sort = "none", margins = NULL,
 ##            na.rm = FALSE, ...)

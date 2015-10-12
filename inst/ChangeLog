@@ -1,12 +1,12 @@
+2015-10-11 Alexander Ristig <alexander.ristig@univie.ac.at>
+
+	* NAMESPACE and author/maintainer information are updated.
+
 2015-05-12 Alexander Ristig <ristigal@hu-berlin.de>
 	
-
 	* The estimation method 'penalized ML' is added.
-
 	
 	* The computational time for the stage-wise (QML) estimation procedure is enormously reduced.
-
-
 
 2015-02-03 Alexander Ristig <ristigal@hu-berlin.de>
 

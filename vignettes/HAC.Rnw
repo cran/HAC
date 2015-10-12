@@ -1,7 +1,7 @@
 \documentclass[article, nojss]{jss}
 
 \author{Ostap Okhrin \\Dresden University of Technology \And
-        Alexander Ristig \\Humboldt-Universit\"at zu Berlin}
+        Alexander Ristig \\University of Vienna}
 \title{Hierarchical Archimedean Copulae: The \pkg{HAC} Package}
 
 \Plainauthor{Ostap Okhrin, Alexander Ristig} 
@@ -36,12 +36,12 @@
   URL: \url{https://www.wiwi.hu-berlin.de/professuren/quantitativ/statistik/members/personalpages/o2}\\
   \\
   Alexander Ristig\\
-  C.A.S.E - Center for Applied Statistics and Economics\\
-  Ladislaus von Bortkiewicz Chair of Statistics\\
-  Humboldt-Universit\"at zu Berlin\\
-  10099 Berlin, Germany\\
-  E-mail: \email{alexander.ristig@hu-berlin.de}\\
-  URL: \url{https://www.wiwi.hu-berlin.de/professuren/quantitativ/statistik/members/personalpages/ar}\\
+  Department of Statistics and Operations Research\\
+  University of Vienna\\
+  Oskar--Morgenstern--Platz 1\\
+  1090 Vienna, Austria\\
+  E-mail: \email{alexander.ristig@univie.ac.at}\\
+  URL: \url{https://isor.univie.ac.at/home}\\
 }
 
 \usepackage{enumerate}
@@ -129,15 +129,13 @@ from version 0.8-1 on. The central contribution of the \pkg{HAC} package
 this class of copulae, as discussed in
 \citet{okhrin_okhrin_schmid_2013a}, including a simple and intuitive
 representation of HAC as \proglang{R} objects of the class
-`\code{hac}'. The main estimation procedure relies on a recursive
-multi-stage maximum likelihood (ML) procedure, which determines the
-parameter and the structure simultaneously. This elegant procedure
-endows the estimator with the usual asymptotic properties but avoids
-the computationally intensive one-step ML estimation, which is also
-implemented for a predetermined structure. Besides, the package offers
+`\code{hac}'. We provide recursive
+multi-stage maximum likelihood (ML) procedure, which determine the
+parameter and the structure simultaneously as well as procedures for a predetermined structure estimating only the parameters. The asymptotic properties of the procedures
+are rigorously studied in the literature. Besides, the package offers
 functions for producing graphics of the copula's structure, for
 sampling random vectors from a given copula and for computing values
-of the corresponding distribution and density.
+of the corresponding distribution and density. An earlier version of this paper, for \pkg{HAC} 1.0-0, has been published as \citet{okhrin_ristig_2014}.
 
 The paper is organized as follows. Section~\ref{sec:PHAC} describes
 shortly the theoretical aspects of HAC and its
@@ -246,7 +244,7 @@ that $C(\cdot)$ is a copula. It holds that if
 $\phi_{\theta_{j}}(\cdot)\in \mathfrak{L}$, for $j=1,\dots,d-1$, and
 $\phi_{\theta_{j+1}}^{-1}(\cdot)\circ\phi_{\theta_{j}}(\cdot)$ have
 completely monotone derivatives, then $C(\cdot)$ is a copula for
-$d\geq2$. For the majority of generators feasible HAC require
+$d\geq2$. Weaker conditions are stated in \citet{rezapour_2015}. For the majority of generators feasible HAC require
 decreasing parameters from the highest to the lowest hierarchical
 level. However, in the case of different families within a single HAC,
 the condition of complete monotonicity is not always fulfilled, see
@@ -265,11 +263,11 @@ however, unrealistic in practice because the variety of different
 structures is enormously large even in moderate
 dimensions. \citet{okhrin_okhrin_schmid_2013a} suggest computationally
 efficient procedures, which allow to estimate HAC recursively. The
-\pkg{HAC} package provides these methods for estimating the parameters
+\pkg{HAC} package provides methods for estimating the parameters
 and structure in a user-friendly way.
 
 \subsection[Estimation of HAC]{Estimation of HAC}\label{sec:EHAC}
-The entire procedure can be described in a recursive way where at the
+The recursive procedure can be described as follows. At the
 first iteration step we fit a bivariate copula to every couple of the
 variables. The couple of variables with the strongest dependency is
 selected. We denote the respective estimator of the parameter at the
@@ -294,7 +292,7 @@ threshold, i.e., $\theta_{1} - \theta_{2} < \epsilon $, with $
 \citet{okhrin_okhrin_schmid_2013a}.
 
 For better understanding, let us consider a three-dimensional example
-with $u_j$, $j=1,2,3$, being uniformly distributed on $[0,1]$. All
+with $U_j$, $j=1,2,3$, being uniformly distributed on $[0,1]$. All
 possible pairs $C_{(12)}(u_1,u_2,\hat{\theta}_{(12)})$,
 $C_{(13)}(u_1,u_3,\hat{\theta}_{(13)})$ and
 $C_{(23)}(u_2,u_3,\hat{\theta}_{(23)})$ are estimated by regular ML,
@@ -318,8 +316,8 @@ theoretical validation is also reported by Proposition 1 of
 \citet{okhrin_okhrin_schmid_2013b} stating that HAC can be uniquely
 recovered from the marginal distribution functions and all bivariate
 copula functions. Crucially for the superior recursive ML estimation
-procedure, pseudo-variables are regarded as functions of the
-underlying random variables $X_1,\ldots,X_d$ and are not explicitly
+procedure, pseudo-variables are regarded as functions of
+underlying random variables $U_1,\ldots,U_d$ and are not explicitly
 computed.
 
 In practice, the marginal distributions $F_j$, $j=1,\ldots,d$, are
@@ -339,7 +337,7 @@ follows: at first stage, we estimate the parameter of the copula at
 the first hierarchical level assuming that the marginal distributions
 are known. At further stages, the next level copula parameter is
 estimated assuming that the margins as well as the copula parameters
-at lower levels are known. Let $\mathbf{X}=\{x_{ij}\}^{\top}$ be the
+at lower levels are known. Let $\mathbf{X}=\{X_{ij}\}^{\top}$ be the
 respective sample, for $i=1,\ldots,n$, $j=1,\ldots,d$, and
 $\pmb{\theta}=(\theta_1,\ldots,\theta_{d-1})^\top$ be the parameters of
 the copula starting with the lowest up to the highest level. The
@@ -356,24 +354,22 @@ system
   % 
   \intertext{with for $i=1\ldots,n$}
   %
-  l_{j}(\mathbf{X}_i) &= \log \, \left\{c_j\big[ \{\widehat F_m(x_{im})\}_{m\in s_j};\,s_j, \theta_j\big]\prod_{m\in s_j}\hat
-    f_m(x_{im})\right\}, \nonumber
+  l_{j}(\mathbf{X}_i) &= \log \, \left\{c_j\big[ \{\widehat F_m(X_{im})\}_{m\in s_j};\,s_j, \theta_j\big]\prod_{m\in s_j}\hat
+    f_m(X_{im})\right\}, \nonumber
 \end{align}
 where $s_j$ refers to the (pseudo)-variables considered at the
 $j$th estimation stage. \citet{chen_fan_2006} and
 \citet{okhrin_okhrin_schmid_2013a} provide asymptotic behaviour of the
-estimates. At the moment, there are three different ways to estimate
+estimates. At the moment, there are four different ways to estimate
 HAC:
 \begin{enumerate}[(i)]
 \item Ordinary (full) ML estimation, also denoted by FML, which is
   based on the complete log-likelihood and hence on a predetermined
   structure.
 \item The ML setup is based on realized pseudo-variables, e.g., the
-  pseudo-variable for the variables $u_k$ and $u_{\ell}$ are 
-  computed according to \citet{gorecki_hofert_holena_2014} as $Z_{k\ell}\overset{\operatorname{def}}{=}\phi\left[2\phi^{-1}\left\{\max(u_k, u_{\ell})\right\}\right]$, so that the bivariate density is maximized with respect to
-  the copula parameter at each step of the procedure. This diagonal transformation of the copula avoids the
-  bias around the initial node arising from the similar transformation $Z_{k\ell}\overset{\operatorname{def}}{=}\phi\left\{\phi^{-1}\left(u_k\right)+\phi^{-1}\left(u_{\ell}\right)\right\}$. Note
-  that this procedure is not supported by asymptotic theory.
+  pseudo-variable for the variables $U_k$ and $U_{\ell}$ are 
+  computed as $Z_{k\ell}\overset{\operatorname{def}}{=}\phi\left[2\phi^{-1}\left\{\max(U_k, U_{\ell})\right\}\right]$, so that the bivariate density is maximized with respect to
+  the copula parameter at each step of the procedure. \citet{gorecki_hofert_holena_2014} show that $Z_{k\ell}$ is unformily so that classical ML estimation of Archimedean copula is used at each step of the procedure, where the parameter space is subsequently shortend. This method is very robust and hence, selected as default method.
 \item More precise results can be obtained by the recursive ML (RML)
   procedure discussed in \citet{okhrin_okhrin_schmid_2013a}. The
   difference between the ML method and the recursive ML procedure
@@ -387,9 +383,8 @@ HAC:
   levels as given, so that the final HAC being a copula is ensured by
   shortening the feasible parameter interval from above. From this
   point of view, the computational challenge is to build the
-  log-likelihood for the full ML estimation, which is almost solved by
-  constructing the $d$-dimensional density, see Section \ref{sec:cdf}.
-\item The penalized ML (PML) estimation procedure aims at determining a data driven sequence $\epsilon_n$ in order to fuse subsequent nodes, if $\hat\theta_1-\hat\theta_2<\epsilon_n$. This method merges advantages of the ML and RML procedure. The proposed method is, however, computationally intense, as the data driven thresholding parameter $\epsilon_n$ depends on tuning parameters arising from a non-concave penalization of the log-likelihood function, c.f., \citet{fan_li_2001}. %We refer the interested reader to \citet{okhrin_ristig_sheen_trueck_2015} for details.
+  log-likelihood as for full ML estimation. The $d$-dimensional density is, however, difficult to compute in a high-dimensional setting, see Section \ref{sec:cdf}.
+\item The penalized ML (PML) estimation procedure aims at determining a data driven sequence $\epsilon_n$ in order to fuse subsequent nodes, if $\hat\theta_1-\hat\theta_2<\epsilon_n$. This method merges advantages of the ML and RML procedure. The proposed method is computationally intense, as the data driven thresholding parameter $\epsilon_n$ depends on tuning parameters arising from a non-concave penalization of the log-likelihood function, c.f., \citet{fan_li_2001}. We refer the interested reader to \citet{okhrin_ristig_sheen_trueck_2015} for details.
 \end{enumerate}
 
 \section[Applications of HAC]{Applications of \pkg{HAC}}\label{sec:AHAC}
@@ -417,7 +412,7 @@ mechanism of \code{estimate.copula} related to the previous real data
 example is presented in Table~\ref{tab:est_proc}.
 <<label = Scatter1, fig=TRUE, pdf = TRUE, echo=FALSE, height=6, width=6, eval=TRUE, include=FALSE>>=
 par(mai = c(0, 0, 0, 0))
-pairs(finData, pch = 20)
+pairs(finData, pch = 20, cex.axis = 1.5)
 @
 
 \begin{figure}[t!]
@@ -790,7 +785,7 @@ the characteristics of the underlying HAC, e.g.,
 set.seed(1)
 sim.data = rHAC(500, G.cop)
 par(mai = c(0, 0, 0, 0))
-pairs(sim.data, pch = 20)
+pairs(sim.data, pch = 20, cex.axis = 1.75)
 @
 
 <<fig=FALSE, echo=TRUE, eval = FALSE>>=
@@ -857,12 +852,13 @@ where $\widehat{F}_{j}(\cdot)$ denotes the estimated marginal
 distribution function of variable $X_{j}$. Figure~\ref{fig:pp}
 suggests a proper fit of the empirical copula computed by
 
-<<label = pp, fig=TRUE, pdf = TRUE, echo=FALSE, eval=TRUE, include=FALSE>>=
+<<label = pp, fig=TRUE, pdf = TRUE, echo=FALSE, height = 6, width = 6, eval=TRUE, include=FALSE>>=
 probs.emp = emp.copula.self(sim.data, proc = "M")
-plot(probs, probs.emp, pch = 20, xlab = "True Probabilities", ylab = "Empirical Probabilites", asp = 1)
-grid(lwd = 2)
+plot(probs, probs.emp, pch = 20, xlab = "True Probabilities", ylab = "Empirical Probabilites", asp = 1, cex.lab = 1.125, cex.axis = 1.125)
+grid(lwd = 1.5)
+box(lwd = 1)
 points(probs, probs.emp, pch = 20)
-lines(c(0,1), c(0,1), col = "red3", lwd = 2)
+lines(c(0,1), c(0,1), col = "darkred", lwd = 2)
 @
 
 \begin{figure}[t!]
@@ -971,11 +967,7 @@ Table~\ref{tab:simulation3}. However, this minor improvement is costly
 since the results are based on a preestimated structure. (iv) These
 observations justify choosing different values of \code{epsilon} for
 $C_3^{\text{G}}$ and $C_3^{\text{C}}$, as the tuning parameter should
-reflect the variability of the parameters. Theoretically,
-\code{epsilon} can be different for each aggregation of the structure
-so that the parameter variability is correctly represented. This,
-however, becomes infeasible in practice, because the number of nodes
-contained in the true structure is generally unknown. If the
+reflect the variability of the parameters. A different \code{epsilon} for each aggregation of the structure is determined in the penalized ML method takin the parameter variability into account. If the
 parameters are closer and/or the value of \code{epsilon} is chosen
 smaller, the amount of correctly classified structures declines. On
 the other hand, larger sample sizes permit smaller values of
@@ -1049,12 +1041,10 @@ the other hand, larger sample sizes permit smaller values of
 \section[Conclusion]{Conclusion}\label{sec:Con}
 
 The \pkg{HAC} package focuses on the computationally efficient
-estimation of hierarchical Ar\-chi\-me\-de\-an copulae, which is
+estimation of hierarchical Ar\-chi\-me\-de\-an copulae, which are
 based on grouping binary structures within a recursive multi-stage ML
-procedure. Its theoretical and practical advantages are (i) avoiding
-the demanding asymptotic theory, which arises due to constrained
-one-step ML estimation and (ii) the consecutive optimization of the
-log-likelihood instead of the singular optimization of the
+procedure and on a predetermined structure respectively. In particular, the recursive procedures are computationally tractable, as the consecutive optimization of the
+log-likelihood avoids the singular optimization of the
 $d$-dimensional one with respect to several parameters. Since HAC
 permit modeling large-dimensional random vectors, the package provides
 a function for producing plots of the related `\code{hac}'
