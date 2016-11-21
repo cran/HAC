@@ -36,7 +36,7 @@ The estimated copula follows the formula \deqn{\widehat{C} \left(u_{1}, \dots, u
 A vector containing the values of the empirical copula.
 }
 \references{
-Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{http://www.jstatsoft.org/v58/i04/}.
+Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{https://www.jstatsoft.org/v58/i04/}.
 }
 \seealso{
 \code{\link{pHAC}}

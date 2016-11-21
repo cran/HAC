@@ -62,7 +62,7 @@ arguments to be passed to methods, e.g. graphical parameters (see \code{\link{pa
 }
 }
 \references{
-Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{http://www.jstatsoft.org/v58/i04/}.
+Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{https://www.jstatsoft.org/v58/i04/}.
 }
 \seealso{
 \code{\link{estimate.copula}}

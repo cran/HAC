@@ -29,7 +29,7 @@
 .check = function(L, theta){
 	n = length(L)
 	if(L[[n]] < theta){
-		return(warning("The dependency parameter of the nested AC should be higher than the parameter at the initial node."))
+		return(warning("Dependency parameter of the nested AC should be higher than the parameter at the initial node."))
 	}else{
 	for(i in 1:(n-1)){
 		if(class(L[[i]]) == "list"){
@@ -41,7 +41,7 @@
 
 hac.full = function(type, y, theta){
 	n = length(y)
-	if(n != (length(theta) + 1)){return(warning("The input arguments does not fit to a fully nested HAC"))}
+	if(n != (length(theta) + 1)){return(warning("Input arguments does not fit to a fully nested HAC"))}
 	
 	tree = list(y[n], y[n-1], theta[n-1])
 	for(i in (n-2):1){

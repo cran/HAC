@@ -33,15 +33,16 @@
   Dresden University of Technology\\
   01069 Dresden, Germany\\
   E-mail: \email{ostap.okhrin@tu-dresden.de}\\
-  URL: \url{https://www.wiwi.hu-berlin.de/professuren/quantitativ/statistik/members/personalpages/o2}\\
+  URL: \url{http://tu-dresden.de/die_tu_dresden/fakultaeten/vkw/iwv/osv/mitarbeiter/ostap.okhrin}\\
   \\
   Alexander Ristig\\
   Department of Statistics and Operations Research\\
+  Faculty of Business, Economics and Statistics\\
   University of Vienna\\
   Oskar--Morgenstern--Platz 1\\
   1090 Vienna, Austria\\
   E-mail: \email{alexander.ristig@univie.ac.at}\\
-  URL: \url{https://isor.univie.ac.at/home}\\
+  URL: \url{http://fec.univie.ac.at/researchers/alexander-ristig/}\\
 }
 
 \usepackage{enumerate}
@@ -129,10 +130,9 @@ from version 0.8-1 on. The central contribution of the \pkg{HAC} package
 this class of copulae, as discussed in
 \citet{okhrin_okhrin_schmid_2013a}, including a simple and intuitive
 representation of HAC as \proglang{R} objects of the class
-`\code{hac}'. We provide recursive
-multi-stage maximum likelihood (ML) procedure, which determine the
+`\code{hac}'. We provide several maximum likelihood (ML) based estimation procedure, which determine the
 parameter and the structure simultaneously as well as procedures for a predetermined structure estimating only the parameters. The asymptotic properties of the procedures
-are rigorously studied in the literature. Besides, the package offers
+are rigorously studied in the literature, e.g., see \citet{okhrin_okhrin_schmid_2013a} and \citet{gorecki_hofert_holena_2014}. Besides, the package offers
 functions for producing graphics of the copula's structure, for
 sampling random vectors from a given copula and for computing values
 of the corresponding distribution and density. An earlier version of this paper, for \pkg{HAC} 1.0-0, has been published as \citet{okhrin_ristig_2014}.
@@ -384,7 +384,7 @@ HAC:
   shortening the feasible parameter interval from above. From this
   point of view, the computational challenge is to build the
   log-likelihood as for full ML estimation. The $d$-dimensional density is, however, difficult to compute in a high-dimensional setting, see Section \ref{sec:cdf}.
-\item The penalized ML (PML) estimation procedure aims at determining a data driven sequence $\epsilon_n$ in order to fuse subsequent nodes, if $\hat\theta_1-\hat\theta_2<\epsilon_n$. This method merges advantages of the ML and RML procedure. The proposed method is computationally intense, as the data driven thresholding parameter $\epsilon_n$ depends on tuning parameters arising from a non-concave penalization of the log-likelihood function, c.f., \citet{fan_li_2001}. We refer the interested reader to \citet{okhrin_ristig_sheen_trueck_2015} for details.
+\item The penalized ML (PML) estimation procedure aims at determining a data driven sequence $\epsilon_n$ in order to fuse subsequent nodes, if $\hat\theta_{\ell}-\hat\theta_{k(\ell)}<\epsilon_n$, where the estimate of parameter at the higher hierarchical level is denoted by $\hat\theta_{k(\ell)}$ and that at the lower level by $\hat\theta_{\ell}$. This method merges advantages of the ML and RML procedure. The proposed method is computationally intense, as the data driven thresholding parameter $\epsilon_n$ depends on tuning parameters arising from a non-concave penalization of the log-likelihood function, c.f., \citet{fan_li_2001}. These tuning parameters have to be determined at each stage of the estimation procedure. We refer the interested reader to \citet{okhrin_ristig_sheen_trueck_2015} for details.
 \end{enumerate}
 
 \section[Applications of HAC]{Applications of \pkg{HAC}}\label{sec:AHAC}
@@ -924,24 +924,25 @@ the number of vectors which are to be evaluated.
 \end{figure}
 
 \section[Simulation study]{Simulation study}\label{sec:sim}
-To ensure the accuracy of the proposed methods, we generate random
+
+While the first part of this section deals with the performance of the ML and RML procedure, the second part is about the more sophisticated PML procedure. Summary statistics can only be computed if the correct structure has been detected. Hence, we sample $m$ estimators as long as $n=1000$ structures are correctly identified.
+
+\subsubsection[Quasi and recursive ML]{Quasi and recursive ML}
+
+To illustrate the accuracy of the proposed methods, we generate random
 data from six copula models of different dimension
 $C_{i}^{j}\overset{\operatorname{def}}{=}C^{j}\left(\cdot;s_{i},\pmb{\theta}_i\right)$,
 for $i=1,2,3$ and $j=\text{C},\text{G}$, and show that the estimates
 almost coincide with the true model specification. Here, $j$ denotes
 the copula family (Clayton or Gumbel) and the structures are given by
-$s_1=((12)3)$, $s_2=((((12)3)4)5)$ and $s_3=((12)(34)5)$. The values
-of $\pmb{\theta}_i$ are presented in Tables~\ref{tab:simulation1} and
+$((U_1,U_2)_{\tau^{-1}(2/3)},U_3)_{\tau^{-1}(1/3)}$, $((((U_1,U_2)_{\tau^{-1}(7/9)},U_3)_{\tau^{-1}(5/9)},U_4)_{\tau^{-1}(3/9)},$ $U_5)_{\tau^{-1}(1/9)}$ and $((U_1,U_2)_{\tau^{-1}(6/9)},(U_3,U_4)_{\tau^{-1}(3/9)},U_5)_{\tau^{-1}(1/9)}$. An overview of functions $\tau(\cdot)$ is tabulated in Table~\ref{tab:Basics}. The values
+of $\pmb{\theta}_i$ in terms of are presented in Tables~\ref{tab:simulation1} and
 \ref{tab:simulation3}. They are chosen to obtain a similar strength of
 dependence by the Clayton and Gumbel based models.
 
-The summary statistics of Tables~\ref{tab:simulation1} and
-\ref{tab:simulation3} rely on $n=1000$ estimates, whereby only
-estimates with the same structure can be compared. For this reason the
-procedure was $m$ times replicated till $n=1000$ estimates were
-available. As \code{estimate.copula} approximates the true structure,
-we set \code{epsilon = 0.15} for $C_3^{\text{G}}$ and \code{epsilon =
-  0.20} for $C_3^{\text{C}}$, which are not based on a binary
+Summary statistics are presented Tables~\ref{tab:simulation1} and
+\ref{tab:simulation3}. As \code{estimate.copula} approximates the true structure,
+we set \code{epsilon = 0.15} for $C_3^{\text{G}}$ and \code{epsilon = 0.20} for $C_3^{\text{C}}$, which are not based on a binary
 structure and employ the RML procedure. Note that the
 RML procedure attempts at aggregating the copula tree after
 each estimation step. The simulated samples for the copula estimation
@@ -951,7 +952,7 @@ procedures. Tables~\ref{tab:simulation1} and \ref{tab:simulation3}
 indicate, that the estimation procedure works properly for the
 suggested models, as the estimates are on average consistent with the
 true parameters. Nevertheless, a few points deserve being mentioned:
-(i) The multi-stage procedure detects the true structure for the
+(i) The ML procedure detects the true structure for the
 binary HAC in $n/m=100\%$ and the recursive ML procedure for the
 non-binary HAC in at least $n/m=99\%$ of the cases as long as the
 parameters exhibit the imposed distance and the permutation symmetry
@@ -967,7 +968,7 @@ Table~\ref{tab:simulation3}. However, this minor improvement is costly
 since the results are based on a preestimated structure. (iv) These
 observations justify choosing different values of \code{epsilon} for
 $C_3^{\text{G}}$ and $C_3^{\text{C}}$, as the tuning parameter should
-reflect the variability of the parameters. A different \code{epsilon} for each aggregation of the structure is determined in the penalized ML method takin the parameter variability into account. If the
+reflect the variability of the parameters. A different \code{epsilon} for each aggregation of the structure is determined in the penalized ML method taking the parameter variability into account. If the
 parameters are closer and/or the value of \code{epsilon} is chosen
 smaller, the amount of correctly classified structures declines. On
 the other hand, larger sample sizes permit smaller values of
@@ -1036,6 +1037,85 @@ the other hand, larger sample sizes permit smaller values of
   \end{tabular}
   \caption{The model for the Gumbel family $C_3^{\text{G}}$ and for the Clayton family $C_3^{\text{C}}$, where $\pmb{\theta}$ denotes the true copula parameters and the column $\bar{s}$ refers to the percentage of incorrectly classified structures based on $n=1000$ replications.}
   \label{tab:simulation3}
+\end{table}
+
+\subsubsection[Penalized ML]{Penalized ML}
+
+In order to compare the results of the simulation study among Archimedean families (Clayton, Frank, Gumbel, Joe), let $\tau:\Theta\rightarrow[0,1]$ transform the parameter $\theta\in\Theta$ into Kendall's correlation coefficient. We illustrate the performance of the estimation procedure for two types of models: 
+
+(i) $5$-dimensional HAC with $((U_3,U_3,U_5)_{\theta_{1}},U_1,U_2)_{\theta_{2}}$, where $\theta_{1}=\tau^{-1}(0.7)$ and $\theta_{2}=\tau^{-1}(0.3)$ refer to the group specific dependence parameter of the random vectors $(U_3,U_4,U_5)^{\top}$ and $(U_{1},U_1,U_2)$ respectively, where $U_{1}=\phi_{\theta_{1}}[3\phi^{-1}_{\theta_{1}}\{\max(U_3,U_4,U_5)\}]$. The parameters in terms of Kendall's $\tau(\cdot)$ are chosen as in \citet[Section 8.1]{segers_uyttendaele_2014} for 4-variate HAC. The sample size is $250$. Table~\ref{tab:sim_d5} summarizes the results of the $5$-dimensional setup. The true structure is found in more than $82\%$ of the cases and the parameters are unbiasedly estimated with a small empirical standard deviation. If the true structure is not identified, HAC are constructed from $3$ parameters in most of the cases as shown in the last column of Table~\ref{tab:sim_d5}. Note that a correct classification of the structure requires several aggregation steps, which enlarges the room for mistakes. We would like to emphasize that the results are sensitive with respect to the selection of the tuning parameters of the penalty function. In practice, these parameters are computed by a global stochastic optimization algorithm namely simulated annealing. In our experiments, the longer the simulated annealing algorithm iterates the more precise are the estimation results with respect to a correct specification of the structure. However, more iterations make the entire procedure more computationally intensive. Furthermore, the PML procedure depends on the diagonal element of an estimate of the Fisher information matrix. In our experiments, the estimtors are not sensitive with respect to the estimator of the information matrix, i.e., the outer score product based estimator performs as good as the Hessian based estimator.
+
+\begin{table}[t!]
+\begin{center}
+        \begin{tabular}{l|ccc|c}
+            \hline\hline
+            Family&$s(\hat\theta)=s(\theta_0)$&$\tau(\hat\theta_1)\;(\text{sd})$&$\tau(\hat\theta_2)\;(\text{sd})$&$\#\{\hat\theta\}$\\
+            \hline
+            Clayton&0.82&0.70 (0.01)&0.30 (0.02)&3.04\\
+            Frank&0.85&0.70 (0.01) & 0.30 (0.02)&3.03\\
+            Gumbel&0.85&0.70 (0.01) & 0.30 (0.02)&3.02\\
+            Joe&0.88&0.70 (0.01) & 0.30 (0.02)&3.04\\
+            \hline\hline
+        \end{tabular}
+    \caption{$s(\hat\theta)=s(\theta_0)$ reports the fraction of correctly specified structures, $\tau(\hat\theta_k)\;(\text{sd})$, $k=1,2$, refers to the sample average of Kendall's $\tau(\cdot)$ evaluated at the estimates and sd to the sample standard deviation thereof. If the structure is misspecified, $\#\{\hat\theta\}$ gives the number of parameters on average included in the misspecified HAC. Monte Carlo sample size is $250$.}
+    \label{tab:sim_d5}
+    \end{center}
+\end{table}
+
+(ii) As $\tau(\cdot)$ is a non-linear transformation, we investigate differences in the aggregation performance for different strength of dependence. In detail, we consider $3$-dimensional HAC $((U_2,U_3)_{\theta_{\ell}},U_1)_{\theta_{k(\ell)}}$, where $\theta_{\ell}$ refers to the dependence between $(U_2,U_3)^{\top}$ and $\theta_{k(\ell)}$ to the dependence of between $(U_{\ell}, U_1)^{\top}$, with $U_{\ell}=\phi_{\theta_{\ell}}[2\phi^{-1}_{\theta_{\ell}}\{\max(U_2,U_3)\}]$. The parameters are chosen such that $\theta_{\ell}=\tau^{-1}(\omega_{\ell})$, with $\omega_{\ell}\in\{0.9,0.7,0.5,0.3,0.1\}$, and $\theta_{k(\ell)}=\tau^{-1}(\omega_{k(\ell)})$, with $k(\ell)=\ell,\ldots,5$. The sample size is $100$. The major findings of the $3$-dimensional setting are presented in Table~\ref{tab:sim_d3}. In contrast to the previous simulation study, there is only one possible error source to obtain a misspecified structure. The penalized estimator is overall unbiased and the correct structure is detected in most of the cases, especially if the distance between $\tau(\theta_{k(\ell),0})$ and $\tau(\theta_{\ell,0})$ is large. Nevertheless, the low classification rate of the $3$-dimensional Archimedean Clayton copula $(U1,U_2,U_3)_{\tau^{-1}(0.1)}$ should be mentioned as well as the bias of the estimator of the lower parameter of the Frank copula $((U_2,U_3)_{\tau^{-1}(0.9)},U_1)_{\tau^{-1}(0.3)}$.
+
+\begin{table}[!t]
+\hspace{-0.5cm}
+        \begin{tabular}{cc|ccc|ccc}
+        \hline\hline
+        && \multicolumn{3}{c|}{Clayton} & \multicolumn{3}{c}{Frank}\\
+        $\tau(\theta_{k(\ell),0})$ &  $\tau(\theta_{\ell,0})$ & $s(\hat\theta)=s(\theta_0)$ & $\tau(\hat\theta_{k(\ell)})$ (sd) & $\tau(\hat\theta_{\ell})$ (sd)& $s(\hat\theta)=s(\theta_0)$ & $\tau(\hat\theta_{k(\ell)})$ (sd) & $\tau(\hat\theta_{\ell})$ (sd)\\
+        \hline
+        0.10 & 0.10 & 0.31 & 0.12 (0.03) & 0.12 (0.03) & 0.83 & 0.10 (0.09) & 0.10 (0.09)\\
+        0.10 & 0.30 & 0.93 & 0.10 (0.05) & 0.30 (0.05) & 0.77 & 0.09 (0.14) & 0.31 (0.05)\\
+        0.10 & 0.50 & 1.00 & 0.10 (0.05) & 0.50 (0.03) & 1.00 & 0.11 (0.14) & 0.50 (0.03)\\
+        0.10 & 0.70 & 1.00 & 0.10 (0.05) & 0.70 (0.02) & 1.00 & 0.10 (0.15) & 0.70 (0.01)\\
+        0.10 & 0.90 & 1.00 & 0.10 (0.05) & 0.90 (0.01) & 1.00 & 0.11 (0.13) & 0.91 (0.00)\\
+        \hline
+        0.30 & 0.30 & 0.88 & 0.30 (0.03) & 0.30 (0.03) & 0.88 & 0.30 (0.04) & 0.30 (0.04)\\
+        0.30 & 0.50 & 0.98 & 0.30 (0.04) & 0.50 (0.03) & 0.93 & 0.30 (0.05) & 0.50 (0.02)\\
+        0.30 & 0.70 & 1.00 & 0.30 (0.05) & 0.70 (0.02) & 1.00 & 0.30 (0.06) & 0.70 (0.01)\\
+        0.30 & 0.90 & 1.00 & 0.30 (0.05) & 0.90 (0.01) & 1.00 & 0.25 (0.06) & 0.92 (0.00)\\
+        \hline
+        0.50 & 0.50 & 0.89 & 0.05 (0.02) & 0.05 (0.02) & 0.88 & 0.50 (0.02) & 0.50 (0.02)\\
+        0.50 & 0.70 & 1.00 & 0.50 (0.03) & 0.70 (0.02) & 1.00 & 0.50 (0.03) & 0.70 (0.01)\\
+        0.50 & 0.90 & 1.00 & 0.50 (0.03) & 0.90 (0.01) & 1.00 & 0.47 (0.03) & 0.91 (0.00)\\
+        \hline
+        0.70 & 0.70 & 0.90 & 0.70 (0.02) & 0.70 (0.02) & 0.90 & 0.70 (0.01) & 0.70 (0.01)\\
+        0.70 & 0.90 & 1.00 & 0.70 (0.02) & 0.90 (0.01) & 1.00 & 0.69 (0.01) & 0.90 (0.00)\\
+        \hline
+        0.90 & 0.90 & 0.84 & 0.90 (0.01) & 0.90 (0.01) & 0.86 & 0.90 (0.00) & 0.90 (0.00)\\
+        \hline
+        && \multicolumn{3}{c|}{Gumbel} & \multicolumn{3}{c}{Joe}\\
+        \hline
+        0.10 & 0.10 & 0.87 & 0.10 (0.01) & 0.10 (0.01) & 0.87 & 0.10 (0.02) & 0.10 (0.01)\\
+        0.10 & 0.30 & 0.85 & 0.09 (0.01) & 0.31 (0.02) & 0.91 & 0.09 (0.02) & 0.31 (0.02)\\
+        0.10 & 0.50 & 1.00 & 0.10 (0.02) & 0.50 (0.02) & 1.00 & 0.10 (0.02) & 0.50 (0.02)\\
+        0.10 & 0.70 & 1.00 & 0.10 (0.02) & 0.70 (0.02) & 1.00 & 0.10 (0.02) & 0.70 (0.02)\\
+        0.10 & 0.90 & 1.00 & 0.10 (0.02) & 0.90 (0.01) & 1.00 & 0.11 (0.02) & 0.90 (0.01)\\
+        \hline
+        0.30 & 0.30 & 0.90 & 0.30 (0.01) & 0.30 (0.01) & 0.89 & 0.30 (0.02) & 0.30 (0.02)\\
+        0.30 & 0.50 & 0.95 & 0.30 (0.02) & 0.50 (0.02) & 0.98 & 0.30 (0.03) & 0.50 (0.02)\\
+        0.30 & 0.70 & 1.00 & 0.30 (0.02) & 0.70 (0.02) & 1.00 & 0.30 (0.03) & 0.70 (0.02)\\
+        0.30 & 0.90 & 1.00 & 0.30 (0.02) & 0.90 (0.01) & 1.00 & 0.30 (0.03) & 0.90 (0.01)\\
+        \hline
+        0.50 & 0.50 & 0.90 & 0.50 (0.01) & 0.50 (0.02) & 0.90 & 0.50 (0.02) & 0.50 (0.02)\\
+        0.50 & 0.70 & 1.00 & 0.50 (0.02) & 0.70 (0.01) & 1.00 & 0.50 (0.02) & 0.70 (0.01)\\
+        0.50 & 0.90 & 1.00 & 0.50 (0.02) & 0.90 (0.01) & 1.00 & 0.50 (0.02) & 0.90 (0.01)\\
+        \hline
+        0.70 & 0.70 & 0.90 & 0.70 (0.01) & 0.70 (0.01) & 0.90 & 0.70 (0.01) & 0.70 (0.01)\\
+        0.70 & 0.90 & 1.00 & 0.70 (0.02) & 0.90 (0.01) & 1.00 & 0.70 (0.02) & 0.90 (0.01)\\
+        \hline
+        0.90 & 0.90 & 0.88 & 0.90 (0.01) & 0.90 (0.01) & 0.86 & 0.90 (0.01) & 0.90 (0.01)\\
+\hline\hline
+        \end{tabular}
+    \caption{The columns $\tau(\theta_{k(\ell),0})$ and $\tau(\theta_{\ell,0})$ refer to parameter values in terms of Kendall's $\tau(\cdot)$ at the lower and higher hierarchical level, respectively. $s(\hat\theta)=s(\theta_0)$ reports the fraction of correctly specified structures, $\tau(\hat\theta_{k(\ell)})$ (sd) and $\tau(\hat\theta_{\ell})$ (sd) refer to the sample averages of Kendall's $\tau(\cdot)$ evaluated at the estimate of the higher and lower hierarchical level and sd to the sample standard deviation thereof. Monte Carlo sample size is $100$.}
+    \label{tab:sim_d3}
 \end{table}
 
 \section[Conclusion]{Conclusion}\label{sec:Con}
