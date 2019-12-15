@@ -68,7 +68,7 @@ pHAC = function(X, hac, margins = NULL, na.rm = FALSE, ...){
 #------------------------------------------------------------------------------------------------------------------------
 
 .one.ob = function(X, margins = NULL){
-    if(class(X) != "matrix"){ 
+    if(!inherits(X, "matrix")){ 
         names = names(X)
         X = .margins(X, margins)
         names(X) = names

@@ -50,7 +50,7 @@ A \env{hac} object is returned.
 \references{
 Hofert, M. and Maechler, M. 2011, Nested Archimedean Copulas Meet R: The \verb{nacopula} Package, \emph{Journal of Statistical Software}, 39(9), 1-20, \url{https://www.jstatsoft.org/v39/i09/}.
 
-Hofert, M., Kojadinovic, I., Maechler, M. and Yan, J. 2013, \verb{copula}: Multivariate Dependence with Copulas, \emph{R package version 0.999-7}, \url{https://CRAN.R-project.org/package=copula}.
+Hofert, M., Kojadinovic, I., Maechler, M. and Yan, J. 2015, \verb{copula}: Multivariate Dependence with Copulas, \emph{R package version 0.999-14}, \url{https://CRAN.R-project.org/package=copula}.
 
 Kojadinovic, I., Yan, J. 2010, Modeling Multivariate Distributions with Continuous Margins Using the \verb{copula} R Package, \emph{Journal of Statistical Software}, 34(9), 1-20. \url{https://www.jstatsoft.org/v34/i09/}.
 

@@ -11,7 +11,7 @@
 
 tau2theta = function(tau, type){
 	n = length(tau)
-	for(i in 1 : n){if((tau[i] < 0) | (tau[i] > 1)){return(warning(paste("tau[", i,"] should be in [0, 1).")))}}
+	for(i in 1:n){if((tau[i] < 0) | (tau[i] > 1)){return(warning(paste("tau[", i,"] should be in [0, 1).")))}}
     if((type == 2) || (type == 1))
         copGumbel@iTau(tau)
     else if((type == 4) || (type == 3))
@@ -144,7 +144,7 @@ par.pairs = function(hac, FUN = NULL, ...){
     tree = hac$tree
     vars = .get.leaves(tree)
     d = length(vars)
-    matr = matrix(NA,nrow=d,ncol=d); colnames(matr)=rownames(matr)=vars
+    matr = matrix(NA, nrow=d, ncol=d); colnames(matr) = rownames(matr) = vars
     matr = .pairs.matr(tree, matr)
     diag(matr) = NA
     

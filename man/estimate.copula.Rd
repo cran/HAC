@@ -64,7 +64,7 @@ tree = list(list("X1", "X5", 3), list("X2", "X3", "X4", 4), 2)
 model = hac(type = 1, tree = tree)
 
 # sample from copula model
-x = rHAC(1000, model)
+x = rHAC(100, model)
 
 # in the following case the true model is binary approximated
 est.obj = estimate.copula(x, type = 1, method = 1, epsilon = 0)

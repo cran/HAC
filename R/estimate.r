@@ -16,7 +16,7 @@
 
 estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg.method = "mean", margins = NULL, na.rm = FALSE, max.min = TRUE, ...){
 	
-	if(is.null(colnames(X))){g.names = names = paste("X", 1 : NCOL(X), sep = "")}else{names = colnames(X)}
+	if(is.null(colnames(X))){g.names = names = paste0("X", 1:NCOL(X))}else{names = colnames(X)}
 	
 	X = .margins(X, margins)
 	colnames(X) = names
@@ -348,7 +348,7 @@ estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 .margins = function(X, margins, ...){
-	if(is.null(margins) | (class(X)!="matrix") | (NROW(X)==1)){
+	if(is.null(margins) | inherits(X, "matrix") | (NROW(X) == 1)){
 		X
 	}else{
 		if(length(margins)==1){
