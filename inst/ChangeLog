@@ -1,3 +1,7 @@
+2020-06-08 Alexander Ristig <alexander.ristig@univie.ac.at>
+
+	* Due to new checks in 'check --as-cran', the namespace is updated.
+
 2019-12-14 Alexander Ristig <alexander.ristig@univie.ac.at>
 
 	* Due to changes of the R-environment, the package is updated.

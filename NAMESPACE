@@ -21,16 +21,13 @@
 	"nacopula2hac"
 )
 
-exportClass("hac")
-
 # generics:
 S3method(aggregate, hac)
 
 S3method(plot, hac)
 S3method(print, hac)
 
-
-export("aggregate.hac", "plot.hac", "print.hac")
+export("hac", "aggregate.hac", "plot.hac", "print.hac")
 
 # imports:
 
