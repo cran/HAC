@@ -1,6 +1,6 @@
 \documentclass[article, nojss]{jss}
 
-\author{Ostap Okhrin \\T \And
+\author{Ostap Okhrin \\Technische Universit\"{a}t Dresden \And
         Alexander Ristig}
 \title{Hierarchical Archimedean Copulae: The \pkg{HAC} Package}
 
@@ -30,19 +30,10 @@
   Chair of Econometrics and Statistics esp. Transportation\\
   Institute of Economics and Transport\\
   Faculty of Transportation\\ 
-  Dresden University of Technology\\
+  Technische Universit\"{a}t Dresden\\
   01069 Dresden, Germany\\
   E-mail: \email{ostap.okhrin@tu-dresden.de}\\
-  URL: \url{http://tu-dresden.de/die_tu_dresden/fakultaeten/vkw/iwv/osv/mitarbeiter/ostap.okhrin}\\
-  \\
-  Alexander Ristig\\
-  Department of Statistics and Operations Research\\
-  Faculty of Business, Economics and Statistics\\
-  University of Vienna\\
-  Oskar--Morgenstern--Platz 1\\
-  1090 Vienna, Austria\\
-  E-mail: \email{alexander.ristig@univie.ac.at}\\
-  URL: \url{http://fec.univie.ac.at/researchers/alexander-ristig/}\\
+  URL: \url{https://tu-dresden.de/bu/verkehr/ivw/osv/die-professur/inhaber-in}
 }
 
 \usepackage{enumerate}

@@ -1,10 +1,10 @@
-ab9d72c4532ad2dbb8551b5a8e189f50 *DESCRIPTION
+1ab7b6d2bae43405412f6e0dae1355ab *DESCRIPTION
 8a730ac210703b8c0c9bc994a5a4b241 *NAMESPACE
 9b6e4037c606eefb217326bd79c7a3ed *R/aggregate.r
 94fe763ac6218279e029c3a6913cbaef *R/cdf.r
 57029d468250d8cd484ee5bee7f854f0 *R/constructor.r
 f58bf38327f43e2f7fa88ae2cc25faff *R/empirical.r
-957215b4eb8a3b07226a6d84cac8e61e *R/estimate.r
+f18dca22ad3562d507b18fa77e6c58b1 *R/estimate.r
 bf03929c7d51aaac7c1adcdcba4be3a6 *R/functions.r
 2277a67cba22000b4c3d4839b7b1c98d *R/pdf.r
 4d454bf177512c696c142ea899da5b7b *R/plot.r
@@ -13,10 +13,10 @@ b954f327e597397bd0585db260b01249 *R/simulate.r
 1ee9fa27a9c357384c34d247d58b9ca0 *build/vignette.rds
 6ce8e9adcde6bcb79e803dc7cda07b81 *data/finData.RData
 a0660183d1d46d13fc8338e649d064c4 *inst/CITATION
-fc9e4ac07ad37257c9805f23f9a4b64e *inst/ChangeLog
-d232afdd821e14ff337dda8bacc06bcd *inst/doc/HAC.R
-0f12c64e854e7cf4022d9de6d2167484 *inst/doc/HAC.Rnw
-88028621eeaab01fb1e24c3d6dfe6ba6 *inst/doc/HAC.pdf
+0a4107db348ba55494d406c155b08064 *inst/ChangeLog
+b757b6efcab82934d8eba94299914ecc *inst/doc/HAC.R
+4800a2253fc51b599e5f76b5f783cc35 *inst/doc/HAC.Rnw
+c60b6a56d336b9d9f797dcefc6462869 *inst/doc/HAC.pdf
 84b8e26039f134ad5c19613044267da5 *man/aggregate.hac.Rd
 707681f115242b45f230ae423534b0f2 *man/copMult.Rd
 923fef877f850c77b7abb69425567176 *man/dHAC.Rd
@@ -32,5 +32,5 @@ bbe7c7d4e1da32b8f85e179ccaff1f0d *man/phi.Rd
 df4e5bbebc84974c2b406c1524a0a7d8 *man/theta2tau.Rd
 285ee42948afab8c1c95fae912400fdf *man/tree2str.Rd
 f4e5add12005e126260c7ada7e4c7d71 *vignettes/HAC-speed2.pdf
-0f12c64e854e7cf4022d9de6d2167484 *vignettes/HAC.Rnw
+4800a2253fc51b599e5f76b5f783cc35 *vignettes/HAC.Rnw
 373d621c7ee59d39cff7dffd1c6aa1a1 *vignettes/ref.bib

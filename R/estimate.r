@@ -348,13 +348,13 @@ estimate.copula = function(X, type = 1, method = 1, hac = NULL, epsilon = 0, agg
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 .margins = function(X, margins, ...){
-	if(is.null(margins) | inherits(X, "matrix") | (NROW(X) == 1)){
+	if(is.null(margins) | !inherits(X, "matrix") | (NROW(X) == 1)){
 		X
 	}else{
 		if(length(margins)==1){
 		X = apply(X, 2, .one.mar, spec = margins, ...)
 	}else{
-		for(i in 1:NCOL(X)){X[,i] = .one.mar(X[,i], margins[i],...)}}
+		for(i in 1:NCOL(X)){X[,i] = .one.mar(X[,i], margins[i], ...)}}
 		X
 	}
 }
