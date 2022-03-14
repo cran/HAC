@@ -2,8 +2,8 @@
 # FUNCTION:         DESCRIPTION:
 #  tau2theta       	Transforms Kendall's rank correlation coefficient to the dependence parameter of an Archimedean copula.
 #  theta2tau        Transfrorms the dependence parameter of an Archimedean copula to Kendall's rank correlation coefficient.
-#  phi        		The generator function of Archimedean copula.
-#  phi.inv			The inverse of the generator function.
+#  phi        		  The generator function of Archimedean copula.
+#  phi.inv			    The inverse of the generator function.
 #  copMult        	Computes the value of d-dimensional AC for a given sample with values in [0,1]^d.
 #  par.pairs        Returns the pairwise arranged parameter in a matrix, so that the parameters correspond to the lowest hierarchical level at which the variables are joined. 
 #  .pair.matr       Supplementary function of par.pairs. Arranges the variables pairwise and returns the corresponding value. (Internal function)
@@ -148,7 +148,7 @@ par.pairs = function(hac, FUN = NULL, ...){
     matr = .pairs.matr(tree, matr)
     diag(matr) = NA
     
-    if(class(FUN)=="function"){
+    if(is.function(FUN)){
         matr[lower.tri(matr)] = FUN(matr[lower.tri(matr)], ...)
         matr[upper.tri(matr)] = FUN(matr[upper.tri(matr)], ...)
     }else{

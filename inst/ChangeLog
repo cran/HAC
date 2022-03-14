@@ -1,8 +1,14 @@
-2019-12-14 Alexander Ristig <alexander.ristig@univie.ac.at>
+2022-03-08 Alexander Ristig <alexander.ristig@univie.ac.at>
+
+	* The PML procedure is modified. Gumbel- and Clayton-copulas can be estimated in higher dimensions now. 
+
+	* Maintainer information is updated.
+	
+	* JSS-citations are changed due to a move of JSS to a new server.
+
+2020-08-14 Alexander Ristig <alexander.ristig@univie.ac.at>
 
 	* A bug in the package-update from 2019-12-14 was corrected. This bug affected the results of estimation.copula when 'margins != NULL'.
-
-	* Author/maintainer information are updated.
 
 2020-06-08 Alexander Ristig <alexander.ristig@univie.ac.at>
 

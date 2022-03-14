@@ -13,13 +13,6 @@
 #  .constr.expr             Returns an expression of the HAC for a given copula type. (Internal function)
 #  to.logLik                Returns the log-Likelihood function or evalutes the log-likelihood instantaneously.
 #  .tree.without.params     Tranforms a tree of a 'hac' object with numeric values as parameters into a tree with symbolic parameters. (Internal function)
-#  .curviture				Fisher-Scoring contributions. (Internal function)
-#  .score					Score contributions of a bivariate log-likelihood. (Internal function)
-#  .score.amh				Score contributions of a bivariate log-likelihood for AMH. (Internal function)
-#  .score.joe				Score contributions of a bivariate log-likelihood for Joe. (Internal function)
-#  .score.frank				Score contributions of a bivariate log-likelihood for Frank. (Internal function)
-#  .score.clayton			Score contributions of a bivariate log-likelihood for Clayton. (Internal function)
-#  .score.gumbel			Score contributions of a bivariate log-likelihood for Gumbel. (Internal function)
 ##########################################################################################################################
 
 .dAC = function(x, y, theta, type){	
@@ -113,7 +106,7 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
            return(.cop.pdf(tree = hac$tree, sample = X, type = type, d = d, names = names, eval = eval))
         }else{
         	if((type == 1) | (type == 3) | (type == 5) | (type == 7) | (type == 9)){type = type + 1}
-			.d.multi.AC(X, theta = hac$tree[[length(hac$tree)]], type = type, log = FALSE)[-1]
+			      .d.multi.AC(X, theta = hac$tree[[length(hac$tree)]], type = type, log = FALSE)[-1]
         }
 }
 
@@ -121,7 +114,7 @@ dHAC = function(X, hac, eval = TRUE, margins = NULL, na.rm = FALSE, ...){
 
 .cop.pdf = function(tree, sample, type, d, names, eval){
 	if(is.null(colnames(sample))){stop("Specify colnames for X.")}
-	string.expr = .constr.expr(tree, type)
+	  string.expr = .constr.expr(tree, type)
     Dd = .d.dell(parse(text = string.expr), names, d)
     
     if(eval){
@@ -232,120 +225,17 @@ to.logLik = function(X, hac, eval = FALSE, margins = NULL, sum.log = TRUE, na.rm
      n = length(tree)
      s = sapply(tree[-n], is.character)
      tree[[n]] = paste("theta",k,".",l, sep="")
-     
+
      if(any(s)){
          if(any(!s)){
             for(i in which(!s)){
                 tree[[i]]=.tree.without.params(tree[[i]], k=k+1,l=i)
-            }       
+            }    
          }else{
             tree = tree
          }}else{
          for(i in 1:(n-1)){
                 tree[[i]]=.tree.without.params(tree[[i]], k=k+1,l=i)
          }}
-    return(tree)        
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------
-#
-#.d.dell.score = function(expr, names, order){
-#   if(order==1){
-#        deriv(parse(text = paste("log(",paste(deparse(expr), sep = "", collapse = ""), ")", sep = "", collapse = "")), names[order], function.arg = names)
-#   }else{
-#        .d.dell.score(D(expr, names[order]), names, order-1)}
-#}
-
-#-----------------------------------------------------------------------------------------------------------------
-
-#.score = function(X, tree, type){
-#	hac.names = .get.leaves(tree)
-#	values = .read.params(tree);
-	  
-#	tree = .tree.without.params(tree)
-#    thetas = .read.params(tree); 
-#    expr = .constr.expr(tree, type)
-#    f = .d.dell.score(parse(text=expr), c(thetas, hac.names), order = length(hac.names) + 1)
- 	
-# 	values = cbind(values, X)
-#    for(i in 1:NCOL(values)){formals(f)[[i]]=values[,i]}
-#    c(attr(f(), "gradient"))
-#}
-
-#-------------------------------------------------------------------------------------------------------------------------------
-
-.curviture = function(X, theta, type){
-   d = NCOL(X)
-  .names = colnames(X)
-  if(d < 3){
-     #.AC = vector("list", d+1)
-     #for(j in 1:d){.AC[[j]] = .names[[j]]}; .AC[[d+1]] = theta;
-     #.score(X = X, tree = .AC, type = type)^2
-     .score(X[,1], X[,2], theta, type + 1)^2
-  }else{
-      jacobian(function(r){.d.multi.AC(X = X, theta = r, type = type + 1)}, x = theta, method = "simple", method.args = list(eps = 1e-8))^2
-  }
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-.score = function(x, y, theta, type){
-	        if(type == 2){
-                .score.gumbel(x, y, theta)
-            }else
-            if(type == 4){
-            	.score.clayton(x, y, theta)
-       		}else
-            if(type == 6){
-            	.score.frank(x, y, theta)
-        		}else
-            if(type == 8){
-            	.score.joe(x, y, theta)
-        		}else
-            if(type == 10){
-            	.score.amh(x, y, theta)
-        		}
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-.score.amh = function(x, y, theta){
-	m.x = -1 + x
-	m.y = -1 + y
-	(-1 + x*(2 - 4*y) - theta^2*(-1 + x)^2*m.y^2 + 2*y - 2*theta*m.x*m.y*(m.x + y + x*y))/((-1 + theta*m.x*m.y)*(1 + theta*(m.x + m.y + theta*m.x*m.y + x*y)))
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-.score.joe = function(x, y, theta){
-	x.1 = (1-x)^theta
-	y.1 = (1-y)^theta
-	-((theta*((-(-1 + theta)^2 + x.1)*x.1 + ((-1 + theta)*theta + (2 + (-1 + theta)*theta)*x.1 - 2*x.1^2)*y.1 + (-1 + x.1)*(-theta + x.1)*y.1^2)*log1p(-x) - (-theta + (-1 + x.1)*(-1 + y.1))*(-x.1 + (-1 + x.1)*y.1)*log(x.1 - (-1 + x.1)*y.1) + theta*((-1 + x.1)^2*y.1^2*log(1 - y) + theta*x.1*(1 + (-1 + theta + x.1)*log1p(-y)) - (-1 + x.1)*y.1*(theta + (-(-1 + theta)^2 + (1 + theta)*x.1)*log1p(-y))))/(theta^2*(-theta + (-1 + x.1)*(-1 + y.1))*(x.1 - (-1 + x.1)*y.1)))
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-.score.frank = function(x, y, theta){
-	dif.xy = x-y
-	sum.xy = x+y
-(exp(theta*(2 + y))*(1 + theta*dif.xy) + exp(theta + theta*x)*(-1 + theta*(1 + dif.xy)) + exp(theta*(2 + x))*(1 - theta*dif.xy) + exp(theta + theta*y)*(-1 - theta*(-1 + dif.xy)) + exp(theta*(1 + sum.xy))*(-1 + theta*(-2 + sum.xy)) + exp(theta*sum.xy)*(1 - theta*(-1 + sum.xy)) + exp(theta)*(1 + theta*(-1 + sum.xy)) - exp(2*theta)*(1 + theta*sum.xy))/((-1 + exp(theta))*(-exp(theta*sum.xy) + exp(theta)*(-1 + exp(theta*x) + exp(theta*y)))*theta)
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-.score.clayton = function(x, y, theta){
-	x.theta = x^theta 
-	y.theta = y^theta
-	theta.1 = 1 + theta
-	(theta*theta.1*(-(theta*x.theta) + theta.1*y.theta)*log(x) + theta*theta.1*(theta.1*x.theta - theta*y.theta)*log(y) + (x.theta + y.theta)*(theta^2 + theta.1*log(x^(-theta) + y^(-theta))))/(theta^2*theta.1*(x.theta + y.theta))
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
-.score.gumbel = function(x, y, theta){
-	lx = (-log1p(-x))^theta
-	ly = (-log1p(-y))^theta
-	xy = lx + ly
-	xy.t = xy^(1/theta)
-(theta*(-(lx*((-1+theta)^2+(-3+2*theta)*xy.t+(lx+ly)^(2/theta)))+theta*(-1+theta+xy.t)*ly)*log(-log1p(-x))+(1-theta+(-3+theta)*xy.t+xy.t^2)*xy*log(xy)+theta*(theta*lx*(1+(-1 +theta+xy.t)*log(-log1p(-y)))+ly*(theta-((-1+theta)^2+(-3+2*theta)*xy.t+xy^(2/theta))*log(-log1p(-y)))))/(theta^2*(-1+theta+xy.t)*xy)
+    return(tree)  
 }

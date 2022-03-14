@@ -54,7 +54,7 @@ Joe, H. 2005, Asymptotic Efficiency of the Two-Stage Estimation Method for Copul
 
 Okhrin, O., Okhrin, Y. and Schmid, W. 2013, On the Structure and Estimation of Hierarchical Archimedean Copulas, \emph{Journal of Econometrics} 173, 189-204.
 
-Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{https://www.jstatsoft.org/v58/i04/}.
+Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \doi{10.18637/jss.v058.i04}.
 
 Okhrin, O., Ristig, A., Sheen J. and Trueck, S. 2015, Conditional Systemic Risk with Penalized Copula, \emph{SFB 649 Discussion Paper 2015-038, Sonderforschungsbereich 649, Humboldt University, Germany}.
 }

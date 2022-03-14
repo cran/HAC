@@ -48,15 +48,15 @@ A \env{hac} object is returned.
 \item{tree}{the structure of the HAC.}
 }
 \references{
-Hofert, M. and Maechler, M. 2011, Nested Archimedean Copulas Meet R: The \verb{nacopula} Package, \emph{Journal of Statistical Software}, 39(9), 1-20, \url{https://www.jstatsoft.org/v39/i09/}.
+Hofert, M. and Maechler, M. 2011, Nested Archimedean Copulas Meet R: The \verb{nacopula} Package, \emph{Journal of Statistical Software}, 39(9), 1-20, \doi{10.18637/jss.v039.i09}.
 
 Hofert, M., Kojadinovic, I., Maechler, M. and Yan, J. 2015, \verb{copula}: Multivariate Dependence with Copulas, \emph{R package version 0.999-14}, \url{https://CRAN.R-project.org/package=copula}.
 
-Kojadinovic, I., Yan, J. 2010, Modeling Multivariate Distributions with Continuous Margins Using the \verb{copula} R Package, \emph{Journal of Statistical Software}, 34(9), 1-20. \url{https://www.jstatsoft.org/v34/i09/}.
+Kojadinovic, I., Yan, J. 2010, Modeling Multivariate Distributions with Continuous Margins Using the \verb{copula} R Package, \emph{Journal of Statistical Software}, 34(9), 1-20. \doi{10.18637/jss.v034.i09}.
 
-Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{https://www.jstatsoft.org/v58/i04/}.
+Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \doi{10.18637/jss.v058.i04}.
 
-Yan, J. 2007, Enjoy the Joy of Copulas: With a Package \verb{copula}, \emph{Journal of Statistical Software}, 21(4), 1-21, \url{https://www.jstatsoft.org/v21/i04/}.
+Yan, J. 2007, Enjoy the Joy of Copulas: With a Package \verb{copula}, \emph{Journal of Statistical Software}, 21(4), 1-21, \doi{10.18637/jss.v021.i04}.
 }
 \examples{
 # it might be helpful to plot the hac objects

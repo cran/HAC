@@ -2,7 +2,7 @@
 # FUNCTION:         DESCRIPTION:
 #  .union         	Aggregates the whole tree of a HAC. (Internal function)
 #  .compare.one     Compares two paramters of subcopulae for being larger or smaller than the prespecified epsilon and aggregates the subcopulae if the condition is TRUE. (Internal function)
-#  .method					Computates the mean, min and max if abs(theta_1 - theta_2) < epsilon. (Internal function)
+#  .method					Computes the mean, min and max if abs(theta_1 - theta_2) < epsilon. (Internal function)
 #  aggregate.hac    Aggregates an object of the class 'hac'.             
 ##########################################################################################################################
 
@@ -11,7 +11,7 @@
 	result = list()
 	
 	for(i in 1:n){
-	if(class(tree[[i]])=="list"){
+	if(is.list(tree[[i]])){
 			x1 = list()
 			x2 = list()
 			

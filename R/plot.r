@@ -22,12 +22,12 @@
 #-------------------------------------------------------------------------------------------------------------------------------
 
 .X.coord.var = function(tree, s){
-	if( (!("coord" %in% names(tree))) & (class(tree) != "character")){
+	if( (!("coord" %in% names(tree))) & (!is.character(tree))){
 		n = length(tree) - 1
 			for(i in 1:n){
 				tree[[i]] = .X.coord.var(tree[[i]], s = s)
 	}}else{
-		if(class(tree) == "character"){
+		if(is.character(tree)){
 			n = length(tree)
         	tree = list(tree, coord = list(x = integer(n), y = integer(n)))
         	for(i in 1:n){
@@ -75,11 +75,11 @@
 #-------------------------------------------------------------------------------------------------------------------------------
 
 .get.coord = function(tree){
-	if((class(tree[[1]]) == "character") | (class(tree[[1]]) == "numeric")){
+	if(is.character(tree[[1]]) | is.numeric(tree[[1]])){
 		n = length(tree)
 		mean(tree[[n]][[1]])
 	}else{
-	if(class(tree[[1]]) == "list"){
+	if(is.list(tree[[1]])){
 		mean(unlist(sapply(tree, FUN = .get.coord)))
 	}}
 }
@@ -127,7 +127,7 @@
 	n = length(tree)
 	
 	for(i in 1:(n-1)){
-		if(class(tree[[i]][[1]])=="list"){
+		if(is.list(tree[[i]][[1]])){
 			.line(c(tree[[n]]$coord$x, tree[[i]][[length(tree[[i]])]]$coord$x), c(tree[[n]]$coord$y, tree[[i]][[length(tree[[i]])]]$coord$y), col = col, lwd = lwd, ...)
 			.plot.lines.circles(tree[[i]], circles = circles, bg = bg, fg = fg, col = col, col.t = col.t, lwd = lwd, ...)
 		}else{
@@ -148,7 +148,7 @@
     stopifnot(n==nn)
 	
 	for(i in 1:(n-1)){
-		if(class(tree.coord[[i]][[1]])=="list"){
+		if(is.list(tree.coord[[i]][[1]])){
         n = length(tree[[i]])
 			.rectangle(a = tree.coord[[i]][[n]]$coord$x, b = tree.coord[[i]][[n]]$coord$y, L = tree[[i]], l = l, h = h, z = z, index = index, numbering = numbering, s.params = s.params, theta = theta, type = type, digits = digits, fg = fg, bg = bg, col = col, col.t = col.t, lwd = lwd, ...)
 			.plot.rectangles(tree.coord = tree.coord[[i]], tree = tree[[i]], h = h, l = l, z = z, index = index, numbering = numbering, s.params = s.params, theta = theta, type = type, digits = digits, fg = fg, bg = bg, col = col, col.t = col.t, lwd = lwd, ...)
@@ -202,7 +202,7 @@
 	m = integer(1)
 	
 	for(i in 1:n){
-		if(class(tree[[i]][[1]])=="list"){
+		if(is.list(tree[[i]][[1]])){
 			s[i] = TRUE
 		}else{
 			s[i] = FALSE

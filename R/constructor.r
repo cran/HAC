@@ -32,7 +32,7 @@
 		return(warning("Dependency parameter of the nested AC should be higher than the parameter at the initial node."))
 	}else{
 	for(i in 1:(n-1)){
-		if(class(L[[i]]) == "list"){
+		if(is.list(L[[i]])){
 			.check(L = L[[i]], theta = L[[n]])
 	}}}
 }

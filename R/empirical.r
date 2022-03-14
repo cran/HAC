@@ -17,7 +17,7 @@ emp.copula = function(u, x, proc = "M", sort = "none", margins = NULL, na.rm = F
 	if(na.rm){
 		x = na.omit(x, ...)
 		u = na.omit(u, ...)
-    }
+  }
 	
 if(sort == "none"){
 	.emp(u = u, x = x, proc = proc, n = n, nn = nn, d = d)}
@@ -37,11 +37,11 @@ emp.copula.self = function(x, proc = "M", sort = "none", margins = NULL, na.rm =
 
 .emp = function(u, x, proc, n, nn, d){
 	if(proc == "M"){
-		Compare = matrix(t(matrix(rep(u, n), ncol = n * d)), ncol = d, byrow = TRUE)
-		Values = matrix(rep(t(x), nn), ncol = d, byrow = TRUE)		
-		1/n*colSums(matrix((rowSums(Values <= Compare) == d), ncol = nn)) 
+    Compare = matrix(t(matrix(rep(u, n), ncol = n * d)), ncol = d, byrow = TRUE)
+    Values = matrix(rep(t(x), nn), ncol = d, byrow = TRUE)		
+		1/n * colSums(matrix((rowSums(Values <= Compare) == d), ncol = nn)) 
 	}else{	
-        loops = function(w){apply(x, 1, FUN = function(r){prod(r <= u[w,])})}
-        1/n*colSums(sapply(1:nn, FUN = loops))
+    loops = function(w){apply(x, 1, FUN = function(r){prod(r <= u[w,])})}
+    1/n * colSums(sapply(1:nn, FUN = loops))
 	}
 }

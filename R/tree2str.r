@@ -69,16 +69,16 @@ n = length(tree); x = character(1)
 #-------------------------------------------------------------------------------------------------------------------------------
 
 .one.with.theta = function(element, digits, theta){
-		if(class(element)=="character"){
+		if(is.character(element)){
 			d = length(element)
-			if(d ==1){
+			if(d == 1){
 				element
 		}else{
 			if(d > 1){
 				paste(element, sep = "", collapse = ".")
 		}}
 	}else{
-		if(class(element)=="list"){
+		if(is.list(element)){
 			.allocate.all(element, theta = theta, digits = digits)
 	  }else{
 			round(element, digits = digits)
@@ -88,16 +88,16 @@ n = length(tree); x = character(1)
 #-------------------------------------------------------------------------------------------------------------------------------
 
 .one.without.theta = function(element, theta){
-		if(class(element)=="character"){
+		if(is.character(element)){
 			d = length(element)
-			if(d ==1){
+			if(d == 1){
 				element
 		}else{
 			if(d > 1){
 				paste(element, sep = "", collapse = ".")
 		}}
 	}else{
-		if(class(element)=="list"){
+		if(is.list(element)){
 			return(.allocate.all(element, theta = theta))
 	}}
 }

@@ -52,7 +52,7 @@ McNeil, A. J. 2008, Sampling Nested Archimedean Copulas, \emph{Journal of Statis
 
 Nelsen, R. B. 2006, An Introduction to Copulas, \emph{Spinger}, 2nd Edition.
 
-Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \url{https://www.jstatsoft.org/v58/i04/}.
+Okhrin, O. and Ristig, A. 2014, Hierarchical Archimedean Copulae: The \verb{HAC} Package", \emph{Journal of Statistical Software}, 58(4), 1-20, \doi{10.18637/jss.v058.i04}.
 
 Savu, C. and Trede, M. 2010, Hierarchies of Archimedean copulas, \emph{Quantitative Finance} 10, 295-304.
 }
