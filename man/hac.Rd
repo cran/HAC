@@ -33,7 +33,7 @@ all copula-types are admissible, see \code{\link{phi}} for an overview of implem
 a \env{hac} object.
 }
  \item{outer_nacopula}{
-an \code{\link{nacopula}} object. The variables of the \code{outer_nacopula} object \code{1, 2, ...} are translated into the \code{\link{character}}s \code{"X1", "X2", ...}.
+an \code{nacopula} object. The variables of the \code{outer_nacopula} object \code{1, 2, ...} are translated into the \code{\link{character}}s \code{"X1", "X2", ...}.
 }
   \item{digits}{
 specifies the digits, see \code{\link{tree2str}}.

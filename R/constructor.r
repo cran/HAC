@@ -140,7 +140,7 @@ hac2nacopula = function(x){
 #------------------------------------------------------------------------------------------------------------------------
 
 nacopula2hac = function(outer_nacopula){
-  if(class(outer_nacopula) != "outer_nacopula"){stop("An outer_nacopula object is required.")}
+  if (!inherits(outer_nacopula, "outer_nacopula")){stop("An outer_nacopula object is required.")}
 	.family = character(1)
 	n.childs = length(outer_nacopula@childCops)
 	if(outer_nacopula@copula@name == "Gumbel"){

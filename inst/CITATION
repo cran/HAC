@@ -1,8 +1,8 @@
 citHeader("To cite HAC in publications use:")
 
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
   title        = "Hierarchical Archimedean Copulae: The {HAC} Package",
-  author       = personList(as.person("Ostap Okhrin"),
+  author       = c(as.person("Ostap Okhrin"),
                    as.person("Alexander Ristig")),
   journal      = "Journal of Statistical Software",
   year         = "2014",
